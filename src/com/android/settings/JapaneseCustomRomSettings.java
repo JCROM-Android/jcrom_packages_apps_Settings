@@ -177,7 +177,9 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             try {
                 ActivityManager am = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
                 am.forceStopPackage("com.android.launcher");
-                Runtime.getRuntime().exec("pkill -f  com.android.systemui");
+                Intent jcservice = (new Intent())
+                    .setClassName("com.android.systemui", "com.android.systemui.JcromService");
+                getActivity().startActivity(jcservice);
                 Thread.sleep(7500);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -352,7 +354,9 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             try {
                 ActivityManager am = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
                 am.forceStopPackage("com.android.launcher");
-                Runtime.getRuntime().exec("pkill -f  com.android.systemui");
+                Intent jcservice = (new Intent())
+                    .setClassName("com.android.systemui", "com.android.systemui.JcromService");
+                getActivity().startActivity(jcservice);
                 Thread.sleep(7500);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -424,7 +428,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        Log.e(TAG, "[SOLA-TEST] : 001");
         if (Utils.isMonkeyRunning()) {
             return false;
         }
@@ -435,7 +438,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeMyHobbyOptions();
         } else if (preference == mTheme) {
             if(mForceMyHobby.isChecked()) {
-                Log.e(TAG, "[SOLA-TEST] : 002");
                 FileListDialog dlg = new FileListDialog(getActivity());
                 dlg.setOnFileListDialogListener(this);
                 dlg.show( "/sdcard/mytheme/", "select theme");
@@ -445,7 +447,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         } else if (preference == mForceMyAndroidId) {
         	showNewAndroidIdDialog();
         } else {
-            Log.e(TAG, "[SOLA-TEST] : 003");
         }
 
         return false;
