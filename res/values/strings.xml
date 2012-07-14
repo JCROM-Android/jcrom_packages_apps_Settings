@@ -3822,6 +3822,8 @@
     <string name="developer_IoriAYANE_summary">twitter : IoriAYANE</string>
     <string name="developer_hamatz">hamatz</string>
     <string name="developer_hamatz_summary">twitter : hamatz</string>
+    <string name="developer_tama">tama</string>
+    <string name="developer_tama_summary">twitter : tamacjp</string>
 
     <string name="theme_setting">Select Theme</string>
     <string name="theme_setting_summary">default</string>

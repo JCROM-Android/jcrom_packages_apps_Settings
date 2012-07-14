@@ -48,4 +48,9 @@
             android:title="@string/developer_hamatz"
             android:summary="@string/developer_hamatz_summary"/>
 
+        <Preference
+            android:key="developer_tama"
+            android:title="@string/developer_tama"
+            android:summary="@string/developer_tama_summary"/>
+
 </PreferenceScreen>
