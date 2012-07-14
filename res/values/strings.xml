@@ -3763,6 +3763,9 @@
 
     <string name="select_ui_title">select UI</string>
 
+    <string name="actionbar_bottom">Bottom ActionBar</string>
+    <string name="actionbar_bottom_summary">ActionBar put on bottom</string>
+
     <string name="force_my_font">Change My Font</string>
     <string name="force_my_font_summary">Use My Font</string>
 

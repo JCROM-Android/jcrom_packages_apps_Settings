@@ -60,6 +60,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         implements OnPreferenceChangeListener, FileListDialog.onFileListDialogListener {
 
     private static final String SELECT_UI_PROPERTY = "persist.sys.ui.select";
+    private static final String ACTIONBAR_BOTTOM_PROPERTY = "persist.sys.actionbar.bottom";
     private static final String MY_FONT_PROPERTY = "persist.sys.force.myfont";
     private static final String MY_HOBBY_PROPERTY = "persist.sys.force.hobby";
     private static final String MY_THEME_PROPERTY = "persist.sys.theme";
@@ -68,6 +69,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_HOMESCREEN_PROPERTY = "persist.sys.num.homescreen";
 
     private static final String SELECT_UI_KEY = "select_ui";
+    private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
     private static final String FORCE_MY_FONT_KEY = "force_my_font";
     private static final String FORCE_MY_HOBBY_KEY = "force_my_hobby";
     private static final String THEME_KEY = "theme_setting";
@@ -80,6 +82,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
     private ListPreference mSelectUi;
+    private CheckBoxPreference mActionBarBottom;
     private CheckBoxPreference mForceMyFont;
     private CheckBoxPreference mForceMyHobby;
     private PreferenceScreen mTheme;
@@ -98,7 +101,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mAllPrefs.add(mSelectUi);
         mSelectUi.setOnPreferenceChangeListener(this);
         selectUi();
-
+        mActionBarBottom = (CheckBoxPreference) findPreference(ACTIONBAR_BOTTOM_KEY);
         mForceMyFont = (CheckBoxPreference) findPreference(FORCE_MY_FONT_KEY);
         mForceMyHobby = (CheckBoxPreference) findPreference(FORCE_MY_HOBBY_KEY);
         mTheme = (PreferenceScreen) findPreference(THEME_KEY);
@@ -153,6 +156,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             mSelectUi.setValueIndex(select);
             mSelectUi.setSummary(mSelectUi.getEntries()[select]);
         }
+    }
+
+    private void writeActionBarBottomOptions() {
+        SystemProperties.set(ACTIONBAR_BOTTOM_PROPERTY, mActionBarBottom.isChecked() ? "true" : "false");
     }
 
     private void updateMyFontOptions() {
@@ -432,7 +439,9 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             return false;
         }
 
-        if (preference == mForceMyFont) {
+        if (preference == mActionBarBottom) {
+            writeActionBarBottomOptions();
+        } else if (preference == mForceMyFont) {
             writeMyFontOptions();
         } else if (preference == mForceMyHobby) {
             writeMyHobbyOptions();

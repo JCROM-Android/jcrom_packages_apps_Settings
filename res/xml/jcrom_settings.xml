@@ -11,6 +11,11 @@
             android:entryValues="@array/select_ui_values" />
 
         <CheckBoxPreference
+            android:key="actionbar_bottom"
+            android:title="@string/actionbar_bottom"
+            android:summary="@string/actionbar_bottom_summary"/>
+
+        <CheckBoxPreference
             android:key="force_my_font"
             android:title="@string/force_my_font"
             android:summary="@string/force_my_font_summary"/>
