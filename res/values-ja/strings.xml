@@ -1701,4 +1701,25 @@
     <string name="help_label" msgid="1107174367904110532">"ヘルプ"</string>
     <string name="cell_broadcast_settings" msgid="8415582011920085222">"エリアメール"</string>
     <string name="cell_broadcast_settings_summary" msgid="3301339398950905913">"表示する緊急警報の種類を選択してください。"</string>
+
+<!-- JCROM -->
+    <string name="header_category_jcrom" msgid="2073558547468647138">"JCROM"</string>
+    <string name="jcrom_settings" msgid="7697580845616764652">"JCROM の設定"</string>
+    <string name="jcrom_developers" msgid="641908614413556310">"JCROM 開発者"</string>
+    <string name="jcrom_developers_summary" msgid="641908614413556320">"JCROM 開発者情報"</string>
+    <string name="select_ui_title" msgid="6426383462520888742">"UI(Phone/Tablet) の選択"</string>
+    <string name="actionbar_bottom" msgid="6426383462520888743">ActionBar を下に</string>
+    <string name="actionbar_bottom_summary" msgid="6426383462520888744">ActionBar を下に配置する</string>
+    <string name="force_my_font" msgid="7426383462520888742">"フォントを変更する"</string>
+    <string name="force_my_font_summary" msgid="9642000962902609986">"強制的にフォントを変更する"</string>
+    <string name="force_my_hobby" msgid="7426383462520888752">"趣味に走る"</string>
+    <string name="force_my_hobby_summary" msgid="9642000962902609996">"テーマ選択を有効にします"</string>
+    <string name="theme_setting" msgid="7426383462520988752">"テーマ選択"</string>
+    <string name="theme_setting_summary" msgid="9642000962902709996">"何も選択されてません"</string>
+    <string name="force_fixed_wallpaper" msgid="9245217863256487532">"壁紙固定モード"</string>
+    <string name="force_fixed_wallpaper_summary" msgid="5441287412586128742">"ホームスクリーンをスクロールしても壁紙が連動しないようにします"</string>
+    <string name="number_of_homescreen" msgid="4682013568742146245">ホームスクリーンの枚数</string>
+    <string name="number_of_homescreen_summary" msgid="4682013568742146246">ホームスクリーンの枚数を変更する</string>
+    <string name="number_of_homescreen_title" msgid="4682013568742146247">ホームスクリーン枚数選択</string>
+
 </resources>

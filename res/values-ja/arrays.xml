@@ -277,4 +277,11 @@
     <item msgid="4042143101664725090">"タイムアウト"</item>
     <item msgid="7664124146786465092">"失敗しました"</item>
   </string-array>
+<!-- JCROM -->
+  <string-array name="entries_number_of_homescreen">
+    <item msgid="8672158431295301840">1 スクリーン</item>
+    <item msgid="8672158431295301841">3 スクリーン</item>
+    <item msgid="8672158431295301842">5 スクリーン(デフォルト)</item>
+    <item msgid="8672158431295301843">7 スクリーン</item>
+  </string-array>
 </resources>
