@@ -27,6 +27,8 @@
 
         <PreferenceScreen
 			android:key="theme_setting"
+            android:dependency="force_my_hobby"
+            android:layout="?android:attr/preferenceLayoutChild"
             android:title="@string/theme_setting"
             android:summary="@string/theme_setting_summary"/>
             
