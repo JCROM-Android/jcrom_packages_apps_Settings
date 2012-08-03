@@ -1708,6 +1708,9 @@
     <string name="jcrom_developers" msgid="641908614413556310">"JCROM 開発者"</string>
     <string name="jcrom_developers_summary" msgid="641908614413556320">"JCROM 開発者情報"</string>
     <string name="select_ui_title" msgid="6426383462520888742">"UI(Phone/Tablet) の選択"</string>
+    <string name="select_ui_confirm_reboot">今すぐ再起動しますか</string>
+    <string name="select_ui_confirm_yes">はい</string>
+    <string name="select_ui_confirm_no">いいえ</string>
     <string name="actionbar_bottom" msgid="6426383462520888743">ActionBar を下に</string>
     <string name="actionbar_bottom_summary" msgid="6426383462520888744">ActionBar を下に配置する</string>
     <string name="force_my_font" msgid="7426383462520888742">"フォントを変更する"</string>

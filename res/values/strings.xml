@@ -3764,6 +3764,9 @@
     <string name="animator_duration_scale_title">Animator duration scale</string>
 
     <string name="select_ui_title">select UI</string>
+    <string name="select_ui_confirm_reboot">Reboot now</string>
+    <string name="select_ui_confirm_yes">Yes</string>
+    <string name="select_ui_confirm_no">No</string>
 
     <string name="actionbar_bottom">Bottom ActionBar</string>
     <string name="actionbar_bottom_summary">ActionBar put on bottom</string>

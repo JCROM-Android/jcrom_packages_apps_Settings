@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcel;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.StrictMode;
@@ -514,9 +515,27 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         if (preference == mSelectUi) {
             SystemProperties.set(SELECT_UI_PROPERTY, newValue.toString());
             selectUi();
+            confirmReset();
             return true;
         }
         return false;
+    }
+
+    private void confirmReset() {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == DialogInterface.BUTTON_POSITIVE) {
+                        PowerManager pm = (PowerManager)getActivity().getSystemService(Context.POWER_SERVICE);
+                        pm.reboot(null);
+                    }
+                }
+            };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.select_ui_confirm_reboot);
+        builder.setPositiveButton(R.string.select_ui_confirm_yes, listener);
+        builder.setNegativeButton(R.string.select_ui_confirm_no, listener);
+        builder.show();
     }
 }
 
