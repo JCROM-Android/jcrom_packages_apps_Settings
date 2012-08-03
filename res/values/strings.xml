@@ -3829,6 +3829,8 @@
 
     <string name="theme_setting">Select Theme</string>
     <string name="theme_setting_summary">default</string>
+    <string name="progress_set_theme">Setting Theme</string>
+    <string name="progress_clear_theme">Clear Theme</string>
 
     <!-- Activity title for network data usage summary. [CHAR LIMIT=25] -->
     <string name="data_usage_summary_title">Data usage</string>

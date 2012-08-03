@@ -6,6 +6,7 @@ import android.app.ActivityManagerNative;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.backup.IBackupManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.content.pm.VerifierDeviceIdentity;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
@@ -80,6 +82,22 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
+    private static final String sThemeDirs[] = {
+        "bootanime",
+        "frame",
+        "launcher",
+        "lockscreen",
+        "navikey",
+        "notification",
+        "screenshot",
+        "statusbar",
+        "navibar",
+        "simeji",
+        "sounds/effect",
+        "sounds/bootsound",
+        "wallpaper",
+    };
+
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
     private ListPreference mSelectUi;
     private CheckBoxPreference mActionBarBottom;
@@ -91,6 +109,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private PreferenceScreen mForceMyAndroidId;
     
     private String mAndroidId;
+    private Handler mHandler = new Handler();
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -177,24 +196,25 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private void writeMyHobbyOptions() {
         SystemProperties.set(MY_HOBBY_PROPERTY, mForceMyHobby.isChecked() ? "true" : "false");
         if (!(mForceMyHobby.isChecked())) {
+            final ProgressDialog progress = new ProgressDialog(getActivity());
+            progress.setMessage(getActivity().getString(R.string.progress_clear_theme));
+            progress.setCancelable(false);
+            progress.show();
+
             SystemProperties.set(MY_THEME_PROPERTY, "");
             mTheme.setSummary("");
             setDefaultSounds();
             themeAllClear();
-            try {
-                ActivityManager am = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
-                am.forceStopPackage("com.android.launcher");
-                Intent jcservice = (new Intent())
-                    .setClassName("com.android.systemui", "com.android.systemui.JcromService");
-                getActivity().startActivity(jcservice);
-                Thread.sleep(7500);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                WallpaperManager.getInstance(getActivity()).clear();
-            } catch (IOException e) {
-            }
+
+            restartSystemUI(new Runnable() {
+                    public void run() {
+                        try {
+                            WallpaperManager.getInstance(getActivity()).clear();
+                        } catch (IOException e) {
+                        }
+                        progress.dismiss();
+                    }
+                });
         }
     }
 
@@ -300,6 +320,12 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         themeCopy(iDir, oDir);
     }
 
+    public void themeAllInstall() {
+        for (String dir: sThemeDirs) {
+            themeInstall(dir);
+        }
+    }
+
     public void themeDelete(File iDir) {
         if (iDir.isDirectory()) {
             String[] children = iDir.list();
@@ -319,56 +345,60 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     }
 
     public void themeAllClear() {
-        themeClear("bootanime");
-        themeClear("frame");
-        themeClear("launcher");
-        themeClear("lockscreen");
-        themeClear("navikey");
-        themeClear("notification");
-        themeClear("screenshot");
-        themeClear("statusbar");
-        themeClear("navibar");
-        themeClear("simeji");
-        themeClear("sounds/effect");
-        themeClear("sounds/bootsound");
-        themeClear("wallpaper");
+        for (String dir: sThemeDirs) {
+            themeClear(dir);
+        }
     }
 
     @Override
-    public void onClickFileList(File file) { 
+    public void onClickFileList(File file) {
         if(file != null) {
+            final ProgressDialog progress = new ProgressDialog(getActivity());
+            progress.setMessage(getActivity().getString(R.string.progress_set_theme));
+            progress.setCancelable(false);
+            progress.show();
+
             SystemProperties.set(MY_THEME_PROPERTY, file.getName());
             mTheme.setSummary(file.getName());
 
-            themeAllClear();
-            themeInstall("bootanime");
-            themeInstall("frame");
-            themeInstall("launcher");
-            themeInstall("lockscreen");
-            themeInstall("navikey");
-            themeInstall("notification");
-            themeInstall("screenshot");
-            themeInstall("statusbar");
-            themeInstall("navibar");
-            themeInstall("simeji");
-            themeInstall("sounds/effect");
-            themeInstall("sounds/bootsound");
-            themeInstall("wallpaper");
+            new Thread(new Runnable() {
+                    public void run() {
+                        themeAllClear();
+                        themeAllInstall();
 
-            setDefaultSounds();
-            setMySounds();
+                        setDefaultSounds();
+                        setMySounds();
 
-            try {
-                ActivityManager am = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
-                am.forceStopPackage("com.android.launcher");
-                Intent jcservice = (new Intent())
-                    .setClassName("com.android.systemui", "com.android.systemui.JcromService");
-                getActivity().startActivity(jcservice);
-                Thread.sleep(7500);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                        restartSystemUI(new Runnable() {
+                                public void run() {
+                                    applyTheme();
+                                    progress.dismiss();
+                                }
+                            });
+                    }
+                }).start();
+        }
+    }
 
+    private void restartSystemUI(final Runnable postproc) {
+        mHandler.post(new Runnable() {
+                public void run() {
+                    try {
+                        ActivityManager am = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+                        am.forceStopPackage("com.android.launcher");
+                        Intent jcservice = (new Intent())
+                            .setClassName("com.android.systemui", "com.android.systemui.JcromService");
+                        getActivity().startActivity(jcservice);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    mHandler.postDelayed(postproc, 7500/*ms*/);
+                }
+            });
+    }
+
+    private void applyTheme() {
             Bitmap bitmapWallpaper;
             String MY_FRAME_FILE = "home_wallpaper.png";
             StringBuilder builder = new StringBuilder();
@@ -413,7 +443,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 } catch (IOException e) {
                 }
             }
-        }
     }
 
     // borrowed from "com/android/launcher2/Workspace.java"

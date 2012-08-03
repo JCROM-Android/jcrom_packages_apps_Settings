@@ -1716,6 +1716,8 @@
     <string name="force_my_hobby_summary" msgid="9642000962902609996">"テーマ選択を有効にします"</string>
     <string name="theme_setting" msgid="7426383462520988752">"テーマ選択"</string>
     <string name="theme_setting_summary" msgid="9642000962902709996">"何も選択されてません"</string>
+    <string name="progress_set_theme">"テーマ適用中"</string>
+    <string name="progress_clear_theme">"テーマ解除中"</string>
     <string name="force_fixed_wallpaper" msgid="9245217863256487532">"壁紙固定モード"</string>
     <string name="force_fixed_wallpaper_summary" msgid="5441287412586128742">"ホームスクリーンをスクロールしても壁紙が連動しないようにします"</string>
     <string name="number_of_homescreen" msgid="4682013568742146245">ホームスクリーンの枚数</string>
