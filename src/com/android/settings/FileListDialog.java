@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.*;
 import android.util.Log;
+import java.util.Arrays;
+import java.lang.Comparable;
 
 public class FileListDialog extends Activity
     implements View.OnClickListener, DialogInterface.OnClickListener {
@@ -69,7 +71,19 @@ public class FileListDialog extends Activity
     public void show(String path, String title){
          
         try{
-            _dialog_file_list = new File(path).listFiles();
+            File[] _dialog_file_list_unsorted = new File(path).listFiles();
+
+            FileWrapper [] fileWrappers = new FileWrapper[_dialog_file_list_unsorted.length];
+            for (int i=0; i<_dialog_file_list_unsorted.length; i++) {
+                fileWrappers[i] = new FileWrapper(_dialog_file_list_unsorted[i]);
+            }
+            Arrays.sort(fileWrappers);
+
+            _dialog_file_list = new File[_dialog_file_list_unsorted.length];
+            for (int i=0; i<_dialog_file_list_unsorted.length; i++) {
+                _dialog_file_list[i] = fileWrappers[i].getFile();
+            }
+
             theme_num = new int[_dialog_file_list.length];
             if(_dialog_file_list == null){
                 //NG
@@ -90,7 +104,7 @@ public class FileListDialog extends Activity
                     }
                     
                     extension = getSuffix(name);
-                    if(!extension.equals(zip)) {
+                    if(!extension.equals(zip) && !".nomedia".equals(name)) {
                         list[count] = name;
                         theme_num[count] = n;
                         count++;
@@ -115,5 +129,30 @@ public class FileListDialog extends Activity
      
     public interface onFileListDialogListener{
         public void onClickFileList(File file);
+    }
+}
+
+class FileWrapper implements Comparable{
+
+    private File file;
+
+    public FileWrapper(File file){
+        this.file = file;
+    }
+
+    public int compareTo(Object obj){
+        FileWrapper castObj = (FileWrapper)obj;
+
+        if(this.file.getName().compareTo(castObj.getFile().getName()) > 0){
+            return 1;    // large case
+        }else if(this.file.getName().compareTo(castObj.getFile().getName()) < 0){
+            return -1;    // small case
+        }else{
+            return 0;    // equal case
+        }
+    }
+
+    public File getFile(){
+        return this.file;
     }
 }
