@@ -51,4 +51,9 @@
           android:title="@string/force_my_android_id"
           android:summary=""/>
 
+        <CheckBoxPreference
+            android:key="gradient_setting"
+            android:title="@string/gradient_setting"
+            android:summary="@string/gradient_setting_summary"/>
+
 </PreferenceScreen>

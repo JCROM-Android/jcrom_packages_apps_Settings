@@ -58,6 +58,10 @@ import java.security.SecureRandom;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import java.util.ArrayList;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
+import android.app.ProgressDialog;
 
 public class JapaneseCustomRomSettings extends PreferenceFragment
         implements OnPreferenceChangeListener, FileListDialog.onFileListDialogListener {
@@ -70,6 +74,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_SEFFECTS_PROPERTY = "persist.sys.sound.effects";
     private static final String MY_WALLPAPER_PROPERTY = "persist.sys.fixed.wallpaper";
     private static final String MY_HOMESCREEN_PROPERTY = "persist.sys.num.homescreen";
+    private static final String MY_GRADIENT_PROPERTY = "persist.sys.prop.gradient";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -80,6 +85,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String FORCE_FIXED_WALLPAPER = "force_fixed_wallpaper";
     private static final String NUM_OF_HOMESCREEN = "number_of_homescreen";
     private static final String FORCE_MY_ANDROID_ID_KEY = "force_my_android_id";
+    private static final String GRADIENT_KEY = "gradient_setting";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -108,8 +114,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mFixedWallpaper;
     private ListPreference mNumHomescreen;
     private PreferenceScreen mForceMyAndroidId;
+    private CheckBoxPreference mGradientStat;
     
     private String mAndroidId;
+    refreshWallpaperTask rwpTask;
     private Handler mHandler = new Handler();
 
     @Override
@@ -128,6 +136,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mFixedWallpaper = (CheckBoxPreference) findPreference(FORCE_FIXED_WALLPAPER);
         mNumHomescreen = (ListPreference) findPreference(NUM_OF_HOMESCREEN);
         mForceMyAndroidId = (PreferenceScreen) findPreference(FORCE_MY_ANDROID_ID_KEY);
+        mGradientStat = (CheckBoxPreference) findPreference(GRADIENT_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -168,6 +177,28 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mAndroidId = Settings.Secure.getString(
         getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
         mForceMyAndroidId.setSummary(mAndroidId);
+
+        mGradientStat.setOnPreferenceChangeListener(
+              new OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue){
+                          // TODO hand-generated method stub;;
+                          CheckBoxPreference _cb = (CheckBoxPreference)findPreference(GRADIENT_KEY);
+
+                          if(_cb == preference && newValue != null){
+                                 try {
+                                      ActivityManager am = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+                                      am.forceStopPackage("com.android.launcher");
+                                      rwpTask = new refreshWallpaperTask();
+                                      rwpTask.execute();
+                                      
+                                 } catch (Exception e) {
+                                      e.printStackTrace();
+                                     }
+                             }
+                         return true;
+                        }
+                 });
     }
 
     private void selectUi() {
@@ -240,6 +271,11 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 , Settings.Secure.ANDROID_ID, newAndroidId);
         mForceMyAndroidId.setSummary(newAndroidId);
         mAndroidId = newAndroidId;
+    }
+
+    private void writeGradientOptions() {
+        SystemProperties.set(MY_GRADIENT_PROPERTY, mGradientStat.isChecked() ? "true" : "false");
+        Log.e(TAG, "Gradient setting changed");
     }
 
     private void setDefaultSounds() {
@@ -485,6 +521,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeMyWallpaperOptions();
         } else if (preference == mForceMyAndroidId) {
         	showNewAndroidIdDialog();
+        } else if (preference == mGradientStat){
+            writeGradientOptions();
         } else {
         }
 
@@ -536,6 +574,108 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         builder.setPositiveButton(R.string.select_ui_confirm_yes, listener);
         builder.setNegativeButton(R.string.select_ui_confirm_no, listener);
         builder.show();
+    }
+
+    private ProgressDialog progressDialog;
+    private class refreshWallpaperTask extends AsyncTask<Void, Void, Void>{
+
+        public refreshWallpaperTask(){
+            progressDialog = new ProgressDialog(getActivity());
+        }
+
+        @Override
+        protected void onPreExecute(){
+            progressDialog.setMessage(getString(R.string.gradient_setting_progress));
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            Log.e(TAG, getString(R.string.gradient_setting_progress));
+        }
+        
+        @Override
+        protected Void doInBackground(Void... arg0){
+        
+            String forceHobby = SystemProperties.get("persist.sys.force.hobby");
+            if (forceHobby.equals("true")) {        
+                // in case of mode "going my way"
+                Bitmap bitmapWallpaper;
+                String MY_FRAME_FILE = "home_wallpaper.png";
+                StringBuilder builder = new StringBuilder();
+                builder.append(Environment.getDataDirectory().toString() + "/theme/wallpaper/");
+                builder.append(File.separator);
+                builder.append(MY_FRAME_FILE);
+                String filePath = builder.toString();
+                bitmapWallpaper = BitmapFactory.decodeFile(filePath);
+                if (null != bitmapWallpaper) {
+                    try {
+                        WallpaperManager wm = WallpaperManager.getInstance(getActivity());
+                        int srcWidth = bitmapWallpaper.getWidth();
+                        int srcHeight = bitmapWallpaper.getHeight();
+
+                        int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+                        boolean isScreenLarge = screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE || screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+                        int maxDim = Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
+                        int minDim = Math.min(displayMetrics.widthPixels, displayMetrics.heightPixels);
+                        float WALLPAPER_SCREENS_SPAN = 2f;
+                        int w, h;
+                        if (isScreenLarge) {
+                            w = (int) (maxDim * wallpaperTravelToScreenWidthRatio(maxDim, minDim));
+                            h = maxDim;
+                        } else {
+                            w = Math.max((int) (minDim * WALLPAPER_SCREENS_SPAN), maxDim);
+                            h = maxDim;
+                        }
+
+                        if(w < srcWidth && h < srcHeight){
+                            Matrix matrix = new Matrix();
+                            float widthScale = w / (float)srcWidth;
+                            float heightScale = h / (float)srcHeight;
+                            matrix.postScale(widthScale, heightScale);
+                            Bitmap resizedWallpaper = Bitmap.createBitmap(bitmapWallpaper, 0, 0, srcWidth, srcHeight, matrix, true);
+                            wm.setBitmap(resizedWallpaper);
+                        }else{
+                            wm.setBitmap(bitmapWallpaper);
+                        }
+                    } catch (IOException e) {
+                    }
+                }
+            }else{
+                // another case
+                try {
+                    WallpaperManager wpm = (WallpaperManager) getActivity().getSystemService(
+                             Context.WALLPAPER_SERVICE);
+                    Drawable currentWallpaperDrawable = wpm.getDrawable();
+                    Bitmap currentWallpaper = ((BitmapDrawable)currentWallpaperDrawable).getBitmap();
+                    wpm.setBitmap(currentWallpaper);
+                } catch (IOException e) {
+                Log.e(TAG, "Failed to refresh wallpaper");
+                }
+            }
+            return null;
+        }
+        
+        @Override
+        protected void onPostExecute(Void arg0){
+            if(progressDialog != null && progressDialog.isShowing()){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }
+
+        public void reopenDialog(){
+            progressDialog.show();
+        } 
+    }
+    
+    @Override
+    public void onPause(){
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+        super.onPause();
     }
 }
 
