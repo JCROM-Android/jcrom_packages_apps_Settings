@@ -3826,6 +3826,10 @@
     <string name ="gradient_setting_summary">Disable Gradient of Homescreen</string>
     <string name ="gradient_setting_progress">Refleshing Wallpaper.\nPlease wait...</string>
 
+    <string name="launcher_landscape">Landscape launcher</string>
+    <string name="launcher_landscape_summary">Launcher support landscape on Phone UI</string>
+    <string name="launcher_landscape_progress">Restart launcher</string>
+
     <!-- Preference category for application debugging development settings. [CHAR LIMIT=25] -->
     <string name="debug_applications_category">Apps</string>
 

@@ -56,6 +56,11 @@
             android:title="@string/gradient_setting"
             android:summary="@string/gradient_setting_summary"/>
 
+        <CheckBoxPreference
+            android:key="launcher_landscape"
+            android:title="@string/launcher_landscape"
+            android:summary="@string/launcher_landscape_summary"/>
+
         <PreferenceScreen
           android:key="force_my_sim"
           android:title="@string/force_my_sim"
