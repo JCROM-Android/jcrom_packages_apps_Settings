@@ -45,6 +45,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String NUM_OF_HOMESCREEN = "number_of_homescreen";
     private static final String FORCE_MY_ANDROID_ID_KEY = "force_my_android_id";
     private static final String GRADIENT_KEY = "gradient_setting";
+    private static final String FORCE_MY_SIM_KEY = "force_my_sim";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -59,6 +60,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private PreferenceScreen mForceMyAndroidId;
     private CheckBoxPreference mGradientStat;
     private ProgressDialog mProgressDialog;
+    private PreferenceScreen mForceMySIM;
 
     private String mAndroidId;
 
@@ -79,6 +81,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mNumHomescreen = (ListPreference) findPreference(NUM_OF_HOMESCREEN);
         mForceMyAndroidId = (PreferenceScreen) findPreference(FORCE_MY_ANDROID_ID_KEY);
         mGradientStat = (CheckBoxPreference) findPreference(GRADIENT_KEY);
+        mForceMySIM = (PreferenceScreen) findPreference(FORCE_MY_SIM_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -241,6 +244,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             showNewAndroidIdDialog();
         } else if (preference == mGradientStat) {
             writeGradientOptions();
+        } else if (preference == mForceMySIM) {
+            JapaneseCustomRomSimState.makeDialog(getActivity()).show();
         } else {
         }
 

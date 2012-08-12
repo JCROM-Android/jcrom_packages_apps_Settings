@@ -1729,5 +1729,15 @@
     <string name ="gradient_setting" msgid="4682013568742146248">グラデーション無効</string>
     <string name ="gradient_setting_summary" msgid="4682013568742146249">ホームスクリーン上下のグラデーションを無効化する</string>
     <string name ="gradient_setting_progress" msgid="4682013568742146250">壁紙の再構築中…</string>
+    <string name="force_my_sim">SIMエミュレーション</string>
+    <string name="jcrom_cannot_sim_emulation">SIMが刺さっているのでSIMエミュレーションはできません</string>
+    <string name="jcrom_simstate_emulation">SIMエミュレーション</string>
+    <string name="jcrom_simstate_roaming">ローミング</string>
+    <string name="jcrom_operator_sim">SIM事業者</string>
+    <string name="jcrom_operator_network">接続事業者</string>
+    <string name="jcrom_operator_select">選択</string>
+    <string name="jcrom_operator_mccmnc">MCC+MNC</string>
+    <string name="jcrom_operator_country">国コード</string>
+    <string name="jcrom_operator_name">事業者名</string>
 
 </resources>

@@ -3783,7 +3783,39 @@
     
     <!-- Change ANDROID_ID -->
     <string name="force_my_android_id">ANDROID_ID</string>
-    
+
+    <string name="force_my_sim">SIM emulation</string>
+    <string name="jcrom_cannot_sim_emulation">Cannot SIM emulation because has real SIM</string>
+    <string name="jcrom_simstate_emulation">SIM emulation</string>
+    <string name="jcrom_simstate_roaming">Roaming</string>
+    <string name="jcrom_operator_sim">SIM operator</string>
+    <string name="jcrom_operator_network">Network operator</string>
+    <string name="jcrom_operator_select">Select</string>
+    <string name="jcrom_operator_mccmnc">MCC+MNC</string>
+    <string name="jcrom_operator_country">Country code</string>
+    <string name="jcrom_operator_name">Operator name</string>
+
+    <string-array name="jcrom_operator_preset">
+        <item>302370,Fido</item>
+        <item>302720,Rogers</item>
+        <item>310000,Tracfone</item>
+        <item>310120,Sprint</item>
+        <item>310410,AT&amp;T Mobility</item>
+        <item>310600,Cellcom</item>
+        <item>311220,USCC</item>
+        <item>311230,C SPire Wireless + Celluar South</item>
+        <item>311490,Virgin Mobile</item>
+        <item>311660,MetroPCS</item>
+        <item>311870,Boost Mobile</item>
+        <item>44010,NTT DOCOMO</item>
+        <item>44020,SBM</item>
+        <item>44053,KDDI</item>
+        <item>45002,SKT Mobility</item>
+        <item>45006,LGT</item>
+        <item>45008,KT Mobility</item>
+        <item>46003,China Telecom</item>
+    </string-array>
+
     <!-- Selectable number of homescreen -->
     <string name="number_of_homescreen">Number of Homescreen</string>
     <string name="number_of_homescreen_summary">Change number of Homescreen</string>
