@@ -34,6 +34,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_WALLPAPER_PROPERTY = "persist.sys.fixed.wallpaper";
     private static final String MY_HOMESCREEN_PROPERTY = "persist.sys.num.homescreen";
     private static final String MY_GRADIENT_PROPERTY = "persist.sys.prop.gradient";
+    // packages/apps/Launcher2/src/com/android/launcher2/Launcher.java FORCE_ENABLE_ROTATION_PROPERTY
+    private static final String LAUNCHER_LANDSCAPE_PROPERTY = "persist.sys.launcher.landscape";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -45,6 +47,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String NUM_OF_HOMESCREEN = "number_of_homescreen";
     private static final String FORCE_MY_ANDROID_ID_KEY = "force_my_android_id";
     private static final String GRADIENT_KEY = "gradient_setting";
+    private static final String ALLOW_LAUNCHER_LANDSCAPE_KEY = "launcher_landscape";
     private static final String FORCE_MY_SIM_KEY = "force_my_sim";
 
     private static final String TAG = "JapaneseCustomRomSettings";
@@ -59,6 +62,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private ListPreference mNumHomescreen;
     private PreferenceScreen mForceMyAndroidId;
     private CheckBoxPreference mGradientStat;
+    private CheckBoxPreference mLauncherLandscape;
     private ProgressDialog mProgressDialog;
     private PreferenceScreen mForceMySIM;
 
@@ -81,6 +85,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mNumHomescreen = (ListPreference) findPreference(NUM_OF_HOMESCREEN);
         mForceMyAndroidId = (PreferenceScreen) findPreference(FORCE_MY_ANDROID_ID_KEY);
         mGradientStat = (CheckBoxPreference) findPreference(GRADIENT_KEY);
+        mLauncherLandscape = (CheckBoxPreference) findPreference(ALLOW_LAUNCHER_LANDSCAPE_KEY);
         mForceMySIM = (PreferenceScreen) findPreference(FORCE_MY_SIM_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
@@ -209,6 +214,12 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         // Log.e(TAG, "Gradient setting changed");
     }
 
+    private void writeLauncherLandscape() {
+        SystemProperties.set(LAUNCHER_LANDSCAPE_PROPERTY, mLauncherLandscape.isChecked() ? "true" : "false");
+        showProgress(R.string.launcher_landscape_progress);
+        new ThemeManager(getActivity()).restartLauncher(closeProgress);
+    }
+
     @Override
     public void onClickFileList(File file) {
         if(file != null) {
@@ -244,6 +255,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             showNewAndroidIdDialog();
         } else if (preference == mGradientStat) {
             writeGradientOptions();
+        } else if (preference == mLauncherLandscape) {
+            writeLauncherLandscape();
         } else if (preference == mForceMySIM) {
             JapaneseCustomRomSimState.makeDialog(getActivity()).show();
         } else {
