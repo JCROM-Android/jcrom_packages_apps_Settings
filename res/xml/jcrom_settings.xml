@@ -3,6 +3,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         android:title="@string/jcrom_settings">
 
+    <PreferenceCategory android:title="@string/jcrom_settings_category_system" >
         <ListPreference
             android:key="select_ui"
             android:title="@string/select_ui_title"
@@ -26,12 +27,15 @@
             android:summary="@string/force_my_hobby_summary"/>
 
         <PreferenceScreen
-			android:key="theme_setting"
+            android:key="theme_setting"
             android:dependency="force_my_hobby"
             android:layout="?android:attr/preferenceLayoutChild"
             android:title="@string/theme_setting"
             android:summary="@string/theme_setting_summary"/>
             
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/jcrom_settings_category_launcher" >
+
         <CheckBoxPreference
             android:key="force_fixed_wallpaper"
             android:title="@string/force_fixed_wallpaper"
@@ -45,30 +49,35 @@
             android:entries="@array/entries_number_of_homescreen"
             android:entryValues="@array/entryvalues_number_of_homescreen"
             android:defaultValue="5"/>
-            
-        <PreferenceScreen
-          android:key="force_my_android_id"
-          android:title="@string/force_my_android_id"
-          android:summary=""/>
 
+        <CheckBoxPreference
+            android:key="launcher_landscape"
+            android:title="@string/launcher_landscape"
+            android:summary="@string/launcher_landscape_summary"/>
+ 
         <CheckBoxPreference
             android:key="gradient_setting"
             android:title="@string/gradient_setting"
             android:summary="@string/gradient_setting_summary"/>
 
         <CheckBoxPreference
-            android:key="launcher_landscape"
-            android:title="@string/launcher_landscape"
-            android:summary="@string/launcher_landscape_summary"/>
+            android:key="navikey_alpha"
+            android:title="@string/navikey_alpha"
+            android:summary="@string/navikey_alpha_summary"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/jcrom_settings_category_development" >
+
+        <PreferenceScreen
+          android:key="force_my_android_id"
+          android:title="@string/force_my_android_id"
+          android:summary=""/>
 
         <PreferenceScreen
           android:key="force_my_sim"
           android:title="@string/force_my_sim"
           android:summary=""/>
 
-        <CheckBoxPreference
-            android:key="navikey_alpha"
-            android:title="@string/navikey_alpha"
-            android:summary="@string/navikey_alpha_summary"/>
+    </PreferenceCategory>
 
 </PreferenceScreen>
