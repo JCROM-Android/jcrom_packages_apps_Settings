@@ -3860,6 +3860,10 @@
     <string name="jcrom_version">JCROM version</string>
     <string name="jcrom_version_default">Unknown</string>
 
+    <!-- Navikey Alpha -->
+    <string name="navikey_alpha">Navikey Alpha</string>
+    <string name="navikey_alpha_summary">Force opaque</string>
+
     <!-- Preference category for application debugging development settings. [CHAR LIMIT=25] -->
     <string name="debug_applications_category">Apps</string>
 

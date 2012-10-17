@@ -36,6 +36,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_GRADIENT_PROPERTY = "persist.sys.prop.gradient";
     // packages/apps/Launcher2/src/com/android/launcher2/Launcher.java FORCE_ENABLE_ROTATION_PROPERTY
     private static final String LAUNCHER_LANDSCAPE_PROPERTY = "persist.sys.launcher.landscape";
+    private static final String NAVIKEY_ALPHA_PROPERTY = "persist.sys.alpha.navikey";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -49,6 +50,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String GRADIENT_KEY = "gradient_setting";
     private static final String ALLOW_LAUNCHER_LANDSCAPE_KEY = "launcher_landscape";
     private static final String FORCE_MY_SIM_KEY = "force_my_sim";
+    private static final String NAVIKEY_ALPHA_KEY = "navikey_alpha";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -65,6 +67,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mLauncherLandscape;
     private ProgressDialog mProgressDialog;
     private PreferenceScreen mForceMySIM;
+    private CheckBoxPreference mNavikeyAlpha;
 
     private String mAndroidId;
 
@@ -87,6 +90,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mGradientStat = (CheckBoxPreference) findPreference(GRADIENT_KEY);
         mLauncherLandscape = (CheckBoxPreference) findPreference(ALLOW_LAUNCHER_LANDSCAPE_KEY);
         mForceMySIM = (PreferenceScreen) findPreference(FORCE_MY_SIM_KEY);
+        mNavikeyAlpha = (CheckBoxPreference) findPreference(NAVIKEY_ALPHA_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -211,13 +215,16 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     private void writeGradientOptions() {
         SystemProperties.set(MY_GRADIENT_PROPERTY, mGradientStat.isChecked() ? "true" : "false");
-        // Log.e(TAG, "Gradient setting changed");
     }
 
     private void writeLauncherLandscape() {
         SystemProperties.set(LAUNCHER_LANDSCAPE_PROPERTY, mLauncherLandscape.isChecked() ? "true" : "false");
         showProgress(R.string.launcher_landscape_progress);
         new ThemeManager(getActivity()).restartLauncher(closeProgress);
+    }
+
+    private void writeNavikeyAlphaOptions() {
+        SystemProperties.set(NAVIKEY_ALPHA_PROPERTY, mNavikeyAlpha.isChecked() ? "true" : "false");
     }
 
     @Override
@@ -259,8 +266,11 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeLauncherLandscape();
         } else if (preference == mForceMySIM) {
             JapaneseCustomRomSimState.makeDialog(getActivity()).show();
+        } else if (preference == mNavikeyAlpha){
+            writeNavikeyAlphaOptions();
         } else {
         }
+
 
         return false;
     }

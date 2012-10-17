@@ -66,4 +66,9 @@
           android:title="@string/force_my_sim"
           android:summary=""/>
 
+        <CheckBoxPreference
+            android:key="navikey_alpha"
+            android:title="@string/navikey_alpha"
+            android:summary="@string/navikey_alpha_summary"/>
+
 </PreferenceScreen>
