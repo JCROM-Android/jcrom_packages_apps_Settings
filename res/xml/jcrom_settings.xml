@@ -65,6 +65,11 @@
             android:title="@string/navikey_alpha"
             android:summary="@string/navikey_alpha_summary"/>
 
+        <CheckBoxPreference
+            android:key="searchbar_setting"
+            android:title="@string/searchbar_setting"
+            android:summary="@string/searchbar_setting_summary"/>
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/jcrom_settings_category_development" >
 

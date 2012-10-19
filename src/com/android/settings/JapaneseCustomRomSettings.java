@@ -37,6 +37,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     // packages/apps/Launcher2/src/com/android/launcher2/Launcher.java FORCE_ENABLE_ROTATION_PROPERTY
     private static final String LAUNCHER_LANDSCAPE_PROPERTY = "persist.sys.launcher.landscape";
     private static final String NAVIKEY_ALPHA_PROPERTY = "persist.sys.alpha.navikey";
+    private static final String MY_SEARCHBAR_PROPERTY = "persist.sys.prop.searchbar";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -51,6 +52,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String ALLOW_LAUNCHER_LANDSCAPE_KEY = "launcher_landscape";
     private static final String FORCE_MY_SIM_KEY = "force_my_sim";
     private static final String NAVIKEY_ALPHA_KEY = "navikey_alpha";
+    private static final String SEARCHBAR_KEY = "searchbar_setting";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -68,6 +70,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private ProgressDialog mProgressDialog;
     private PreferenceScreen mForceMySIM;
     private CheckBoxPreference mNavikeyAlpha;
+    private CheckBoxPreference mDisableSearchbar;
 
     private String mAndroidId;
 
@@ -91,6 +94,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mLauncherLandscape = (CheckBoxPreference) findPreference(ALLOW_LAUNCHER_LANDSCAPE_KEY);
         mForceMySIM = (PreferenceScreen) findPreference(FORCE_MY_SIM_KEY);
         mNavikeyAlpha = (CheckBoxPreference) findPreference(NAVIKEY_ALPHA_KEY);
+        mDisableSearchbar = (CheckBoxPreference) findPreference(SEARCHBAR_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -227,6 +231,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         SystemProperties.set(NAVIKEY_ALPHA_PROPERTY, mNavikeyAlpha.isChecked() ? "true" : "false");
     }
 
+    private void writeSearchbarOptions() {
+        SystemProperties.set(MY_SEARCHBAR_PROPERTY, mDisableSearchbar.isChecked() ? "true" : "false");
+    }
+
     @Override
     public void onClickFileList(File file) {
         if(file != null) {
@@ -268,6 +276,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             JapaneseCustomRomSimState.makeDialog(getActivity()).show();
         } else if (preference == mNavikeyAlpha){
             writeNavikeyAlphaOptions();
+        } else if (preference == mDisableSearchbar) {
+            writeSearchbarOptions();
         } else {
         }
 

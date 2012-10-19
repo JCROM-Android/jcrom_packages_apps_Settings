@@ -1754,6 +1754,8 @@
     <string name="jcrom_version_default">不明</string>
     <string name="navikey_alpha" msgid="4682013568742146251">ナビキーの透過設定</string>
     <string name="navikey_alpha_summary" msgid="4682013568742146252">ナビキーの透過を無効にします</string>
+    <string name="searchbar_setting" msgid="4682013568742146253">検索バーの無効化</string>
+    <string name="searchbar_setting_summary" msgid="4682013568742146254">ホームの検索バーを非表示にします</string>
 
     <!-- Setting checkbox title for root access -->
     <string name="root_access">Rootアクセス</string>
