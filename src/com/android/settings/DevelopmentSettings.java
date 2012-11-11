@@ -412,6 +412,20 @@ public class DevelopmentSettings extends PreferenceFragment
         mRootAccess.setValue(value);
         mRootAccess.setSummary(getResources()
                 .getStringArray(R.array.root_access_entries)[Integer.valueOf(value)]);
+
+        if (value.equals("0")) {
+            try {
+                Runtime.getRuntime().exec("/system/bin/rm /data/jcrom/bin/su");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                Runtime.getRuntime().exec("/system/bin/ln -s /system/xbin/xsu /data/jcrom/bin/su");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void writeRootAccessOptions(Object newValue) {
