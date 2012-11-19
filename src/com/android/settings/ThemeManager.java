@@ -110,19 +110,19 @@ public class ThemeManager {
     }
 
     private void setDefaultSounds() {
-        Settings.System.putString(mContentResolver, Settings.System.LOW_BATTERY_SOUND,
+        Settings.Global.putString(mContentResolver, Settings.Global.LOW_BATTERY_SOUND,
                 "/system/media/audio/ui/LowBattery.ogg");
-        Settings.System.putString(mContentResolver, Settings.System.DESK_DOCK_SOUND,
+        Settings.Global.putString(mContentResolver, Settings.Global.DESK_DOCK_SOUND,
                 "/system/media/audio/ui/Dock.ogg");
-        Settings.System.putString(mContentResolver, Settings.System.DESK_UNDOCK_SOUND,
+        Settings.Global.putString(mContentResolver, Settings.Global.DESK_UNDOCK_SOUND,
                 "/system/media/audio/ui/Undock.ogg");
-        Settings.System.putString(mContentResolver, Settings.System.CAR_DOCK_SOUND,
+        Settings.Global.putString(mContentResolver, Settings.Global.CAR_DOCK_SOUND,
                 "/system/media/audio/ui/Dock.ogg");
-        Settings.System.putString(mContentResolver, Settings.System.CAR_UNDOCK_SOUND,
+        Settings.Global.putString(mContentResolver, Settings.Global.CAR_UNDOCK_SOUND,
                 "/system/media/audio/ui/Undock.ogg");
-        Settings.System.putString(mContentResolver, Settings.System.LOCK_SOUND,
+        Settings.Global.putString(mContentResolver, Settings.Global.LOCK_SOUND,
                 "/system/media/audio/ui/Lock.ogg");
-        Settings.System.putString(mContentResolver, Settings.System.UNLOCK_SOUND,
+        Settings.Global.putString(mContentResolver, Settings.Global.UNLOCK_SOUND,
                 "/system/media/audio/ui/Unlock.ogg");
     }
 
@@ -135,20 +135,20 @@ public class ThemeManager {
         String filePath = builder.toString();
         File file = new File(filePath);
         if (file.exists()) {
-            Settings.System.putString(mContentResolver, key, filePath);
+            Settings.Global.putString(mContentResolver, key, filePath);
         }
     }
 
     private void setMySounds() {
         String forceHobby = SystemProperties.get("persist.sys.force.hobby");
         if (forceHobby.equals("true")) {
-            setDataBase(Settings.System.LOW_BATTERY_SOUND, "LowBattery.ogg");
-            setDataBase(Settings.System.DESK_DOCK_SOUND, "Dock.ogg");
-            setDataBase(Settings.System.DESK_UNDOCK_SOUND, "UnDock.ogg");
-            setDataBase(Settings.System.CAR_DOCK_SOUND, "CarDock.ogg");
-            setDataBase(Settings.System.CAR_UNDOCK_SOUND, "UnCarDock.ogg");
-            setDataBase(Settings.System.LOCK_SOUND, "Lock.ogg");
-            setDataBase(Settings.System.UNLOCK_SOUND, "unLock.ogg");
+            setDataBase(Settings.Global.LOW_BATTERY_SOUND, "LowBattery.ogg");
+            setDataBase(Settings.Global.DESK_DOCK_SOUND, "Dock.ogg");
+            setDataBase(Settings.Global.DESK_UNDOCK_SOUND, "UnDock.ogg");
+            setDataBase(Settings.Global.CAR_DOCK_SOUND, "CarDock.ogg");
+            setDataBase(Settings.Global.CAR_UNDOCK_SOUND, "UnCarDock.ogg");
+            setDataBase(Settings.Global.LOCK_SOUND, "Lock.ogg");
+            setDataBase(Settings.Global.UNLOCK_SOUND, "unLock.ogg");
         }
     }
 
