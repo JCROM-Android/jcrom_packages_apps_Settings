@@ -816,6 +816,7 @@ public class Settings extends PreferenceActivity
     public static class ApplicationSettingsActivity extends Settings { /* empty */ }
     public static class ManageApplicationsActivity extends Settings { /* empty */ }
     public static class StorageUseActivity extends Settings { /* empty */ }
+    public static class JapaneseCustomRomSettingsActivity extends Settings { /* empty */ }
     public static class DevelopmentSettingsActivity extends Settings { /* empty */ }
     public static class AccessibilitySettingsActivity extends Settings { /* empty */ }
     public static class SecuritySettingsActivity extends Settings { /* empty */ }

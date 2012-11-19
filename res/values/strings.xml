@@ -4395,4 +4395,102 @@
     <string name="cell_broadcast_settings">Cell broadcasts</string>
     <!-- Cell Broadcast settings description [CHAR LIMIT=100] -->
     <string name="cell_broadcast_settings_summary">Select the types of emergency alerts to display.</string>
+
+    <!-- JCROM -->
+    <string name="header_category_jcrom">JCROM</string>
+    <string name="jcrom_settings" >JCROM Settings</string>
+    <string name="select_ui_title">select UI</string>
+    <string name="select_ui_confirm_reboot">Reboot now</string>
+    <string name="select_ui_confirm_yes">Yes</string>
+    <string name="select_ui_confirm_no">No</string>
+    <string name="actionbar_bottom">Bottom ActionBar</string>
+    <string name="actionbar_bottom_summary">ActionBar put on bottom</string>
+    <string name="force_my_font">Change My Font</string>
+    <string name="force_my_font_summary">Use My Font</string>
+    <string name="force_my_hobby">Going My Way</string>
+    <string name="force_my_hobby_summary">Going My Way</string>
+    <string name="force_fixed_wallpaper">Fix Wallpaper</string>
+    <string name="force_fixed_wallpaper_summary">Use Fixed Wallpaper(1280x720)</string>
+    <string name="force_my_android_id">ANDROID_ID</string>
+    <string name="force_my_sim">SIM emulation</string>
+    <string name="jcrom_cannot_sim_emulation">Cannot SIM emulation because has real SIM</string>
+    <string name="jcrom_simstate_emulation">SIM emulation</string>
+    <string name="jcrom_simstate_roaming">Roaming</string>
+    <string name="jcrom_operator_sim">SIM operator</string>
+    <string name="jcrom_operator_network">Network operator</string>
+    <string name="jcrom_operator_select">Select</string>
+    <string name="jcrom_operator_mccmnc">MCC+MNC</string>
+    <string name="jcrom_operator_country">Country code</string>
+    <string name="jcrom_operator_name">Operator name</string>
+    <string-array name="jcrom_operator_preset">
+        <item>302370,Fido</item>
+        <item>302720,Rogers</item>
+        <item>310000,Tracfone</item>
+        <item>310120,Sprint</item>
+        <item>310410,AT&amp;T Mobility</item>
+        <item>310600,Cellcom</item>
+        <item>311220,USCC</item>
+        <item>311230,C SPire Wireless + Celluar South</item>
+        <item>311490,Virgin Mobile</item>
+        <item>311660,MetroPCS</item>
+        <item>311870,Boost Mobile</item>
+        <item>44010,NTT DOCOMO</item>
+        <item>44020,SBM</item>
+        <item>44053,KDDI</item>
+        <item>45002,SKT Mobility</item>
+        <item>45006,LGT</item>
+        <item>45008,KT Mobility</item>
+        <item>46003,China Telecom</item>
+    </string-array>
+    <string name="number_of_homescreen">Number of Homescreen</string>
+    <string name="number_of_homescreen_summary">Change number of Homescreen</string>
+    <string name="number_of_homescreen_title">Select Number of Homescreen</string>
+    <string name ="gradient_setting">No Gradient</string>
+    <string name ="gradient_setting_summary">Disable Gradient of Homescreen</string>
+    <string name ="gradient_setting_progress">Refleshing Wallpaper.\nPlease wait...</string>
+    <string name="launcher_landscape">Landscape launcher</string>
+    <string name="launcher_landscape_summary">Launcher support landscape on Phone UI</string>
+    <string name="launcher_landscape_progress">Restart launcher</string>
+    <string name="jcrom_version">JCROM version</string>
+    <string name="jcrom_version_default">Unknown</string>
+    <string name="navikey_alpha">Navikey Alpha</string>
+    <string name="navikey_alpha_summary">Force opaque</string>
+    <string name="searchbar_setting">Disable Searchbar</string>
+    <string name="searchbar_setting_summary">Disable Searchbar of Homescreen</string>
+    <string name="jcrom_settings_category_system">JCROM System Settings</string>
+    <string name="jcrom_settings_category_launcher">JCROM Launcher Settings</string>
+    <string name="jcrom_settings_category_development">JCROM Development Settings</string>
+    <string name="jcrom_developers">JCROM Developers</string>
+    <string name="jcrom_developers_summary">Developers Info.</string>
+    <string name="developer_sola">sola</string>
+    <string name="developer_sola_summary">twitter : androidsola</string>
+    <string name="developer_adakoda">adakoda</string>
+    <string name="developer_adakoda_summary">twitter : adakoda</string>
+    <string name="developer_mhidaka">mhidaka</string>
+    <string name="developer_mhidaka_summary">twitter : mhidaka</string>
+    <string name="developer_iqm">iqm</string>
+    <string name="developer_iqm_summary">twitter : iqm</string>
+    <string name="developer_Kaikias">Kaikias_lys</string>
+    <string name="developer_Kaikias_summary">twitter : Kaikias_lys</string>
+    <string name="developer_neuralassembly">neuralassembly</string>
+    <string name="developer_neuralassembly_summary">twitter : neuralassembly</string>
+    <string name="developer_ryosms">ryosms</string>
+    <string name="developer_ryosms_summary">twitter : ryosms</string>
+    <string name="developer_IoriAYANE">IoriAYANE</string>
+    <string name="developer_IoriAYANE_summary">twitter : IoriAYANE</string>
+    <string name="developer_hamatz">hamatz</string>
+    <string name="developer_hamatz_summary">twitter : hamatz</string>
+    <string name="developer_tama">tama</string>
+    <string name="developer_tama_summary">twitter : tamacjp</string>
+    <string name="theme_setting">Select Theme</string>
+    <string name="theme_setting_summary">default</string>
+    <string name="progress_set_theme">Setting Theme</string>
+    <string name="progress_clear_theme">Clear Theme</string>
+    <string name="root_access">Root access</string>
+    <string name="root_access_warning_title">Allow root access?</string>
+    <string name="root_access_warning_message">Allowing applications to request root access is very dangerous and could compromise the security of your system!</string>
+    <string name="root_access_none">Disabled</string>
+    <string name="root_access_apps">Apps only</string>
+    <string name="root_access_adb">ADB only</string>
+    <string name="root_access_all">Apps and ADB</string>
 </resources>

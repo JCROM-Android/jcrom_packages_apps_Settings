@@ -129,6 +129,9 @@ public class DevelopmentSettings extends PreferenceFragment
 
     private static final String SHOW_ALL_ANRS_KEY = "show_all_anrs";
 
+    private static final String ROOT_ACCESS_KEY = "root_access";
+    private static final String ROOT_ACCESS_PROPERTY = "persist.sys.root_access";
+
     private static final String TAG_CONFIRM_ENFORCE = "confirm_enforce";
 
     private static final String PACKAGE_MIME_TYPE = "application/vnd.android.package-archive";
@@ -182,6 +185,9 @@ public class DevelopmentSettings extends PreferenceFragment
 
     private CheckBoxPreference mShowAllANRs;
 
+    private ListPreference mRootAccess;
+    private Object mSelectedRootValue;
+
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
     private final ArrayList<CheckBoxPreference> mResetCbPrefs
             = new ArrayList<CheckBoxPreference>();
@@ -192,6 +198,7 @@ public class DevelopmentSettings extends PreferenceFragment
     private boolean mDialogClicked;
     private Dialog mEnableDialog;
     private Dialog mAdbDialog;
+    private Dialog mRootDialog;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -282,6 +289,10 @@ public class DevelopmentSettings extends PreferenceFragment
             mAllPrefs.add(hdcpChecking);
         }
         removeHdcpOptionsForProduction();
+
+        mRootAccess = (ListPreference) findPreference(ROOT_ACCESS_KEY);
+        mRootAccess.setOnPreferenceChangeListener(this);
+        mAllPrefs.add(mRootAccess);
     }
 
     private CheckBoxPreference findAndInitCheckboxPref(String key) {
@@ -421,6 +432,7 @@ public class DevelopmentSettings extends PreferenceFragment
         updateShowAllANRsOptions();
         updateVerifyAppsOverUsbOptions();
         updateBugreportOptions();
+        updateRootAccessOptions();
     }
 
     private void resetDangerousOptions() {
@@ -433,6 +445,7 @@ public class DevelopmentSettings extends PreferenceFragment
             }
         }
         resetDebuggerOptions();
+        resetRootAccessOptions();
         writeAnimationScaleOption(0, mWindowAnimationScale, null);
         writeAnimationScaleOption(1, mTransitionAnimationScale, null);
         writeAnimationScaleOption(2, mAnimatorDurationScale, null);
@@ -443,6 +456,54 @@ public class DevelopmentSettings extends PreferenceFragment
         updateAllOptions();
         mDontPokeProperties = false;
         pokeSystemProperties();
+    }
+
+    private void updateRootAccessOptions() {
+        String value = SystemProperties.get(ROOT_ACCESS_PROPERTY, "0");
+        mRootAccess.setValue(value);
+        mRootAccess.setSummary(getResources()
+                .getStringArray(R.array.root_access_entries)[Integer.valueOf(value)]);
+
+        if (value.equals("0")) {
+            try {
+                Runtime.getRuntime().exec("/system/bin/rm /data/jcrom/bin/su");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                Runtime.getRuntime().exec("/system/bin/ln -s /system/xbin/xsu /data/jcrom/bin/su");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void writeRootAccessOptions(Object newValue) {
+        String oldValue = SystemProperties.get(ROOT_ACCESS_PROPERTY, "0");
+        SystemProperties.set(ROOT_ACCESS_PROPERTY, newValue.toString());
+        if (Integer.valueOf(newValue.toString()) < 2 && !oldValue.equals(newValue)
+                && "1".equals(SystemProperties.get("service.adb.root", "0"))) {
+            SystemProperties.set("service.adb.root", "0");
+            Settings.Secure.putInt(getActivity().getContentResolver(),
+                    Settings.Secure.ADB_ENABLED, 0);
+            Settings.Secure.putInt(getActivity().getContentResolver(),
+                    Settings.Secure.ADB_ENABLED, 1);
+        }
+        updateRootAccessOptions();
+    }
+
+    private void resetRootAccessOptions() {
+        String oldValue = SystemProperties.get(ROOT_ACCESS_PROPERTY, "0");
+        SystemProperties.set(ROOT_ACCESS_PROPERTY, "0");
+        if (!oldValue.equals("0") && "1".equals(SystemProperties.get("service.adb.root", "0"))) {
+            SystemProperties.set("service.adb.root", "0");
+            Settings.Secure.putInt(getActivity().getContentResolver(),
+                    Settings.Secure.ADB_ENABLED, 0);
+            Settings.Secure.putInt(getActivity().getContentResolver(),
+                    Settings.Secure.ADB_ENABLED, 1);
+        }
+        updateRootAccessOptions();
     }
 
     private void updateHdcpValues() {
@@ -1101,6 +1162,25 @@ public class DevelopmentSettings extends PreferenceFragment
         } else if (preference == mAppProcessLimit) {
             writeAppProcessLimitOptions(newValue);
             return true;
+        } else if (preference == mRootAccess) {
+            if ("0".equals(SystemProperties.get(ROOT_ACCESS_PROPERTY, "0"))
+                    && !"0".equals(newValue)) {
+                mSelectedRootValue = newValue;
+                mDialogClicked = false;
+                if (mRootDialog != null) {
+                    dismissDialogs();
+                }
+                mRootDialog = new AlertDialog.Builder(getActivity())
+                        .setMessage(getResources().getString(R.string.root_access_warning_message))
+                        .setTitle(R.string.root_access_warning_title)
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .setPositiveButton(android.R.string.yes, this)
+                        .setNegativeButton(android.R.string.no, this).show();
+                mRootDialog.setOnDismissListener(this);
+            } else {
+                writeRootAccessOptions(newValue);
+            }
+            return true;
         }
         return false;
     }
@@ -1113,6 +1193,10 @@ public class DevelopmentSettings extends PreferenceFragment
         if (mEnableDialog != null) {
             mEnableDialog.dismiss();
             mEnableDialog = null;
+        }
+        if (mRootDialog != null) {
+            mRootDialog.dismiss();
+            mRootDialog = null;
         }
     }
 
@@ -1139,6 +1223,13 @@ public class DevelopmentSettings extends PreferenceFragment
             } else {
                 // Reset the toggle
                 mEnabledSwitch.setChecked(false);
+            }
+        } else if (dialog == mRootDialog) {
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                writeRootAccessOptions(mSelectedRootValue);
+            } else {
+                // Reset the option
+                writeRootAccessOptions("0");
             }
         }
     }
