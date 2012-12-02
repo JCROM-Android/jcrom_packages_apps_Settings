@@ -4482,6 +4482,8 @@
     <string name="developer_hamatz_summary">twitter : hamatz</string>
     <string name="developer_tama">tama</string>
     <string name="developer_tama_summary">twitter : tamacjp</string>
+    <string name="developer_chebecky">chebecky</string>
+    <string name="developer_chebecky_summary">twitter : chebecky</string>
     <string name="theme_setting">Select Theme</string>
     <string name="theme_setting_summary">default</string>
     <string name="progress_set_theme">Setting Theme</string>

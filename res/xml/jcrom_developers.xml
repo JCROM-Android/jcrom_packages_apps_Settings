@@ -53,4 +53,9 @@
             android:title="@string/developer_tama"
             android:summary="@string/developer_tama_summary"/>
 
+        <Preference
+            android:key="developer_chebecky"
+            android:title="@string/developer_chebecky"
+            android:summary="@string/developer_chebecky_summary"/>
+
 </PreferenceScreen>
