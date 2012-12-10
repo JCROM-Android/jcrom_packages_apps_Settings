@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemProperties;
+import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -27,7 +28,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     private static final String SELECT_UI_PROPERTY = "persist.sys.ui.select";
     private static final String ACTIONBAR_BOTTOM_PROPERTY = "persist.sys.actionbar.bottom";
-    private static final String MY_FONT_PROPERTY = "persist.sys.force.myfont";
     private static final String MY_HOBBY_PROPERTY = "persist.sys.force.hobby";
     private static final String MY_THEME_PROPERTY = "persist.sys.theme";
     private static final String MY_SEFFECTS_PROPERTY = "persist.sys.sound.effects";
@@ -41,7 +41,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
-    private static final String FORCE_MY_FONT_KEY = "force_my_font";
     private static final String FORCE_MY_HOBBY_KEY = "force_my_hobby";
     private static final String THEME_KEY = "theme_setting";
     private static final String DEVINFO_KEY = "jcrom_developer";
@@ -59,7 +58,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
     private ListPreference mSelectUi;
     private CheckBoxPreference mActionBarBottom;
-    private CheckBoxPreference mForceMyFont;
     private CheckBoxPreference mForceMyHobby;
     private PreferenceScreen mTheme;
     private CheckBoxPreference mFixedWallpaper;
@@ -84,7 +82,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mSelectUi.setOnPreferenceChangeListener(this);
         selectUi();
         mActionBarBottom = (CheckBoxPreference) findPreference(ACTIONBAR_BOTTOM_KEY);
-        mForceMyFont = (CheckBoxPreference) findPreference(FORCE_MY_FONT_KEY);
         mForceMyHobby = (CheckBoxPreference) findPreference(FORCE_MY_HOBBY_KEY);
         mTheme = (PreferenceScreen) findPreference(THEME_KEY);
         mFixedWallpaper = (CheckBoxPreference) findPreference(FORCE_FIXED_WALLPAPER);
@@ -171,16 +168,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         SystemProperties.set(ACTIONBAR_BOTTOM_PROPERTY, mActionBarBottom.isChecked() ? "true" : "false");
     }
 
-    private void updateMyFontOptions() {
-        mForceMyFont.setChecked(SystemProperties.getBoolean(MY_FONT_PROPERTY, false));
-    }
-
-    private void writeMyFontOptions() {
-        SystemProperties.set(MY_FONT_PROPERTY, mForceMyFont.isChecked() ? "true" : "false");
-    }
-
     private void updateMyHobbyOptions() {
-        mForceMyFont.setChecked(SystemProperties.getBoolean(MY_HOBBY_PROPERTY, false));
+        mForceMyHobby.setChecked(SystemProperties.getBoolean(MY_HOBBY_PROPERTY, false));
     }
 
     private void writeMyHobbyOptions() {
@@ -254,15 +243,13 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
         if (preference == mActionBarBottom) {
             writeActionBarBottomOptions();
-        } else if (preference == mForceMyFont) {
-            writeMyFontOptions();
         } else if (preference == mForceMyHobby) {
             writeMyHobbyOptions();
         } else if (preference == mTheme) {
             if(mForceMyHobby.isChecked()) {
                 FileListDialog dlg = new FileListDialog(getActivity());
                 dlg.setOnFileListDialogListener(this);
-                dlg.show( "/sdcard/mytheme/", "select theme");
+                dlg.show( Environment.getExternalStorageDirectory().toString() + "/mytheme/", "select theme");
             }
         } else if (preference == mFixedWallpaper) {
             writeMyWallpaperOptions();

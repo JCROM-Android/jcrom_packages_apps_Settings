@@ -41,6 +41,7 @@ public class ThemeManager {
             "sounds/effect",
             "sounds/bootsound",
             "wallpaper",
+            "font",
     };
 
     private Context mContext;
