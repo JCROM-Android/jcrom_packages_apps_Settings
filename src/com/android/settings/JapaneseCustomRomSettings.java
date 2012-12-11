@@ -38,6 +38,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String LAUNCHER_LANDSCAPE_PROPERTY = "persist.sys.launcher.landscape";
     private static final String NAVIKEY_ALPHA_PROPERTY = "persist.sys.alpha.navikey";
     private static final String MY_SEARCHBAR_PROPERTY = "persist.sys.prop.searchbar";
+    private static final String MY_NOTIFICATION_PROPERTY = "persist.sys.notification";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -52,6 +53,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String FORCE_MY_SIM_KEY = "force_my_sim";
     private static final String NAVIKEY_ALPHA_KEY = "navikey_alpha";
     private static final String SEARCHBAR_KEY = "searchbar_setting";
+    private static final String NOTIFICATION_KEY = "notification_setting";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -69,6 +71,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private PreferenceScreen mForceMySIM;
     private CheckBoxPreference mNavikeyAlpha;
     private CheckBoxPreference mDisableSearchbar;
+    private CheckBoxPreference mNotification;
 
     private String mAndroidId;
 
@@ -92,6 +95,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mForceMySIM = (PreferenceScreen) findPreference(FORCE_MY_SIM_KEY);
         mNavikeyAlpha = (CheckBoxPreference) findPreference(NAVIKEY_ALPHA_KEY);
         mDisableSearchbar = (CheckBoxPreference) findPreference(SEARCHBAR_KEY);
+        mNotification = (CheckBoxPreference) findPreference(NOTIFICATION_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -162,6 +166,16 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             mSelectUi.setValueIndex(select);
             mSelectUi.setSummary(mSelectUi.getEntries()[select]);
         }
+    }
+
+    private void updateNotificationOptions() {
+        mNotification.setChecked(SystemProperties.getBoolean(MY_NOTIFICATION_PROPERTY, false));
+    }
+
+    private void writeNotificationOptions() {
+        SystemProperties.set(MY_NOTIFICATION_PROPERTY, mNotification.isChecked() ? "true" : "false");
+        showProgress(R.string.notification_progress);
+        new ThemeManager(getActivity()).restartLauncher(closeProgress);
     }
 
     private void writeActionBarBottomOptions() {
@@ -243,6 +257,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
         if (preference == mActionBarBottom) {
             writeActionBarBottomOptions();
+        } else if (preference == mNotification) {
+            writeNotificationOptions();
         } else if (preference == mForceMyHobby) {
             writeMyHobbyOptions();
         } else if (preference == mTheme) {

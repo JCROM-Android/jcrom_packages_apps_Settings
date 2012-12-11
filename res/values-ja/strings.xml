@@ -1854,6 +1854,9 @@
     <string name="actionbar_bottom_summary" msgid="6426383462520888744">ActionBar を下に配置する</string>
     <string name="force_my_font" msgid="7426383462520888742">"フォントを変更する"</string>
     <string name="force_my_font_summary" msgid="9642000962902609986">"強制的にフォントを変更する"</string>
+    <string name="notification_setting">Notification を下に</string>
+    <string name="notification_setting_summary">Notification を下に配置する</string>
+    <string name="notification_progress">再構築中...</string>
     <string name="force_my_hobby" msgid="7426383462520888752">"趣味に走る"</string>
     <string name="force_my_hobby_summary" msgid="9642000962902609996">"テーマ選択を有効にします"</string>
     <string name="theme_setting" msgid="7426383462520988752">"テーマ選択"</string>

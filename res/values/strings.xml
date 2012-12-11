@@ -4457,6 +4457,9 @@
     <string name="navikey_alpha_summary">Force opaque</string>
     <string name="searchbar_setting">Disable Searchbar</string>
     <string name="searchbar_setting_summary">Disable Searchbar of Homescreen</string>
+    <string name="notification_setting">Bottom Notification</string>
+    <string name="notification_setting_summary">Notification from the bottom position</string>
+    <string name="notification_progress">Please wait...</string>
     <string name="jcrom_settings_category_system">JCROM System Settings</string>
     <string name="jcrom_settings_category_launcher">JCROM Launcher Settings</string>
     <string name="jcrom_settings_category_development">JCROM Development Settings</string>

@@ -17,6 +17,11 @@
             android:summary="@string/actionbar_bottom_summary"/>
 
         <CheckBoxPreference
+            android:key="notification_setting"
+            android:title="@string/notification_setting"
+            android:summary="@string/notification_setting_summary"/>
+
+        <CheckBoxPreference
             android:key="force_my_hobby"
             android:title="@string/force_my_hobby"
             android:summary="@string/force_my_hobby_summary"/>
