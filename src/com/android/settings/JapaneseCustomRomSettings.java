@@ -241,11 +241,11 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     @Override
     public void onClickFileList(File file) {
         if(file != null) {
-            SystemProperties.set(MY_THEME_PROPERTY, file.getName());
-            mTheme.setSummary(file.getName());
+            SystemProperties.set(MY_THEME_PROPERTY, removeFileExtension(file.getName()));
+            mTheme.setSummary(removeFileExtension(file.getName()));
 
             showProgress(R.string.progress_set_theme);
-            new ThemeManager(getActivity()).setTheme(file.getName(), closeProgress);
+            new ThemeManager(getActivity()).setTheme(removeFileExtension(file.getName()), closeProgress);
         }
     }
 
@@ -353,5 +353,17 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         builder.setPositiveButton(R.string.select_ui_confirm_yes, listener);
         builder.setNegativeButton(R.string.select_ui_confirm_no, listener);
         builder.show();
+    }
+    
+    private String removeFileExtension(String filename) {
+        int lastDotPos = filename.lastIndexOf('.');
+
+        if (lastDotPos == -1) {
+            return filename;
+        } else if (lastDotPos == 0) {
+            return filename;
+        } else {
+            return filename.substring(0, lastDotPos);
+        }
     }
 }

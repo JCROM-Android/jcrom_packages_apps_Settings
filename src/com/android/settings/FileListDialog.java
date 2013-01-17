@@ -104,8 +104,19 @@ public class FileListDialog extends Activity
                     }
                     
                     extension = getSuffix(name);
-                    if(!extension.equals(zip) && !".nomedia".equals(name)) {
-                        list[count] = name;
+                    if(!".nomedia".equals(name)) {
+                        boolean conflict_flg = false;                    
+                        for(int c=0; c < count; c++) {
+                        	if(list[c].equals(removeFileExtension(name))) {
+                        		conflict_flg = true;
+                        		break;
+                        	}
+                        }
+                        if(conflict_flg) {
+                            conflict_flg = false;
+                        	continue;
+                        }
+                        list[count] = removeFileExtension(name);
                         theme_num[count] = n;
                         count++;
                     }
@@ -129,6 +140,18 @@ public class FileListDialog extends Activity
      
     public interface onFileListDialogListener{
         public void onClickFileList(File file);
+    }
+
+    public String removeFileExtension(String filename) {
+        int lastDotPos = filename.lastIndexOf('.');
+
+        if (lastDotPos == -1) {
+            return filename;
+        } else if (lastDotPos == 0) {
+            return filename;
+        } else {
+            return filename.substring(0, lastDotPos);
+        }
     }
 }
 

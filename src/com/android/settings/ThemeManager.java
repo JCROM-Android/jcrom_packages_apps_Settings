@@ -25,6 +25,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipEntry;
+import android.util.Log;
+
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+
 public class ThemeManager {
 
     private static final String sThemeDirs[] = {
@@ -49,6 +56,7 @@ public class ThemeManager {
     private WallpaperManager mWallpaperManager;
     private WindowManager mWindowManager;
     private Handler mHandler;
+    private static final String TAG = "ThemeManager";
 
     public ThemeManager(Activity activity) {
         mContext = activity;
@@ -72,12 +80,66 @@ public class ThemeManager {
         });
     }
 
-    public void setTheme(String themeName, final Runnable afterProc) {
+    private void themeZipInstall(String themeFile) {
+        File f = null;
+        InputStream is = null;
+        ZipInputStream in = null;
+        ZipEntry zipEntry = null;
+        
+        f = new File(themeFile);
+        
+		try {
+			is = new FileInputStream(f);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	        
+       	in = new ZipInputStream(is);
+       	String parentPath = Environment.getDataDirectory().toString() + "/theme/";
+       	final File parent = new File(parentPath);
+       	if (!parent.exists()) {
+           	parent.mkdirs();
+       	}
+
+        try {
+            while ((zipEntry = in.getNextEntry()) != null) {
+
+                final File file = new File(parentPath, zipEntry.getName());
+
+                if (zipEntry.isDirectory()) {
+                	if (!file.exists()) {
+                		file.mkdirs();
+                	}
+                } else {
+                    BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+                    int length;
+                    int writeSize = 0;
+                    byte []buffer = new byte[4096];
+                    while ((length = in.read(buffer)) != -1) {
+                        out.write(buffer,0,length);
+                        writeSize += length;
+                    }
+                    out.flush();
+                    out.close();
+                    file.setReadable(true, false);
+                    Log.d("File","name:" + file.toString() + " size:" + file.length() + " writeSize:" + writeSize );
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setTheme(final String themeName, final Runnable afterProc) {
         new Thread(new Runnable() {
             public void run() {
                 themeAllClear();
-                themeAllInstall();
-
+                File file = new File(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
+                if (file.exists()) {
+                	themeZipInstall(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
+                }else {
+                    themeAllInstall();
+                }
                 setDefaultSounds();
                 setMySounds();
 
