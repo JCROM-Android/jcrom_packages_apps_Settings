@@ -45,6 +45,7 @@ public class ThemeManager {
             "statusbar",
             "navibar",
             "simeji",
+            "atok",
             "sounds/effect",
             "sounds/bootsound",
             "wallpaper",
