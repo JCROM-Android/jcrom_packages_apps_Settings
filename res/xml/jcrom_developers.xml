@@ -63,4 +63,9 @@
             android:title="@string/developer_ta9mar"
             android:summary="@string/developer_ta9mar_summary"/>
 
+        <Preference
+            android:key="developer_kassy_kz"
+            android:title="@string/developer_kassy_kz"
+            android:summary="@string/developer_kassy_kz_summary"/>
+
 </PreferenceScreen>
