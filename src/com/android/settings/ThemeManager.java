@@ -32,6 +32,19 @@ import android.util.Log;
 import java.io.BufferedOutputStream;
 import java.io.InputStream;
 
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ApplicationInfo;
+import java.util.Arrays;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import android.graphics.Rect;
+import java.io.OutputStream;
+import java.io.BufferedInputStream;
+import android.graphics.drawable.NinePatchDrawable;
+import android.graphics.NinePatch;
+
+
 public class ThemeManager {
 
     private static final String sThemeDirs[] = {
@@ -50,6 +63,7 @@ public class ThemeManager {
             "sounds/bootsound",
             "wallpaper",
             "font",
+            "flickwnn",
     };
 
     private Context mContext;
@@ -143,6 +157,7 @@ public class ThemeManager {
                 }
                 setDefaultSounds();
                 setMySounds();
+                setFlickWnnTheme();
 
                 restartSystemUI(new Runnable() {
                     public void run() {
@@ -274,6 +289,7 @@ public class ThemeManager {
         String iDirPath = ibuilder.toString();
         File iDir = new File(iDirPath);
         themeDelete(iDir);
+        deleteFlickWnnTheme();
     }
 
     public void themeAllClear() {
@@ -366,5 +382,152 @@ public class ThemeManager {
                         / (ASPECT_RATIO_LANDSCAPE - ASPECT_RATIO_PORTRAIT);
         final float y = WALLPAPER_WIDTH_TO_SCREEN_RATIO_PORTRAIT - x * ASPECT_RATIO_PORTRAIT;
         return x * aspectRatio + y;
+    }
+    
+    private void setFlickWnnTheme(){
+        
+        try{
+            ApplicationInfo ai = mContext.getPackageManager().getApplicationInfo("com.pm9.flickwnn", 0);
+        } catch (NameNotFoundException ex){
+            // Do nothing.
+            return;
+        }
+    
+        String mFlickWnnTheme = Environment.getExternalStorageDirectory().toString() + "/FlickWnn/keyboard/";
+        String mFlickWnnData = Environment.getDataDirectory().toString() + "/theme/flickwnn/";
+
+        flickWnnThemeCopy(mFlickWnnData, mFlickWnnTheme);     
+    }
+    
+    private void flickWnnThemeCopy(String iPath, String oPath) {
+        
+        File iDir = new File(iPath);
+        File oDir = new File(oPath);
+
+        if (!oDir.exists()){
+            oDir.mkdirs();
+        }
+
+        if (iDir.isDirectory()) {
+            String[] children = iDir.list();
+
+            if(!Arrays.asList(children).contains("text.info")){
+                createFlickWnnTextInfo(oPath);
+            }
+            for (int i = 0; i < children.length; i++) {
+                File iFile = new File(iDir, children[i]);
+                File oFile = new File(oDir, children[i]);
+
+                try {
+                    // Skip file copy in case of inappropriate image.(=failed to get 9patch chunk from image)
+                    boolean fcStat = false; 
+                    fcStat = createFlickWnnPngInfo(iFile.getName(), iPath, oPath);
+                    if(fcStat){
+                        FileChannel iChannel = new FileInputStream(iFile).getChannel();
+                        FileChannel oChannel = new FileOutputStream(oFile).getChannel();
+                        iChannel.transferTo(0, iChannel.size(), oChannel);
+                        iChannel.close();
+                        oChannel.close();
+                        oFile.setReadable(true, false);
+                    }
+                    
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void createFlickWnnTextInfo(String targetPath){
+        
+        // Default text color.
+        // If you want to use custom textinfo, please create custom "text.info" on "/yourtheme/flickwnn/text.info". 
+        int textColor = 0xFFFFFFFF;
+        int textSize = 22;
+        int shadowColor = 0xBB000000;
+        float shadowRadius = 2.75F;
+
+        try{
+            FileWriter fw = new FileWriter(targetPath + "text.info");
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(String.format("textColor:%8X", textColor));
+            bw.newLine();
+            bw.write(String.format("textSize:%d", textSize));
+            bw.newLine();
+            bw.write(String.format("shadowColor:%8X", shadowColor));
+            bw.newLine();
+            bw.write(String.format("shadowRadius:%#.2f", shadowRadius));
+            bw.newLine();
+            bw.close();
+            fw.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private boolean createFlickWnnPngInfo(String ftFile, String themePath, String targetPath){
+        
+        if (!(ftFile.equals("text.info") || ftFile.equals("keybg_custom_bg.png"))){
+            StringBuilder sb = new StringBuilder();
+            sb.append(targetPath);
+            sb.append(ftFile);
+            sb.append(".info");
+            String infoFileName = new String(sb);
+
+            StringBuilder sbt = new StringBuilder();
+            sbt.append(themePath);
+            sbt.append(ftFile);
+            String itFile = new String(sbt);
+
+            try{
+                FileInputStream fis = new FileInputStream(itFile);
+                BufferedInputStream bufs = new BufferedInputStream(fis);
+
+                final Rect padding = new Rect();
+                Bitmap bmp = null;
+                byte chunk[] = null;
+
+                bmp = BitmapFactory.decodeStream(bufs, padding, null);
+                bufs.close();
+                chunk = bmp.getNinePatchChunk();
+                if (null == chunk){
+                    // Inappropriate file if chunk is null.
+                    return false;
+                }
+
+                OutputStream oInfoFile = null;
+            
+                oInfoFile = new FileOutputStream(infoFileName);
+                oInfoFile.write(padding.left);
+                oInfoFile.write(padding.top);
+                oInfoFile.write(padding.right);
+                oInfoFile.write(padding.bottom);
+                oInfoFile.write(chunk.length / 128);
+                oInfoFile.write(chunk.length % 128);
+                oInfoFile.write(chunk);
+                oInfoFile.close();
+            } catch(IOException e){
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    private void deleteFlickWnnTheme(){
+        
+        String mFlickWnnTheme = Environment.getExternalStorageDirectory().toString() + "/FlickWnn/keyboard/";
+        File mFWTDir = new File(mFlickWnnTheme);
+        
+        if(mFWTDir.isDirectory()){
+            String[] children = mFWTDir.list();
+            for(int i = 0; i < children.length; i++){
+                File iFile = new File (mFWTDir, children[i]);
+                iFile.delete();
+            }
+        }
     }
 }
