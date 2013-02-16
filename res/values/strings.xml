@@ -4437,6 +4437,8 @@
     <string name="launcher_landscape">Landscape launcher</string>
     <string name="launcher_landscape_summary">Launcher support landscape on Phone UI</string>
     <string name="launcher_landscape_progress">Restart launcher</string>
+    <string name="lockscreen_rotate">LockScreen Rotate</string>
+    <string name="lockscreen_rotate_summary">Enable LockScreen Rotate</string>
     <string name="jcrom_version">JCROM version</string>
     <string name="jcrom_version_default">Unknown</string>
     <string name="navikey_alpha">Navikey Alpha</string>

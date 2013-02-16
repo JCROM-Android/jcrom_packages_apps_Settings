@@ -36,6 +36,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_GRADIENT_PROPERTY = "persist.sys.prop.gradient";
     // packages/apps/Launcher2/src/com/android/launcher2/Launcher.java FORCE_ENABLE_ROTATION_PROPERTY
     private static final String LAUNCHER_LANDSCAPE_PROPERTY = "persist.sys.launcher.landscape";
+    private static final String LOCKSCREEN_ROTATE_PROPERTY = "persist.sys.lockscreen.rotate";
     private static final String NAVIKEY_ALPHA_PROPERTY = "persist.sys.alpha.navikey";
     private static final String MY_SEARCHBAR_PROPERTY = "persist.sys.prop.searchbar";
     private static final String MY_NOTIFICATION_PROPERTY = "persist.sys.notification";
@@ -50,6 +51,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String FORCE_MY_ANDROID_ID_KEY = "force_my_android_id";
     private static final String GRADIENT_KEY = "gradient_setting";
     private static final String ALLOW_LAUNCHER_LANDSCAPE_KEY = "launcher_landscape";
+    private static final String LOCKSCREEN_ROTATE_KEY = "lockscreen_rotate";
     private static final String FORCE_MY_SIM_KEY = "force_my_sim";
     private static final String NAVIKEY_ALPHA_KEY = "navikey_alpha";
     private static final String SEARCHBAR_KEY = "searchbar_setting";
@@ -67,6 +69,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private PreferenceScreen mForceMyAndroidId;
     private CheckBoxPreference mGradientStat;
     private CheckBoxPreference mLauncherLandscape;
+    private CheckBoxPreference mLockscreenRotate;
     private ProgressDialog mProgressDialog;
     private PreferenceScreen mForceMySIM;
     private CheckBoxPreference mNavikeyAlpha;
@@ -92,6 +95,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mForceMyAndroidId = (PreferenceScreen) findPreference(FORCE_MY_ANDROID_ID_KEY);
         mGradientStat = (CheckBoxPreference) findPreference(GRADIENT_KEY);
         mLauncherLandscape = (CheckBoxPreference) findPreference(ALLOW_LAUNCHER_LANDSCAPE_KEY);
+        mLockscreenRotate = (CheckBoxPreference) findPreference(LOCKSCREEN_ROTATE_KEY);
         mForceMySIM = (PreferenceScreen) findPreference(FORCE_MY_SIM_KEY);
         mNavikeyAlpha = (CheckBoxPreference) findPreference(NAVIKEY_ALPHA_KEY);
         mDisableSearchbar = (CheckBoxPreference) findPreference(SEARCHBAR_KEY);
@@ -230,6 +234,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         new ThemeManager(getActivity()).restartLauncher(closeProgress);
     }
 
+    private void writeLockscreenRotate() {
+        SystemProperties.set(LOCKSCREEN_ROTATE_PROPERTY, mLockscreenRotate.isChecked() ? "true" : "false");
+    }
+
     private void writeNavikeyAlphaOptions() {
         SystemProperties.set(NAVIKEY_ALPHA_PROPERTY, mNavikeyAlpha.isChecked() ? "true" : "false");
     }
@@ -275,6 +283,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeGradientOptions();
         } else if (preference == mLauncherLandscape) {
             writeLauncherLandscape();
+        } else if (preference == mLockscreenRotate) {
+            writeLockscreenRotate();
         } else if (preference == mForceMySIM) {
             JapaneseCustomRomSimState.makeDialog(getActivity()).show();
         } else if (preference == mNavikeyAlpha){

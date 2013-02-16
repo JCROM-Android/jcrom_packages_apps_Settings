@@ -22,6 +22,11 @@
             android:summary="@string/notification_setting_summary"/>
 
         <CheckBoxPreference
+            android:key="lockscreen_rotate"
+            android:title="@string/lockscreen_rotate"
+            android:summary="@string/lockscreen_rotate_summary"/>
+
+        <CheckBoxPreference
             android:key="force_my_hobby"
             android:title="@string/force_my_hobby"
             android:summary="@string/force_my_hobby_summary"/>
