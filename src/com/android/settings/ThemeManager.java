@@ -61,6 +61,7 @@ public class ThemeManager {
             "atok",
             "sounds/effect",
             "sounds/bootsound",
+            "sounds/camera",
             "wallpaper",
             "font",
             "flickwnn",
@@ -149,6 +150,8 @@ public class ThemeManager {
         new Thread(new Runnable() {
             public void run() {
                 themeAllClear();
+                setDefaultCameraSounds();
+
                 File file = new File(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
                 if (file.exists()) {
                 	themeZipInstall(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
@@ -203,6 +206,19 @@ public class ThemeManager {
                 "/system/media/audio/ui/Lock.ogg");
         Settings.Global.putString(mContentResolver, Settings.Global.UNLOCK_SOUND,
                 "/system/media/audio/ui/Unlock.ogg");
+    }
+
+    private void setDefaultCameraSounds() {
+        // Set default camera sounds
+        StringBuilder ibuilder = new StringBuilder();
+        StringBuilder obuilder = new StringBuilder();
+        ibuilder.append("/system/media/audio/ui/");
+        obuilder.append(Environment.getDataDirectory().toString() + "/theme/sounds/camera/");
+        String iDirPath = ibuilder.toString();
+        String oDirPath = obuilder.toString();
+        File iDir = new File(iDirPath);
+        File oDir = new File(oDirPath);
+        themeCopy(iDir, oDir);
     }
 
     private void setDataBase(String key, String name) {
