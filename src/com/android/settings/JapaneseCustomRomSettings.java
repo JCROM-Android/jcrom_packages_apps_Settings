@@ -251,9 +251,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         if(file != null) {
             SystemProperties.set(MY_THEME_PROPERTY, removeFileExtension(file.getName()));
             mTheme.setSummary(removeFileExtension(file.getName()));
-
-            showProgress(R.string.progress_set_theme);
-            new ThemeManager(getActivity()).setTheme(removeFileExtension(file.getName()), closeProgress);
+            confirmResetForSetTheme(file);
         }
     }
 
@@ -375,5 +373,24 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         } else {
             return filename.substring(0, lastDotPos);
         }
+    }
+
+    private void confirmResetForSetTheme(final File file) {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                boolean performReset = false;
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    performReset = true;
+                }
+                showProgress(R.string.progress_set_theme);
+                new ThemeManager(getActivity()).setTheme(removeFileExtension(file.getName()), closeProgress, performReset);
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.set_theme_confirm_reboot);
+        builder.setPositiveButton(R.string.set_theme_confirm_yes, listener);
+        builder.setNegativeButton(R.string.set_theme_confirm_no, listener);
+        builder.show();
     }
 }

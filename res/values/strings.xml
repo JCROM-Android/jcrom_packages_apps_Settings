@@ -4389,6 +4389,9 @@
     <string name="select_ui_confirm_reboot">Reboot now</string>
     <string name="select_ui_confirm_yes">Yes</string>
     <string name="select_ui_confirm_no">No</string>
+    <string name="set_theme_confirm_reboot">After setting the theme, restart now?</string>
+    <string name="set_theme_confirm_yes">Yes</string>
+    <string name="set_theme_confirm_no">No</string>
     <string name="actionbar_bottom">Bottom ActionBar</string>
     <string name="actionbar_bottom_summary">ActionBar put on bottom</string>
     <string name="force_my_font">Change My Font</string>

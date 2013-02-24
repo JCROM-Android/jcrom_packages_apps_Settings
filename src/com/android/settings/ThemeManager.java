@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.SystemProperties;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -146,7 +147,7 @@ public class ThemeManager {
         }
     }
 
-    public void setTheme(final String themeName, final Runnable afterProc) {
+    public void setTheme(final String themeName, final Runnable afterProc, final boolean performReset) {
         new Thread(new Runnable() {
             public void run() {
                 themeAllClear();
@@ -162,14 +163,20 @@ public class ThemeManager {
                 setMySounds();
                 setFlickWnnTheme();
 
-                restartSystemUI(new Runnable() {
-                    public void run() {
-                        applyTheme();
-                        if (afterProc != null) {
-                            afterProc.run();
+                if (performReset == true) {
+                    applyTheme();
+                    PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+                    pm.reboot(null);
+                } else {
+                    restartSystemUI(new Runnable() {
+                        public void run() {
+                            applyTheme();
+                            if (afterProc != null) {
+                                afterProc.run();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }).start();
     }
@@ -223,7 +230,6 @@ public class ThemeManager {
 
     private void setDataBase(String key, String name) {
         StringBuilder builder = new StringBuilder();
-        //builder.append(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + SystemProperties.get("persist.sys.theme") + "/sounds/effect/");
         builder.append(Environment.getDataDirectory().toString() + "/theme/sounds/effect/");
         builder.append(File.separator);
         builder.append(name);
@@ -338,7 +344,6 @@ public class ThemeManager {
         Bitmap bitmapWallpaper;
         String MY_FRAME_FILE = "home_wallpaper.png";
         StringBuilder builder = new StringBuilder();
-        //builder.append(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + SystemProperties.get("persist.sys.theme") + "/wallpaper/");
         builder.append(Environment.getDataDirectory().toString() + "/theme/wallpaper/");
         builder.append(File.separator);
         builder.append(MY_FRAME_FILE);
