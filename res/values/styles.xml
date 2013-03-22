@@ -195,4 +195,10 @@
     <style name="KeyguardAppWidgetItem">
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="ThemeSelectorIntentActivityStyle" parent="android:Theme.Holo.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>
