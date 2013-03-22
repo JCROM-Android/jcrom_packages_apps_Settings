@@ -18,6 +18,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.widget.EditText;
+import android.content.Intent;
+import android.net.Uri;
 
 import java.io.File;
 import java.security.SecureRandom;
@@ -77,6 +79,11 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mNotification;
 
     private String mAndroidId;
+
+    private static final int INTENT_CLEAR_THEME = 0;
+    private static final int INTENT_SET_THEME = 1;
+    private static final int RESULT_OK = -1;
+    private static final int RESULT_CANCELED = 0;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -193,11 +200,38 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private void writeMyHobbyOptions() {
         SystemProperties.set(MY_HOBBY_PROPERTY, mForceMyHobby.isChecked() ? "true" : "false");
         if (!(mForceMyHobby.isChecked())) {
-            SystemProperties.set(MY_THEME_PROPERTY, "");
-            mTheme.setSummary("");
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("jcrom:///clear_theme"));
+            startActivityForResult(intent, INTENT_CLEAR_THEME);
+        }
+    }
 
-            showProgress(R.string.progress_clear_theme);
-            new ThemeManager(getActivity()).clearTheme(closeProgress);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        
+        if(requestCode == INTENT_CLEAR_THEME){
+            // ClearTheme
+            if(resultCode == RESULT_OK){
+                // ClearTheme Succeeded.
+                SystemProperties.set(MY_THEME_PROPERTY, "");
+                mTheme.setSummary("");
+            }else if(resultCode == RESULT_CANCELED){
+                // ClearTheme Failed.
+            }
+        }else if(requestCode == INTENT_SET_THEME){
+            // SetTheme
+            if(resultCode == RESULT_OK){
+                if(data != null){
+                    // SetTheme Succeeded.
+                    String newTheme = data.getStringExtra("jcrom.new.theme");
+                    SystemProperties.set(MY_THEME_PROPERTY, newTheme);
+                    mTheme.setSummary(newTheme);
+                }else{
+                    // SetTheme Failed.
+                }
+            }else if(resultCode == RESULT_CANCELED){
+                // SetTheme UserCancel.
+            }
+
         }
     }
 
@@ -269,9 +303,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeMyHobbyOptions();
         } else if (preference == mTheme) {
             if(mForceMyHobby.isChecked()) {
-                FileListDialog dlg = new FileListDialog(getActivity());
-                dlg.setOnFileListDialogListener(this);
-                dlg.show( Environment.getExternalStorageDirectory().toString() + "/mytheme/", "select theme");
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("jcrom:///set_theme"));
+                startActivityForResult(intent, INTENT_SET_THEME);
             }
         } else if (preference == mFixedWallpaper) {
             writeMyWallpaperOptions();
