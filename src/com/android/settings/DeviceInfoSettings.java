@@ -131,6 +131,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment {
                 Utils.UPDATE_PREFERENCE_FLAG_SET_TITLE_TO_MATCHING_ACTIVITY);
 
         // These are contained by the root preference screen
+/*
         parentPreference = getPreferenceScreen();
         if (UserHandle.myUserId() == UserHandle.USER_OWNER) {
             Utils.updatePreferenceToSpecificActivityOrRemove(act, parentPreference,
@@ -140,6 +141,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment {
             // Remove for secondary users
             removePreference(KEY_SYSTEM_UPDATE_SETTINGS);
         }
+*/
         Utils.updatePreferenceToSpecificActivityOrRemove(act, parentPreference, KEY_CONTRIBUTORS,
                 Utils.UPDATE_PREFERENCE_FLAG_SET_TITLE_TO_MATCHING_ACTIVITY);
 

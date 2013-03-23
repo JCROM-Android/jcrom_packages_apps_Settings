@@ -2186,7 +2186,6 @@
     <string name="master_clear_failed">No reset was performed because the System Clear service isn\'t available.</string>
     <!-- Master clear confirmation screen title [CHAR LIMIT=30] -->
     <string name="master_clear_confirm_title">Reset?</string>
-
     <!-- Media Format -->
     <!-- SD card & phone storage settings screen, setting option name under Internal phone storage heading [CHAR LIMIT=25] -->
     <string name="media_format_title" product="nosdcard">Erase USB storage</string>
@@ -4493,4 +4492,9 @@
     <string name="root_access_apps">Apps only</string>
     <string name="root_access_adb">ADB only</string>
     <string name="root_access_all">Apps and ADB</string>
+    <!-- Software Update -->
+    <string name="software_update_title">JCROM Update</string>
+    <string name="software_update_desc">"You can update to the latest version JCROM.\n\n<li>Please update after you charge the battery.</li>\n<li>After downloading the update data, JCROM is updated automatically.</li></string>
+    <string name="software_update_button_text">Run the update</string>
+    <string name="software_update_url">dummy</string>
 </resources>
