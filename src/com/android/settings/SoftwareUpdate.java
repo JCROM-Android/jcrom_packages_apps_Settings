@@ -27,13 +27,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemProperties;
 import android.os.AsyncTask;
+import android.os.SystemProperties;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
+import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,23 +46,40 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.content.pm.ActivityInfo;
 import android.content.DialogInterface;
 import java.io.File;
 import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 public class SoftwareUpdate extends Fragment {
     private static final String TAG = "SoftwareUpdate";
     private static final int KEYGUARD_REQUEST = 55;
+    private static final String FILE_LOCAL_PATH = "/cache/jcrom.zip";
+    private static final String FILE_LOCAL_TMP_PATH = "/cache/jcrom.zip.tmp";
+    private static final String KEY_JCROM_VERSION = "ro.jcrom.version";
+
     private View mContentView;
     private Button mInitiateButton;
-    static String DOWNLOAD_FILE_URL = null;
-    static final String FILE_LOCAL_PATH = "/cache/jcrom.zip";
+    private Button mCheckButton;
+    private String jcrom_version = "";
+    private String jcrom_link = "";
+    private PowerManager pm = null;
+    private WakeLock lock = null;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -74,26 +96,57 @@ public class SoftwareUpdate extends Fragment {
 
     private final Button.OnClickListener mInitiateListener = new Button.OnClickListener() {
         public void onClick(View v) {
+            clearDownloadData();
             AsyncDownloadTask task = new AsyncDownloadTask ();
             task.execute (0);
         }
     };
 
+    private final Button.OnClickListener mCheckListener = new Button.OnClickListener() {
+        public void onClick(View v) {
+            AsyncDownloadTask2 task = new AsyncDownloadTask2 ();
+            task.execute (0);
+        }
+    };
+
     private void establishInitialState() {
+        TextView textView1 = (TextView)mContentView.findViewById(R.id.software_update_text1);
+        TextView textView2 = (TextView)mContentView.findViewById(R.id.software_update_text2);
+        String str = SystemProperties.get(KEY_JCROM_VERSION);
+        Resources res = getResources();
+        textView1.setText(res.getString(R.string.jcrom_current) + " " +  str);
+        textView2.setText(res.getString(R.string.jcrom_latest) + " " + jcrom_version);
         mInitiateButton = (Button)mContentView.findViewById(R.id.initiate_software_update);
         mInitiateButton.setOnClickListener(mInitiateListener);
+        mCheckButton = (Button)mContentView.findViewById(R.id.check_software_update);
+        mCheckButton.setOnClickListener(mCheckListener);
+    }
+
+    private void updateState() {
+        TextView textView = (TextView)mContentView.findViewById(R.id.software_update_text2);
+        Resources res = getResources();
+        textView.setText(res.getString(R.string.jcrom_latest) + " " + jcrom_version);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContentView = inflater.inflate(R.layout.software_update, null);
         establishInitialState();
+        String model = Build.MODEL;
+        if(model.equals("Nexus 10")) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        pm = (PowerManager)getActivity().getSystemService(Context.POWER_SERVICE);
+        lock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "JCROM");
         return mContentView;
     }
 
     private class AsyncDownloadTask extends AsyncTask <Integer, Integer, Integer> {
         @Override
         public void onPreExecute() {
+            lock.acquire();
             this.progressDialog = new ProgressDialog(getActivity());
             this.progressDialog.setMessage("Downloading");
             this.progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
@@ -128,13 +181,13 @@ public class SoftwareUpdate extends Fragment {
             }
 
             Resources res = getResources();
-            DOWNLOAD_FILE_URL = res.getString(R.string.software_update_url);
-
+            Log.d(TAG, jcrom_version + ": " + jcrom_link);
             boolean downloadComplete = false;
             boolean downloadCancel = false;
+
             try {
                 {
-                    URL url = new URL(DOWNLOAD_FILE_URL);
+                    URL url = new URL(jcrom_link);
                     HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                     httpURLConnection.setRequestMethod("HEAD");
                     httpURLConnection.connect();
@@ -143,7 +196,7 @@ public class SoftwareUpdate extends Fragment {
                     }
                 }
                 {
-                    URL url = new URL(DOWNLOAD_FILE_URL);
+                    URL url = new URL(jcrom_link);
                     HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                     httpURLConnection.setRequestMethod("GET");
                     httpURLConnection.setRequestProperty("Range",
@@ -160,6 +213,7 @@ public class SoftwareUpdate extends Fragment {
                             this.publishProgress(this.downloadFileSizeCount);
                             if(this.isCancelled()) {
                                 downloadCancel = true;
+                                lock.release();
                                 break;
                             }
                         }
@@ -177,6 +231,7 @@ public class SoftwareUpdate extends Fragment {
                     if(false == downloadCancel) {
                         temporaryFile.renameTo(new File(FILE_LOCAL_PATH));
                         showFinalConfirmation();
+                        lock.release();
                     }
                 }
             }
@@ -195,11 +250,108 @@ public class SoftwareUpdate extends Fragment {
                 this.progressDialog.dismiss();
                 this.progressDialog = null;
             }
+            lock.release();
         }
 
         ProgressDialog progressDialog = null;
         Integer downloadFileSize = 0;
         Integer downloadFileSizeCount = 0;
+    }
+
+    private class AsyncDownloadTask2 extends AsyncTask <Integer, Integer, Integer> {
+        @Override
+        public Integer doInBackground(Integer...ARGS) {
+            getUpdateInfo();
+            return 0;
+        }
+
+        @Override
+        public void onPostExecute(Integer result) {
+            updateState();
+        }
+    }
+
+    private void getUpdateInfo() {
+        String uri = "http://jcrom.net/release/aosp/jcrom_update.xml";
+        HttpClient client = new DefaultHttpClient();
+        HttpGet get = new HttpGet();
+        try {
+            get.setURI(new URI(uri));
+            HttpResponse res = client.execute(get);
+            InputStream in = res.getEntity().getContent();
+            XmlPullParser parser = Xml.newPullParser();
+            parser.setInput(in, "UTF-8");
+            int eventType = parser.getEventType();
+            jcrom_version = "";
+            jcrom_link = "";
+            String version_name = getVersionName();
+            String link_name = getLinkName();
+            while(eventType != XmlPullParser.END_DOCUMENT) {
+                switch (eventType) {
+                case XmlPullParser.START_TAG:
+                    String tag = parser.getName();
+                    if (version_name.equals(tag)) {
+                        jcrom_version = parser.nextText();
+                    } else if (link_name.equals(tag)) {
+                    	jcrom_link = parser.nextText();
+                    }
+                    break;
+                }
+                if ( ! ("".equals(jcrom_version) || "".equals(jcrom_link))) {
+                    break;
+                }
+                eventType = parser.next();
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getVersionName() {
+        String model = Build.MODEL;
+        String version = null;
+        if(model.equals("Galaxy Nexus")) {
+            version = "gn_version";
+        } else if(model.equals("Nexus 7")) {
+            version = "n7_version";
+        } else if(model.equals("Nexus 4")) {
+            version = "n4_version";
+        } else if(model.equals("Nexus 10")) {
+            version = "n10_version";
+        } else if(model.equals("Nexus S")) {
+            version = "ns_version";
+        }
+        return version;
+    }
+
+    private String getLinkName() {
+        String model = Build.MODEL;
+        String link = null;
+        if(model.equals("Galaxy Nexus")) {
+            link = "gn_link";
+        } else if(model.equals("Nexus 7")) {
+            link = "n7_link";
+        } else if(model.equals("Nexus 4")) {
+            link = "n4_link";
+        } else if(model.equals("Nexus 10")) {
+            link = "n10_link";
+        } else if(model.equals("Nexus S")) {
+            link = "ns_link";
+        }
+        return link;
+    }
+
+    private void clearDownloadData() {
+        File deleteFile = new File(FILE_LOCAL_PATH);
+        deleteFile.delete();
+        deleteFile = new File(FILE_LOCAL_TMP_PATH);
+        deleteFile.delete();
     }
 }
 

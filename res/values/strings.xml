@@ -4495,6 +4495,13 @@
     <!-- Software Update -->
     <string name="software_update_title">JCROM Update</string>
     <string name="software_update_desc">"You can update to the latest version JCROM.\n\n<li>Please update after you charge the battery.</li>\n<li>After downloading the update data, JCROM is updated automatically.</li></string>
+    <string name="software_update_button_check">update check</string>
     <string name="software_update_button_text">Run the update</string>
     <string name="software_update_url">dummy</string>
+    <string name="jcrom_version_title">JCROM Version</string>
+    <string name="jcrom_current_version">JCROM CURRENT VERSION</string>
+    <string name="jcrom_latest_version">JCROM LATEST VERSION</string>
+    <string name="jcrom_not_update">This device is not support software update.</string>
+    <string name="jcrom_latest">Latest:</string>
+    <string name="jcrom_current">Current:</string>
 </resources>
