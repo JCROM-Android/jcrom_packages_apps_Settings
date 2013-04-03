@@ -4504,4 +4504,8 @@
     <string name="jcrom_latest">Latest:</string>
     <string name="jcrom_current">Current:</string>
     <string name="jcrom_theme_setting">JCROM Theme Selector</string>
+    <string name="theme_disabled_title">Warning</string>
+    <string name="theme_disabled_message">Going my way option is currently disabled. If you want to set theme, please enable it.</string>
+    <string name="theme_disabled_dialog_accept">Open Settings</string>
+    <string name="theme_disabled_dialog_decline">Cancel</string>
 </resources>

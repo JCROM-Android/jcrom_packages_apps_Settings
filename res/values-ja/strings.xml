@@ -1907,4 +1907,8 @@
     <string name="jcrom_not_update">アップデート機能をサポートしていない端末です。</string>
     <string name="jcrom_latest">最新:</string>
     <string name="jcrom_current">現在:</string>
+    <string name="theme_disabled_title">警告</string>
+    <string name="theme_disabled_message">"趣味に走る"設定が無効になっています。テーマを選択するには設定を有効にしてください。</string>
+    <string name="theme_disabled_dialog_accept">設定を開く</string>
+    <string name="theme_disabled_dialog_decline">キャンセル</string>
 </resources>
