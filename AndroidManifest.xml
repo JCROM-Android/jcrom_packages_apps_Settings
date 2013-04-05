@@ -1090,6 +1090,21 @@
                 android:resource="@id/development_settings" />
         </activity-alias>
 
+        <!-- JCROM Theme Selector Intent Entrypoint -->
+        <activity
+            android:name="ThemeSelectorIntentActivity"
+            android:label="@string/jcrom_theme_setting"
+            android:theme="@style/ThemeSelectorIntentActivityStyle"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="jcrom" />
+                <data android:host=""/>
+                <data android:pathPrefix="/set_theme"/>
+            </intent-filter>
+        </activity>
+
         <activity android:name=".AppPicker" android:label="@string/select_application"
                 android:theme="@android:style/Theme.Holo.Dialog" />
 
