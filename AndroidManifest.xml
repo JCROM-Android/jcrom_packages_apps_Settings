@@ -1103,6 +1103,11 @@
                 <data android:host=""/>
                 <data android:pathPrefix="/set_theme"/>
             </intent-filter>
+            <intent-filter android:priority="-101">
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="jcrom" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".AppPicker" android:label="@string/select_application"

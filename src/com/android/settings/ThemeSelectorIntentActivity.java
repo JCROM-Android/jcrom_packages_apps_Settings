@@ -31,7 +31,18 @@ public class ThemeSelectorIntentActivity extends Activity
 		if(SystemProperties.getBoolean(MY_HOBBY_PROPERTY, false)){
 
 			Intent intent = getIntent();
-			newTheme = intent.getStringExtra("jcrom.new.theme");
+			String[] strs = (getIntent().getData().toString()).split("\\+");
+			if((strs.length == 4) && (strs[1].equals("jcrom.new.theme"))) {
+				newTheme = strs[2];
+				if(strs[3].equals("true")) {
+					onButtonSelected(true);
+				} else {
+					onButtonSelected(false);
+				}
+				return;
+			} else {
+				newTheme = intent.getStringExtra("jcrom.new.theme");
+			}
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(R.string.set_theme_confirm_reboot);
@@ -74,9 +85,15 @@ public class ThemeSelectorIntentActivity extends Activity
 				mProgressDialog = null;
 
 				setResult(RESULT_OK);
+
+               Intent intent = new Intent();
+               intent.setClassName("com.android.launcher", "com.android.launcher2.Launcher");
+               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               startActivity(intent);
+
 				finish();
 			}
-	        }
+	    }
 	};
 
 	@Override
