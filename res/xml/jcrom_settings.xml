@@ -27,6 +27,11 @@
             android:summary="@string/lockscreen_rotate_summary"/>
 
         <CheckBoxPreference
+            android:key="hide_theme_images"
+            android:title="@string/hide_theme_images"
+            android:summary="@string/hide_theme_images_summary"/>
+
+        <CheckBoxPreference
             android:key="force_my_hobby"
             android:title="@string/force_my_hobby"
             android:summary="@string/force_my_hobby_summary"/>

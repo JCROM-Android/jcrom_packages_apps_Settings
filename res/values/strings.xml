@@ -4450,6 +4450,8 @@
     <string name="searchbar_setting_summary">Disable Searchbar of Homescreen</string>
     <string name="notification_setting">Bottom Notification</string>
     <string name="notification_setting_summary">Notification from the bottom position</string>
+    <string name="hide_theme_images">Hide JCROM theme images</string>
+    <string name="hide_theme_images_summary">Hide JCROM theme images from gallery app</string>
     <string name="notification_progress">Please wait...</string>
     <string name="jcrom_settings_category_system">JCROM System Settings</string>
     <string name="jcrom_settings_category_launcher">JCROM Launcher Settings</string>
