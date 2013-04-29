@@ -4389,6 +4389,7 @@
     <string name="select_ui_confirm_yes">Yes</string>
     <string name="select_ui_confirm_no">No</string>
     <string name="set_theme_confirm_reboot">After setting the theme, restart now?</string>
+    <string name="unset_theme_confirm_reboot">After resetting the theme, restart now?</string>
     <string name="set_theme_confirm_yes">Yes</string>
     <string name="set_theme_confirm_no">No</string>
     <string name="actionbar_bottom">Bottom ActionBar</string>

@@ -231,6 +231,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             mTheme.setSummary("");
             showProgress(R.string.progress_clear_theme);
             new ThemeManager(getActivity()).clearTheme(closeProgress);
+            confirmResetForUnetTheme();
         }
     }
 
@@ -439,4 +440,22 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         builder.setNegativeButton(R.string.set_theme_confirm_no, listener);
         builder.show();
     }
+
+    private void confirmResetForUnetTheme() {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                        PowerManager pm = (PowerManager)getActivity().getSystemService(Context.POWER_SERVICE);
+                    pm.reboot(null);
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.unset_theme_confirm_reboot);
+        builder.setPositiveButton(R.string.set_theme_confirm_yes, listener);
+        builder.setNegativeButton(R.string.set_theme_confirm_no, listener);
+        builder.show();
+    }
+
 }

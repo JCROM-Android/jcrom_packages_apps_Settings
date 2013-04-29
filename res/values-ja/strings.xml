@@ -1848,6 +1848,7 @@
     <string name="select_ui_confirm_yes">はい</string>
     <string name="select_ui_confirm_no">いいえ</string>
     <string name="set_theme_confirm_reboot">テーマ設定を全て反映させるには再起動が必要です。テーマ設定後すぐに再起動しますか？</string>
+    <string name="unset_theme_confirm_reboot">テーマ設定解除を全て反映させるには再起動が必要です。テーマ設定解除後すぐに再起動しますか？</string>
     <string name="set_theme_confirm_yes">はい</string>
     <string name="set_theme_confirm_no">いいえ</string>
     <string name="actionbar_bottom" msgid="6426383462520888743">ActionBar を下に</string>
