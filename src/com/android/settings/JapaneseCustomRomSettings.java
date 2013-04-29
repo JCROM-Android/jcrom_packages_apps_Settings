@@ -58,6 +58,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String NAVIKEY_ALPHA_KEY = "navikey_alpha";
     private static final String SEARCHBAR_KEY = "searchbar_setting";
     private static final String NOTIFICATION_KEY = "notification_setting";
+    private static final String HIDE_THEME_IMAGES = "hide_theme_images";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -77,6 +78,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mNavikeyAlpha;
     private CheckBoxPreference mDisableSearchbar;
     private CheckBoxPreference mNotification;
+    private CheckBoxPreference mHideThemeImages;
 
     private String mAndroidId;
 
@@ -106,6 +108,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mNavikeyAlpha = (CheckBoxPreference) findPreference(NAVIKEY_ALPHA_KEY);
         mDisableSearchbar = (CheckBoxPreference) findPreference(SEARCHBAR_KEY);
         mNotification = (CheckBoxPreference) findPreference(NOTIFICATION_KEY);
+        mHideThemeImages = (CheckBoxPreference) findPreference(HIDE_THEME_IMAGES);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -160,6 +163,32 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                         return true;
                     }
                 });
+
+        mHideThemeImages.setOnPreferenceChangeListener(
+            new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    CheckBoxPreference _cb = (CheckBoxPreference) findPreference(HIDE_THEME_IMAGES);
+
+                    String themeDir = Environment.getExternalStorageDirectory().toString() + "/mytheme/";
+                    File file = new File(themeDir + ".nomedia");
+
+                    try{
+                        if (_cb == preference && ((Boolean)newValue).booleanValue()) {
+                            file.createNewFile();
+                        } else if (_cb == preference && !((Boolean)newValue).booleanValue()) {
+                            file.delete();
+                        }
+                        confirmReset();
+                    } catch(Exception e) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        );
+
     }
 
     @Override
@@ -202,6 +231,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             mTheme.setSummary("");
             showProgress(R.string.progress_clear_theme);
             new ThemeManager(getActivity()).clearTheme(closeProgress);
+            confirmResetForUnetTheme();
         }
     }
 
@@ -410,4 +440,22 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         builder.setNegativeButton(R.string.set_theme_confirm_no, listener);
         builder.show();
     }
+
+    private void confirmResetForUnetTheme() {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                        PowerManager pm = (PowerManager)getActivity().getSystemService(Context.POWER_SERVICE);
+                    pm.reboot(null);
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.unset_theme_confirm_reboot);
+        builder.setPositiveButton(R.string.set_theme_confirm_yes, listener);
+        builder.setNegativeButton(R.string.set_theme_confirm_no, listener);
+        builder.show();
+    }
+
 }

@@ -1848,6 +1848,7 @@
     <string name="select_ui_confirm_yes">はい</string>
     <string name="select_ui_confirm_no">いいえ</string>
     <string name="set_theme_confirm_reboot">テーマ設定を全て反映させるには再起動が必要です。テーマ設定後すぐに再起動しますか？</string>
+    <string name="unset_theme_confirm_reboot">テーマ設定解除を全て反映させるには再起動が必要です。テーマ設定解除後すぐに再起動しますか？</string>
     <string name="set_theme_confirm_yes">はい</string>
     <string name="set_theme_confirm_no">いいえ</string>
     <string name="actionbar_bottom" msgid="6426383462520888743">ActionBar を下に</string>
@@ -1856,6 +1857,8 @@
     <string name="force_my_font_summary" msgid="9642000962902609986">"強制的にフォントを変更する"</string>
     <string name="notification_setting">Notification を下に</string>
     <string name="notification_setting_summary">Notification を下に配置する</string>
+    <string name="hide_theme_images">テーマ画像を表示しない</string>
+    <string name="hide_theme_images_summary">ギャラリーアプリなどでJCROMテーマ用の画像を非表示にする</string>
     <string name="notification_progress">再構築中...</string>
     <string name="force_my_hobby" msgid="7426383462520888752">"趣味に走る"</string>
     <string name="force_my_hobby_summary" msgid="9642000962902609996">"テーマ選択を有効にします"</string>
