@@ -229,8 +229,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         if (!(mForceMyHobby.isChecked())) {
             SystemProperties.set(MY_THEME_PROPERTY, "");
             mTheme.setSummary("");
-            showProgress(R.string.progress_clear_theme);
-            new ThemeManager(getActivity()).clearTheme(closeProgress);
             confirmResetForUnetTheme();
         }
     }
@@ -444,10 +442,12 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private void confirmResetForUnetTheme() {
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                boolean performReset = false;
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                        PowerManager pm = (PowerManager)getActivity().getSystemService(Context.POWER_SERVICE);
-                    pm.reboot(null);
+                    performReset = true;
                 }
+                showProgress(R.string.progress_clear_theme);
+                new ThemeManager(getActivity()).clearTheme(closeProgress, performReset);
             }
         };
 

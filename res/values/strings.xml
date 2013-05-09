@@ -4396,8 +4396,8 @@
     <string name="actionbar_bottom_summary">ActionBar put on bottom</string>
     <string name="force_my_font">Change My Font</string>
     <string name="force_my_font_summary">Use My Font</string>
-    <string name="force_my_hobby">Going My Way</string>
-    <string name="force_my_hobby_summary">Going My Way</string>
+    <string name="force_my_hobby">Enabling theme selection</string>
+    <string name="force_my_hobby_summary">Enabling theme selection</string>
     <string name="force_fixed_wallpaper">Fix Wallpaper</string>
     <string name="force_fixed_wallpaper_summary">Use Fixed Wallpaper(1280x720)</string>
     <string name="force_my_android_id">ANDROID_ID</string>
@@ -4508,7 +4508,7 @@
     <string name="jcrom_current">Current:</string>
     <string name="jcrom_theme_setting">JCROM Theme Selector</string>
     <string name="theme_disabled_title">Warning</string>
-    <string name="theme_disabled_message">Going my way option is currently disabled. If you want to set theme, please enable it.</string>
+    <string name="theme_disabled_message">Theme selection is currently disabled. If you want to set theme, please enable it.</string>
     <string name="theme_disabled_dialog_accept">Open Settings</string>
     <string name="theme_disabled_dialog_decline">Cancel</string>
 </resources>

@@ -181,9 +181,31 @@ public class ThemeManager {
         }).start();
     }
 
-    public void clearTheme(final Runnable afterProc) {
+    public void clearTheme(final Runnable afterProc, final boolean performReset) {
         setDefaultSounds();
         themeAllClear();
+
+        if (performReset == true) {
+            try {
+                mWallpaperManager.clear();
+            } catch (IOException e) {
+            }
+            PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+            pm.reboot(null);
+        } else {
+            restartSystemUI(new Runnable() {
+                public void run() {
+                    try {
+                        mWallpaperManager.clear();
+                    } catch (IOException e) {
+                    }
+                    if (afterProc != null) {
+                        afterProc.run();
+                    }
+                }
+            });
+        }
+
 
         restartSystemUI(new Runnable() {
             public void run() {

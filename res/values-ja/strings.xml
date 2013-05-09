@@ -1860,7 +1860,7 @@
     <string name="hide_theme_images">テーマ画像を表示しない</string>
     <string name="hide_theme_images_summary">ギャラリーアプリなどでJCROMテーマ用の画像を非表示にする</string>
     <string name="notification_progress">再構築中...</string>
-    <string name="force_my_hobby" msgid="7426383462520888752">"趣味に走る"</string>
+    <string name="force_my_hobby" msgid="7426383462520888752">"テーマ選択を有効にする"</string>
     <string name="force_my_hobby_summary" msgid="9642000962902609996">"テーマ選択を有効にします"</string>
     <string name="theme_setting" msgid="7426383462520988752">"テーマ選択"</string>
     <string name="theme_setting_summary" msgid="9642000962902709996">"何も選択されてません"</string>
@@ -1911,7 +1911,7 @@
     <string name="jcrom_latest">最新:</string>
     <string name="jcrom_current">現在:</string>
     <string name="theme_disabled_title">警告</string>
-    <string name="theme_disabled_message">"趣味に走る"設定が無効になっています。テーマを選択するには設定を有効にしてください。</string>
+    <string name="theme_disabled_message">テーマ選択が無効になっています。テーマを選択するには設定を有効にしてください。</string>
     <string name="theme_disabled_dialog_accept">設定を開く</string>
     <string name="theme_disabled_dialog_decline">キャンセル</string>
 </resources>
