@@ -9,13 +9,15 @@ import android.content.Intent;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.SystemProperties;
-
+import com.android.internal.view.RotationPolicy;
 
 public class ThemeSelectorIntentActivity extends Activity
 	implements DialogInterface.OnClickListener, DialogInterface.OnCancelListener{
 
 	private static final String MY_THEME_PROPERTY = "persist.sys.theme";
 	private static final String MY_HOBBY_PROPERTY = "persist.sys.force.hobby";
+	private static final String FORCE_ROTATION_LOCK = "persist.sys.force.lock";
+	private static final int JC_LIMIT = (15 * 1000);
 
 	private Activity mActivity = this;
 	private ProgressDialog mProgressDialog;
@@ -85,6 +87,7 @@ public class ThemeSelectorIntentActivity extends Activity
 				mProgressDialog = null;
 
 				setResult(RESULT_OK);
+                revertRotationLock();
 
                Intent intent = new Intent();
                intent.setClassName("com.android.launcher", "com.android.launcher2.Launcher");
@@ -130,9 +133,23 @@ public class ThemeSelectorIntentActivity extends Activity
 
 	private void onButtonSelected(boolean performReset){
 
+		boolean rotationLock = RotationPolicy.isRotationLocked(mActivity);
+
+		if(rotationLock) {
+			SystemProperties.set(FORCE_ROTATION_LOCK, "true");
+		}else {
+			SystemProperties.set(FORCE_ROTATION_LOCK, "false");
+		}
+
+        RotationPolicy.setRotationLock(mActivity, true);
+
 		showProgress(R.string.progress_set_theme);
 
 		SystemProperties.set(MY_THEME_PROPERTY, newTheme);
+
+        ThemeSetTimeout themeTimeout = new ThemeSetTimeout();
+        themeTimeout.setTimeout(mActivity, JC_LIMIT);
+
 		new ThemeManager(mActivity).setTheme(newTheme, closeProgress, performReset);
 	}
 
@@ -140,5 +157,15 @@ public class ThemeSelectorIntentActivity extends Activity
 	public void onCancel(DialogInterface dialog){
 		setResult(RESULT_CANCELED);
 		finish();
+	}
+
+	private void revertRotationLock() {
+		String rotationLock = SystemProperties.get(FORCE_ROTATION_LOCK, "none");
+		if(rotationLock.equals("true")) {
+			RotationPolicy.setRotationLock(mActivity, true);
+		}else if(rotationLock.equals("false")) {
+			RotationPolicy.setRotationLock(mActivity, false);
+		}
+		SystemProperties.set(FORCE_ROTATION_LOCK, "none");
 	}
 }
