@@ -272,7 +272,7 @@ public class SoftwareUpdate extends Fragment {
     }
 
     private void getUpdateInfo() {
-        String uri = "http://jcrom.net/release/aosp/jcrom_update.xml";
+        String uri = "http://jcrom.net/release/aosp/jcrom_jb4.3_update.xml";
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet();
         try {
