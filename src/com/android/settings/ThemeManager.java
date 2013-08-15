@@ -45,6 +45,9 @@ import java.io.BufferedInputStream;
 import android.graphics.drawable.NinePatchDrawable;
 import android.graphics.NinePatch;
 
+import java.util.Properties;
+import java.util.HashMap;
+
 
 public class ThemeManager {
 
@@ -66,7 +69,23 @@ public class ThemeManager {
             "wallpaper",
             "font",
             "flickwnn",
+            "settings",
     };
+
+    private static final String sJcromSettings[] = {
+        "persist.sys.actionbar.bottom",
+        "persist.sys.notification",
+        "persist.sys.lockscreen.rotate",
+        "persist.sys.fixed.wallpaper",
+        "persist.sys.num.homescreen",
+        "persist.sys.launcher.landscape",
+        "persist.sys.prop.gradient",
+        "persist.sys.alpha.navikey",
+        "persist.sys.prop.searchbar",
+    };
+
+    public static final String THEME_DIRECTORY = "/theme/settings/";
+    public static final String CONFIGURATION_FILE = "jcrom_settings.conf";
 
     private Context mContext;
     private ContentResolver mContentResolver;
@@ -74,6 +93,8 @@ public class ThemeManager {
     private WindowManager mWindowManager;
     private Handler mHandler;
     private static final String TAG = "ThemeManager";
+
+    private HashMap<String,String> mSettingsList = new HashMap<String,String>();
 
     public ThemeManager(Activity activity) {
         mContext = activity;
@@ -161,6 +182,7 @@ public class ThemeManager {
                 }
                 setDefaultSounds();
                 setMySounds();
+                loadMySettings();
                 setFlickWnnTheme();
 
                 if (performReset == true) {
@@ -272,6 +294,31 @@ public class ThemeManager {
             setDataBase(Settings.Global.CAR_UNDOCK_SOUND, "UnCarDock.ogg");
             setDataBase(Settings.Global.LOCK_SOUND, "Lock.ogg");
             setDataBase(Settings.Global.UNLOCK_SOUND, "unLock.ogg");
+        }
+    }
+
+    private void loadMySettings() {
+        String forceHobby = SystemProperties.get("persist.sys.force.hobby");
+        if (forceHobby.equals("true")) {
+            String mFilePath = Environment.getDataDirectory() + THEME_DIRECTORY + CONFIGURATION_FILE;
+            if (null != mFilePath) {
+                for (String settings : sJcromSettings) {
+                    String param = loadConf(mFilePath, settings);
+                    if(null != param) {
+                        SystemProperties.set(settings, param);
+                    }
+                }
+            }
+        }
+    }
+
+    private String loadConf(String filePath, String propertyName) {
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileInputStream(filePath));
+            return prop.getProperty(propertyName);
+        } catch (IOException e) {
+            return null;
         }
     }
 
