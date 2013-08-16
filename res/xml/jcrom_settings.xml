@@ -4,13 +4,6 @@
         android:title="@string/jcrom_settings">
 
     <PreferenceCategory android:title="@string/jcrom_settings_category_system" >
-        <ListPreference
-            android:key="select_ui"
-            android:title="@string/select_ui_title"
-            android:persistent="false"
-            android:entries="@array/select_ui_entries"
-            android:entryValues="@array/select_ui_values" />
-
         <CheckBoxPreference
             android:key="actionbar_bottom"
             android:title="@string/actionbar_bottom"
@@ -81,6 +74,13 @@
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/jcrom_settings_category_development" >
+
+        <ListPreference
+            android:key="select_ui"
+            android:title="@string/select_ui_title"
+            android:persistent="false"
+            android:entries="@array/select_ui_entries"
+            android:entryValues="@array/select_ui_values" />
 
         <PreferenceScreen
           android:key="force_my_android_id"
