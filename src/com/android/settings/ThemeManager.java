@@ -4,6 +4,7 @@ package com.android.settings;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.WallpaperManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -409,7 +410,32 @@ public class ThemeManager {
         });
     }
 
+    private void setLiveWallpaper() {
+        try {
+            mWallpaperManager.getIWallpaperManager().setWallpaperComponent(ComponentName.unflattenFromString("net.jcrom.jcwallpaper/.JCWallpaperService"));
+        } catch (Exception e) {
+        }
+    }
+
+    private boolean checkFile(String fileName) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(Environment.getDataDirectory().toString() + "/theme/wallpaper/");
+        builder.append(File.separator);
+        builder.append(fileName);
+        String filePath = builder.toString();
+        File file = new File(filePath);
+        return file.exists();
+    }
+
     private void applyTheme() {
+        if(checkFile("home_wallpaper_port.png") && checkFile("home_wallpaper_land.png")) {
+            setLiveWallpaper();
+        } else {
+            setWallpaper();
+        }
+    }
+
+    private void setWallpaper() {
         Bitmap bitmapWallpaper;
         String MY_FRAME_FILE = "home_wallpaper.png";
         StringBuilder builder = new StringBuilder();
