@@ -314,35 +314,39 @@ public class SoftwareUpdate extends Fragment {
     }
 
     private String getVersionName() {
-        String model = Build.MODEL;
+        String model = Build.PRODUCT;
         String version = null;
-        if(model.equals("Galaxy Nexus")) {
+        if(model.equals("yakju")) {
             version = "gn_version";
-        } else if(model.equals("Nexus 7")) {
+        } else if(model.equals("nakasi")) {
             version = "n7_version";
-        } else if(model.equals("Nexus 4")) {
+        } else if(model.equals("occam")) {
             version = "n4_version";
-        } else if(model.equals("Nexus 10")) {
+        } else if(model.equals("mantaray")) {
             version = "n10_version";
-        } else if(model.equals("Nexus S")) {
+        } else if(model.equals("soju")) {
             version = "ns_version";
+        } else if(model.equals("razor")) {
+            version = "n72_version";
         }
         return version;
     }
 
     private String getLinkName() {
-        String model = Build.MODEL;
+        String model = Build.PRODUCT;
         String link = null;
-        if(model.equals("Galaxy Nexus")) {
+        if(model.equals("yakju")) {
             link = "gn_link";
-        } else if(model.equals("Nexus 7")) {
+        } else if(model.equals("nakasi")) {
             link = "n7_link";
-        } else if(model.equals("Nexus 4")) {
+        } else if(model.equals("occam")) {
             link = "n4_link";
-        } else if(model.equals("Nexus 10")) {
+        } else if(model.equals("mantaray")) {
             link = "n10_link";
-        } else if(model.equals("Nexus S")) {
+        } else if(model.equals("soju")) {
             link = "ns_link";
+        } else if(model.equals("razor")) {
+            link = "n72_link";
         }
         return link;
     }
