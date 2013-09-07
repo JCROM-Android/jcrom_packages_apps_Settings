@@ -73,6 +73,21 @@
             android:requiredForAllUsers="true"
             android:supportsRtl="true">
 
+        <receiver
+            android:name="ThemeInstallReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.JcromThemeInstall" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
         <!-- Settings -->
 
         <activity android:name="Settings"

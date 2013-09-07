@@ -22,9 +22,11 @@ import android.view.WindowManager;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.BufferedReader;
 import java.nio.channels.FileChannel;
 
 import java.util.zip.ZipInputStream;
@@ -94,6 +96,7 @@ public class ThemeManager {
     private WindowManager mWindowManager;
     private Handler mHandler;
     private static final String TAG = "ThemeManager";
+    private static int wait_time = 7500; /* ms */
 
     private HashMap<String,String> mSettingsList = new HashMap<String,String>();
 
@@ -161,7 +164,6 @@ public class ThemeManager {
                     out.flush();
                     out.close();
                     file.setReadable(true, false);
-                    Log.d("File","name:" + file.toString() + " size:" + file.length() + " writeSize:" + writeSize );
                 }
             }
         } catch (IOException e) {
@@ -169,17 +171,74 @@ public class ThemeManager {
         }
     }
 
+    private String getTheme(final String themeName) {
+        String compPath = Environment.getExternalStorageDirectory().toString() + "/.mytheme/" + themeName + "/complete";
+        String packPath = Environment.getExternalStorageDirectory().toString() + "/.mytheme/" + themeName + "/package";
+        String packageName = null;
+
+        File tmp = null;
+        tmp = new File(compPath);
+        if((null != tmp) && (tmp.exists())) {
+            tmp.delete();
+        }
+        tmp = new File(packPath);
+        if((null != tmp) && (tmp.exists())) {
+            packageName = infoReader(tmp);
+        }
+        if(null == packageName) {
+            return null;
+        }
+
+        Intent intent = new Intent();
+        intent.setClassName(packageName, packageName + ".JcromThemeManager");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+
+        while(true) {
+            File infoFile = new File(compPath);
+            if((null != infoFile) && (infoFile.exists())) {
+                infoFile.delete();
+                break;
+            } else {
+                infoFile = null;
+                try {
+                    Thread.sleep(100);
+                } catch(Exception e) {
+                }
+            }
+        }
+
+        String themePath = Environment.getExternalStorageDirectory().toString() + "/.mytheme/" + themeName + "/" + themeName + ".zip";
+        tmp = new File(themePath);
+        if((null != tmp) && (tmp.exists())) {
+        } else {
+            themePath = null;
+        }
+        tmp = null;
+
+        String property_name = "persist.sys." + packageName.substring(16);
+        SystemProperties.set(property_name, themeName);
+
+        return themePath;
+    }
+
     public void setTheme(final String themeName, final Runnable afterProc, final boolean performReset) {
         new Thread(new Runnable() {
             public void run() {
                 themeAllClear();
                 setDefaultCameraSounds();
-
-                File file = new File(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
-                if (file.exists()) {
-                	themeZipInstall(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
-                }else {
-                    themeAllInstall();
+                String themePath = getTheme(themeName);
+                if(null != themePath) {
+                    themeZipInstall(themePath);
+                    File file = new File(themePath);
+                    file.delete();
+                } else {
+                    File file = new File(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
+                    if (file.exists()) {
+                    	themeZipInstall(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
+                    }else {
+                        themeAllInstall();
+                    }
                 }
                 setDefaultSounds();
                 setMySounds();
@@ -405,7 +464,7 @@ public class ThemeManager {
                     e.printStackTrace();
                 }
 
-                mHandler.postDelayed(postproc, 7500/* ms */);
+                mHandler.postDelayed(postproc, wait_time);
             }
         });
     }
@@ -646,4 +705,26 @@ public class ThemeManager {
             }
         }
     }
+
+    private String infoReader(File readFile){
+        
+        String oString = null;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(readFile));
+            
+            StringBuilder oBuilder = new StringBuilder();
+            String tmpStr;
+
+            while((tmpStr = br.readLine()) != null){
+                    oBuilder.append(tmpStr);
+            }
+            oString = new String(oBuilder);
+            
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+        
+        return oString;
+    }
+
 }
