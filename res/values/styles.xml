@@ -209,4 +209,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <style name="ThemeClearIntentActivityStyle" parent="android:Theme.Holo.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

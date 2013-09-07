@@ -89,10 +89,10 @@ public class ThemeSelectorIntentActivity extends Activity
 				setResult(RESULT_OK);
                 revertRotationLock();
 
-               Intent intent = new Intent();
-               intent.setClassName("com.android.launcher", "com.android.launcher2.Launcher");
-               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-               startActivity(intent);
+                Intent intent = new Intent();
+                intent.setClassName("com.android.launcher", "com.android.launcher2.Launcher");
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
 
 				finish();
 			}

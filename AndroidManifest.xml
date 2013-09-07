@@ -1153,6 +1153,20 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="ThemeClearIntentActivity"
+            android:label="@string/jcrom_theme_setting"
+            android:theme="@style/ThemeClearIntentActivityStyle"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="jcrom" />
+                <data android:host=""/>
+                <data android:pathPrefix="/clear_theme"/>
+            </intent-filter>
+        </activity>
+
         <activity android:name=".AppPicker" android:label="@string/select_application"
                 android:theme="@android:style/Theme.Holo.Dialog" />
 

@@ -40,7 +40,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_WALLPAPER_PROPERTY = "persist.sys.fixed.wallpaper";
     private static final String MY_HOMESCREEN_PROPERTY = "persist.sys.num.homescreen";
     private static final String MY_GRADIENT_PROPERTY = "persist.sys.prop.gradient";
-    // packages/apps/Launcher2/src/com/android/launcher2/Launcher.java FORCE_ENABLE_ROTATION_PROPERTY
     private static final String LAUNCHER_LANDSCAPE_PROPERTY = "persist.sys.launcher.landscape";
     private static final String LOCKSCREEN_ROTATE_PROPERTY = "persist.sys.lockscreen.rotate";
     private static final String NAVIKEY_ALPHA_PROPERTY = "persist.sys.alpha.navikey";
@@ -216,6 +215,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         updateNavikeyAlpha();
         updateDisableSearchbar();
         updateNumHomescreen();
+        updateForceMyHobby();
     }
 
     private void updateActionBarBottomOptions() {
@@ -244,6 +244,16 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     }
     private void updateNumHomescreen() {
         mNumHomescreen.setValueIndex(getNumHomescreen());
+    }
+    private void updateForceMyHobby() {
+        mForceMyHobby.setChecked(SystemProperties.getBoolean(MY_HOBBY_PROPERTY, false));
+        if (SystemProperties.get(MY_THEME_PROPERTY) != null) {
+            if (SystemProperties.get(MY_THEME_PROPERTY) != "") {
+                mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
+            } else {
+                mTheme.setSummary("");
+            }
+        }
     }
 
     private int getNumHomescreen() {
