@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemProperties;
@@ -20,6 +21,9 @@ import android.provider.Settings;
 import android.widget.EditText;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.Display;
+import android.view.WindowManager;
+import android.util.DisplayMetrics;
 
 import java.io.File;
 import java.security.SecureRandom;
@@ -36,12 +40,12 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_WALLPAPER_PROPERTY = "persist.sys.fixed.wallpaper";
     private static final String MY_HOMESCREEN_PROPERTY = "persist.sys.num.homescreen";
     private static final String MY_GRADIENT_PROPERTY = "persist.sys.prop.gradient";
-    // packages/apps/Launcher2/src/com/android/launcher2/Launcher.java FORCE_ENABLE_ROTATION_PROPERTY
     private static final String LAUNCHER_LANDSCAPE_PROPERTY = "persist.sys.launcher.landscape";
     private static final String LOCKSCREEN_ROTATE_PROPERTY = "persist.sys.lockscreen.rotate";
     private static final String NAVIKEY_ALPHA_PROPERTY = "persist.sys.alpha.navikey";
     private static final String MY_SEARCHBAR_PROPERTY = "persist.sys.prop.searchbar";
     private static final String MY_NOTIFICATION_PROPERTY = "persist.sys.notification";
+    private static final String SELECT_DENSITY_PROPERTY = "persist.sys.ui.density";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -198,16 +202,147 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         closeProgress.run();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        updateActionBarBottomOptions();
+        updateNotificationOptions();
+        updateLockscreenRotate();
+        updateFixedWallpaper();
+        updateLauncherLandscape();
+        updateGradientStat();
+        updateNavikeyAlpha();
+        updateDisableSearchbar();
+        updateNumHomescreen();
+        updateForceMyHobby();
+    }
+
+    private void updateActionBarBottomOptions() {
+        mActionBarBottom.setChecked(SystemProperties.getBoolean(ACTIONBAR_BOTTOM_PROPERTY, false));
+    }
+    private void updateNotificationOptions() {
+        mNotification.setChecked(SystemProperties.getBoolean(MY_NOTIFICATION_PROPERTY, false));
+    }
+    private void updateLockscreenRotate() {
+        mLockscreenRotate.setChecked(SystemProperties.getBoolean(LOCKSCREEN_ROTATE_PROPERTY, false));
+    }
+    private void updateFixedWallpaper() {
+        mFixedWallpaper.setChecked(SystemProperties.getBoolean(MY_WALLPAPER_PROPERTY, false));
+    }
+    private void updateLauncherLandscape() {
+        mLauncherLandscape.setChecked(SystemProperties.getBoolean(LAUNCHER_LANDSCAPE_PROPERTY, false));
+    }
+    private void updateGradientStat() {
+        mGradientStat.setChecked(SystemProperties.getBoolean(MY_GRADIENT_PROPERTY, false));
+    }
+    private void updateNavikeyAlpha() {
+        mNavikeyAlpha.setChecked(SystemProperties.getBoolean(NAVIKEY_ALPHA_PROPERTY, false));
+    }
+    private void updateDisableSearchbar() {
+        mDisableSearchbar.setChecked(SystemProperties.getBoolean(MY_SEARCHBAR_PROPERTY, false));
+    }
+    private void updateNumHomescreen() {
+        mNumHomescreen.setValueIndex(getNumHomescreen());
+    }
+    private void updateForceMyHobby() {
+        mForceMyHobby.setChecked(SystemProperties.getBoolean(MY_HOBBY_PROPERTY, false));
+        if (SystemProperties.get(MY_THEME_PROPERTY) != null) {
+            if (SystemProperties.get(MY_THEME_PROPERTY) != "") {
+                mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
+            } else {
+                mTheme.setSummary("");
+            }
+        }
+    }
+
+    private int getNumHomescreen() {
+        int num = 2;
+        String sNum = SystemProperties.get(MY_HOMESCREEN_PROPERTY, "5");
+        int iNum = Integer.parseInt(sNum);
+        switch(iNum) {
+            case 1:
+                num = 0;
+                break;
+            case 3:
+                num = 1;
+                break;
+            case 5:
+                num = 2;
+                break;
+            case 7:
+                num = 3;
+                break;
+            default:
+                num = 2;
+                break;
+        }
+        return num;
+    }
+
+    private int defaultUi() {
+        int dispSize = 0;
+        int density = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
+        int default_mode = 0;
+        Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        if (d.getHeight() < d.getWidth()) {
+            dispSize = d.getHeight();
+        } else {
+            dispSize = d.getWidth();
+        }
+        int shortSizeDp = (dispSize * DisplayMetrics.DENSITY_DEFAULT) / density;
+        if (shortSizeDp < 600) {
+            default_mode = 0;
+        } else if (shortSizeDp < 720) {
+            default_mode = 1;
+        } else {
+            default_mode = 2;
+        }
+        return default_mode;
+    }
+
+    private void setUiMode(String select_ui) {
+        int select = Integer.parseInt(select_ui);
+        int default_mode = defaultUi();
+        int density = DisplayMetrics.DENSITY_DEFAULT;
+        int dispSize = 0;
+
+        Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        if (d.getHeight() < d.getWidth()) {
+            dispSize = d.getHeight();
+        } else {
+            dispSize = d.getWidth();
+        }
+
+        if (select == default_mode) {
+            density = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
+        } else if (select == 0) {
+            int checkDensity = (dispSize * 160) / 320;
+            if(checkDensity < 600) {
+                density = 320;
+            } else {
+                density = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
+            }
+        } else if (select == 1) {
+            density = (dispSize * 160 ) / 600;
+        } else if (select == 2) {
+            density = (dispSize * 160 ) / 720;
+        } else {
+            density = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
+        }
+
+        SystemProperties.set(SELECT_DENSITY_PROPERTY, String.valueOf(density));
+    }
+
     private void selectUi() {
         int select = SystemProperties.getInt(SELECT_UI_PROPERTY, -1);
         if(select != -1) {
             mSelectUi.setValueIndex(select);
             mSelectUi.setSummary(mSelectUi.getEntries()[select]);
+        } else {
+            mSelectUi.setValueIndex(defaultUi());
+            mSelectUi.setSummary(mSelectUi.getEntries()[defaultUi()]);
         }
-    }
-
-    private void updateNotificationOptions() {
-        mNotification.setChecked(SystemProperties.getBoolean(MY_NOTIFICATION_PROPERTY, false));
     }
 
     private void writeNotificationOptions() {
@@ -245,10 +380,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             }
 
         }
-    }
-
-    private void updateMyWallpaperOptions() {
-        mFixedWallpaper.setChecked(SystemProperties.getBoolean(MY_WALLPAPER_PROPERTY, false));
     }
 
     private void writeMyWallpaperOptions() {
@@ -385,6 +516,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         if (preference == mSelectUi) {
             SystemProperties.set(SELECT_UI_PROPERTY, newValue.toString());
             selectUi();
+            setUiMode(newValue.toString());
             confirmReset();
             return true;
         }

@@ -17,7 +17,7 @@ public class ThemeSelectorIntentActivity extends Activity
 	private static final String MY_THEME_PROPERTY = "persist.sys.theme";
 	private static final String MY_HOBBY_PROPERTY = "persist.sys.force.hobby";
 	private static final String FORCE_ROTATION_LOCK = "persist.sys.force.lock";
-	private static final int JC_LIMIT = (15 * 1000);
+	private static final int JC_LIMIT = (39 * 1000);
 
 	private Activity mActivity = this;
 	private ProgressDialog mProgressDialog;
@@ -89,10 +89,10 @@ public class ThemeSelectorIntentActivity extends Activity
 				setResult(RESULT_OK);
                 revertRotationLock();
 
-               Intent intent = new Intent();
-               intent.setClassName("com.android.launcher", "com.android.launcher2.Launcher");
-               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-               startActivity(intent);
+                Intent intent = new Intent();
+                intent.setClassName("com.android.launcher", "com.android.launcher2.Launcher");
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
 
 				finish();
 			}

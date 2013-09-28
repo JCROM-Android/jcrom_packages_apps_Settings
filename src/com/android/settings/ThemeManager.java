@@ -4,6 +4,7 @@ package com.android.settings;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.WallpaperManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,9 +22,11 @@ import android.view.WindowManager;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.BufferedReader;
 import java.nio.channels.FileChannel;
 
 import java.util.zip.ZipInputStream;
@@ -44,6 +47,9 @@ import java.io.OutputStream;
 import java.io.BufferedInputStream;
 import android.graphics.drawable.NinePatchDrawable;
 import android.graphics.NinePatch;
+
+import java.util.Properties;
+import java.util.HashMap;
 
 
 public class ThemeManager {
@@ -66,7 +72,23 @@ public class ThemeManager {
             "wallpaper",
             "font",
             "flickwnn",
+            "settings",
     };
+
+    private static final String sJcromSettings[] = {
+        "persist.sys.actionbar.bottom",
+        "persist.sys.notification",
+        "persist.sys.lockscreen.rotate",
+        "persist.sys.fixed.wallpaper",
+        "persist.sys.num.homescreen",
+        "persist.sys.launcher.landscape",
+        "persist.sys.prop.gradient",
+        "persist.sys.alpha.navikey",
+        "persist.sys.prop.searchbar",
+    };
+
+    public static final String THEME_DIRECTORY = "/theme/settings/";
+    public static final String CONFIGURATION_FILE = "jcrom_settings.conf";
 
     private Context mContext;
     private ContentResolver mContentResolver;
@@ -74,6 +96,9 @@ public class ThemeManager {
     private WindowManager mWindowManager;
     private Handler mHandler;
     private static final String TAG = "ThemeManager";
+    private static int wait_time = 7500; /* ms */
+
+    private HashMap<String,String> mSettingsList = new HashMap<String,String>();
 
     public ThemeManager(Activity activity) {
         mContext = activity;
@@ -139,7 +164,6 @@ public class ThemeManager {
                     out.flush();
                     out.close();
                     file.setReadable(true, false);
-                    Log.d("File","name:" + file.toString() + " size:" + file.length() + " writeSize:" + writeSize );
                 }
             }
         } catch (IOException e) {
@@ -147,20 +171,78 @@ public class ThemeManager {
         }
     }
 
+    private String getTheme(final String themeName) {
+        String compPath = Environment.getExternalStorageDirectory().toString() + "/.mytheme/" + themeName + "/complete";
+        String packPath = Environment.getExternalStorageDirectory().toString() + "/.mytheme/" + themeName + "/package";
+        String packageName = null;
+
+        File tmp = null;
+        tmp = new File(compPath);
+        if((null != tmp) && (tmp.exists())) {
+            tmp.delete();
+        }
+        tmp = new File(packPath);
+        if((null != tmp) && (tmp.exists())) {
+            packageName = infoReader(tmp);
+        }
+        if(null == packageName) {
+            return null;
+        }
+
+        Intent intent = new Intent();
+        intent.setClassName(packageName, packageName + ".JcromThemeManager");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+
+        while(true) {
+            File infoFile = new File(compPath);
+            if((null != infoFile) && (infoFile.exists())) {
+                infoFile.delete();
+                break;
+            } else {
+                infoFile = null;
+                try {
+                    Thread.sleep(100);
+                } catch(Exception e) {
+                }
+            }
+        }
+
+        String themePath = Environment.getExternalStorageDirectory().toString() + "/.mytheme/" + themeName + "/" + themeName + ".zip";
+        tmp = new File(themePath);
+        if((null != tmp) && (tmp.exists())) {
+        } else {
+            themePath = null;
+        }
+        tmp = null;
+
+        String property_name = "persist.sys." + packageName.substring(16);
+        SystemProperties.set(property_name, themeName);
+
+        return themePath;
+    }
+
     public void setTheme(final String themeName, final Runnable afterProc, final boolean performReset) {
         new Thread(new Runnable() {
             public void run() {
                 themeAllClear();
                 setDefaultCameraSounds();
-
-                File file = new File(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
-                if (file.exists()) {
-                	themeZipInstall(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
-                }else {
-                    themeAllInstall();
+                String themePath = getTheme(themeName);
+                if(null != themePath) {
+                    themeZipInstall(themePath);
+                    File file = new File(themePath);
+                    file.delete();
+                } else {
+                    File file = new File(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
+                    if (file.exists()) {
+                    	themeZipInstall(Environment.getExternalStorageDirectory().toString() + "/mytheme/" + themeName + ".zip");
+                    }else {
+                        themeAllInstall();
+                    }
                 }
                 setDefaultSounds();
                 setMySounds();
+                loadMySettings();
                 setFlickWnnTheme();
 
                 if (performReset == true) {
@@ -275,6 +357,31 @@ public class ThemeManager {
         }
     }
 
+    private void loadMySettings() {
+        String forceHobby = SystemProperties.get("persist.sys.force.hobby");
+        if (forceHobby.equals("true")) {
+            String mFilePath = Environment.getDataDirectory() + THEME_DIRECTORY + CONFIGURATION_FILE;
+            if (null != mFilePath) {
+                for (String settings : sJcromSettings) {
+                    String param = loadConf(mFilePath, settings);
+                    if(null != param) {
+                        SystemProperties.set(settings, param);
+                    }
+                }
+            }
+        }
+    }
+
+    private String loadConf(String filePath, String propertyName) {
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileInputStream(filePath));
+            return prop.getProperty(propertyName);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     public void themeCopy(File iDir, File oDir) {
         if (iDir.isDirectory()) {
             String[] children = iDir.list();
@@ -357,12 +464,37 @@ public class ThemeManager {
                     e.printStackTrace();
                 }
 
-                mHandler.postDelayed(postproc, 7500/* ms */);
+                mHandler.postDelayed(postproc, wait_time);
             }
         });
     }
 
+    private void setLiveWallpaper() {
+        try {
+            mWallpaperManager.getIWallpaperManager().setWallpaperComponent(ComponentName.unflattenFromString("net.jcrom.jcwallpaper/.JCWallpaperService"));
+        } catch (Exception e) {
+        }
+    }
+
+    private boolean checkFile(String fileName) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(Environment.getDataDirectory().toString() + "/theme/wallpaper/");
+        builder.append(File.separator);
+        builder.append(fileName);
+        String filePath = builder.toString();
+        File file = new File(filePath);
+        return file.exists();
+    }
+
     private void applyTheme() {
+        if(checkFile("home_wallpaper_port.png") && checkFile("home_wallpaper_land.png")) {
+            setLiveWallpaper();
+        } else {
+            setWallpaper();
+        }
+    }
+
+    private void setWallpaper() {
         Bitmap bitmapWallpaper;
         String MY_FRAME_FILE = "home_wallpaper.png";
         StringBuilder builder = new StringBuilder();
@@ -573,4 +705,26 @@ public class ThemeManager {
             }
         }
     }
+
+    private String infoReader(File readFile){
+        
+        String oString = null;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(readFile));
+            
+            StringBuilder oBuilder = new StringBuilder();
+            String tmpStr;
+
+            while((tmpStr = br.readLine()) != null){
+                    oBuilder.append(tmpStr);
+            }
+            oString = new String(oBuilder);
+            
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+        
+        return oString;
+    }
+
 }

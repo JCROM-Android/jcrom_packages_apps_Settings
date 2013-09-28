@@ -71,6 +71,21 @@
             android:hardwareAccelerated="true"
             android:supportsRtl="true">
 
+        <receiver
+            android:name="ThemeInstallReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.JcromThemeInstall" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
         <!-- Settings -->
 
         <activity android:name="Settings"
@@ -1107,6 +1122,20 @@
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="jcrom" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="ThemeClearIntentActivity"
+            android:label="@string/jcrom_theme_setting"
+            android:theme="@style/ThemeClearIntentActivityStyle"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="jcrom" />
+                <data android:host=""/>
+                <data android:pathPrefix="/clear_theme"/>
             </intent-filter>
         </activity>
 
