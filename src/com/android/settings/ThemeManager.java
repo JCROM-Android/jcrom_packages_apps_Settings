@@ -85,6 +85,7 @@ public class ThemeManager {
         "persist.sys.prop.gradient",
         "persist.sys.alpha.navikey",
         "persist.sys.prop.searchbar",
+        "persist.sys.full.wallpaper",
     };
 
     public static final String THEME_DIRECTORY = "/theme/settings/";

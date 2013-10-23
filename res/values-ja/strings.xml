@@ -1951,6 +1951,9 @@
     <string name="launcher_landscape_progress">ホームスクリーン再起動中…</string>
     <string name="lockscreen_rotate">ロックスクリーン横画面対応</string>
     <string name="lockscreen_rotate_summary">ロックスクリーンを横画面対応します</string>
+    <string name="fullscreen_wallpaper">ホームスクリーン全画面対応</string>
+    <string name="fullscreen_wallpaper_summary">ホームスクリーンの壁紙を全画面表示にします</string>
+    <string name="fullscreen_wallpaper_progress">画面の再構築中...</string>
     <string name="force_my_sim">SIMエミュレーション</string>
     <string name="jcrom_cannot_sim_emulation">SIMが刺さっているのでSIMエミュレーションはできません</string>
     <string name="jcrom_simstate_emulation">SIMエミュレーション</string>
