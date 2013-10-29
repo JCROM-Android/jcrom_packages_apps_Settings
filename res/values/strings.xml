@@ -4442,6 +4442,9 @@
     <string name="launcher_landscape_progress">Restart launcher</string>
     <string name="lockscreen_rotate">LockScreen Rotate</string>
     <string name="lockscreen_rotate_summary">Enable LockScreen Rotate</string>
+    <string name="fullscreen_wallpaper">Full Screen Wallpaper</string>
+    <string name="fullscreen_wallpaper_summary">Full Screen Wallpaper</string>
+    <string name="fullscreen_wallpaper_progress">Refleshing SystemUI.\nPlease wait...</string>
     <string name="jcrom_version">JCROM version</string>
     <string name="jcrom_version_default">Unknown</string>
     <string name="navikey_alpha">Navikey Alpha</string>

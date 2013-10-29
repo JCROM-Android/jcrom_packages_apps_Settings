@@ -85,6 +85,7 @@ public class ThemeManager {
         "persist.sys.prop.gradient",
         "persist.sys.alpha.navikey",
         "persist.sys.prop.searchbar",
+        "persist.sys.full.wallpaper",
     };
 
     public static final String THEME_DIRECTORY = "/theme/settings/";
@@ -482,12 +483,30 @@ public class ThemeManager {
         builder.append(File.separator);
         builder.append(fileName);
         String filePath = builder.toString();
-        File file = new File(filePath);
+        String extension = checkThemeFile(filePath);
+        File file = new File(filePath + extension);
         return file.exists();
     }
 
+    private String checkThemeFile(String filename) {
+        String extension = ".png";
+        File file = null;
+
+        file = new File(filename + ".png");
+        if(file.exists()) {
+            extension = ".png";
+        }else {
+            file = new File(filename + ".jpg");
+            if(file.exists()) {
+                extension = ".jpg";
+            }
+        }
+
+        return extension;
+    }
+
     private void applyTheme() {
-        if(checkFile("home_wallpaper_port.png") && checkFile("home_wallpaper_land.png")) {
+        if(checkFile("home_wallpaper_port") && checkFile("home_wallpaper_land")) {
             setLiveWallpaper();
         } else {
             setWallpaper();
@@ -502,7 +521,8 @@ public class ThemeManager {
         builder.append(File.separator);
         builder.append(MY_FRAME_FILE);
         String filePath = builder.toString();
-        bitmapWallpaper = BitmapFactory.decodeFile(filePath);
+        String extension = checkThemeFile(filePath);
+        bitmapWallpaper = BitmapFactory.decodeFile(filePath + extension);
         if (null != bitmapWallpaper) {
             try {
                 int srcWidth = bitmapWallpaper.getWidth();
