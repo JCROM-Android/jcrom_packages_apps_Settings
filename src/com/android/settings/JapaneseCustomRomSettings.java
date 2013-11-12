@@ -144,7 +144,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
                             try {
                                 ActivityManager am = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
-                                am.forceStopPackage("com.android.launcher");
+                                am.forceStopPackage("com.android.launcher3");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

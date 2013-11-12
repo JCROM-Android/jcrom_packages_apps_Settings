@@ -456,7 +456,7 @@ public class ThemeManager {
                 try {
                     ActivityManager am = (ActivityManager) mContext
                             .getSystemService(Context.ACTIVITY_SERVICE);
-                    am.forceStopPackage("com.android.launcher");
+                    am.forceStopPackage("com.android.launcher3");
                     Intent jcservice = (new Intent())
                             .setClassName("com.android.systemui",
                                     "com.android.systemui.JcromService");

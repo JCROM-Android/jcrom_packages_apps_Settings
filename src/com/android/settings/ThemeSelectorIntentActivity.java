@@ -90,7 +90,7 @@ public class ThemeSelectorIntentActivity extends Activity
                 revertRotationLock();
 
                 Intent intent = new Intent();
-                intent.setClassName("com.android.launcher", "com.android.launcher2.Launcher");
+                intent.setClassName("com.android.launcher3", "com.android.launcher3.Launcher");
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
