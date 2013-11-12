@@ -37,6 +37,7 @@
     <item msgid="7489864775127957179">"5分"</item>
     <item msgid="2314124409517439288">"10分"</item>
     <item msgid="6864027152847611413">"30分"</item>
+    <item >"スリープしない"</item>
   </string-array>
   <string-array name="dream_timeout_entries">
     <item msgid="3149294732238283185">"起動しない"</item>
@@ -477,5 +478,12 @@
     <item msgid="4517779899383204000">"やや不足"</item>
     <item msgid="406385694840950802">"かなり不足"</item>
     <item msgid="4212263919458209842">"残りわずか"</item>
+  </string-array>
+<!-- JCROM -->
+  <string-array name="entries_number_of_homescreen">
+    <item msgid="8672158431295301840">1 スクリーン</item>
+    <item msgid="8672158431295301841">3 スクリーン</item>
+    <item msgid="8672158431295301842">5 スクリーン(デフォルト)</item>
+    <item msgid="8672158431295301843">7 スクリーン</item>
   </string-array>
 </resources>

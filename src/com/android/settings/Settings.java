@@ -158,7 +158,9 @@ public class Settings extends PreferenceActivity
             R.id.accessibility_settings,
             R.id.print_settings,
             R.id.nfc_payment_settings,
-            R.id.home_settings
+            R.id.home_settings,
+            R.id.jcrom_settings,
+            R.id.jcrom_developers
     };
 
     private SharedPreferences mDevelopmentPreferences;
@@ -1084,6 +1086,7 @@ public class Settings extends PreferenceActivity
     public static class ManageApplicationsActivity extends Settings { /* empty */ }
     public static class AppOpsSummaryActivity extends Settings { /* empty */ }
     public static class StorageUseActivity extends Settings { /* empty */ }
+    public static class JapaneseCustomRomSettingsActivity extends Settings { /* empty */ }
     public static class DevelopmentSettingsActivity extends Settings { /* empty */ }
     public static class AccessibilitySettingsActivity extends Settings { /* empty */ }
     public static class CaptioningSettingsActivity extends Settings { /* empty */ }

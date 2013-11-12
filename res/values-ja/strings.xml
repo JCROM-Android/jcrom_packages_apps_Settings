@@ -753,6 +753,7 @@
     <string name="brightness_summary" msgid="838917350127550703">"画面の明るさを調整する"</string>
     <string name="screen_timeout" msgid="4351334843529712571">"スリープ"</string>
     <string name="screen_timeout_summary" msgid="327761329263064327">"操作が行われない状態で<xliff:g id="TIMEOUT_DESCRIPTION">%1$s</xliff:g>経過後"</string>
+    <string name="screen_timeout_never">"スリープしない"</string>
     <string name="wallpaper_settings_title" msgid="5449180116365824625">"壁紙"</string>
     <string name="wallpaper_settings_fragment_title" msgid="519078346877860129">"壁紙の選択先:"</string>
     <string name="screensaver_settings_title" msgid="3349790120327233241">"スクリーンセーバー"</string>
@@ -2052,4 +2053,84 @@
     <string name="user_image_take_photo" msgid="1280274310152803669">"写真を撮影"</string>
     <string name="user_image_choose_photo" msgid="7940990613897477057">"ギャラリーから画像を選ぶ"</string>
     <string name="regulatory_info_text" msgid="5623087902354026557"></string>
+
+<!-- JCROM -->
+    <string name="header_category_jcrom" msgid="2073558547468647138">"JCROM"</string>
+    <string name="jcrom_settings" msgid="7697580845616764652">"JCROM の設定"</string>
+    <string name="jcrom_developers" msgid="641908614413556310">"JCROM 開発者"</string>
+    <string name="jcrom_developers_summary" msgid="641908614413556320">"JCROM 開発者情報"</string>
+    <string name="select_ui_title" msgid="6426383462520888742">"UI(Phone/Tablet) の選択"</string>
+    <string name="select_ui_confirm_reboot">今すぐ再起動しますか</string>
+    <string name="select_ui_confirm_yes">はい</string>
+    <string name="select_ui_confirm_no">いいえ</string>
+    <string name="set_theme_confirm_reboot">テーマ設定を全て反映させるには再起動が必要です。テーマ設定後すぐに再起動しますか？</string>
+    <string name="unset_theme_confirm_reboot">テーマ設定解除を全て反映させるには再起動が必要です。テーマ設定解除後すぐに再起動しますか？</string>
+    <string name="set_theme_confirm_yes">はい</string>
+    <string name="set_theme_confirm_no">いいえ</string>
+    <string name="actionbar_bottom" msgid="6426383462520888743">ActionBar を下に</string>
+    <string name="actionbar_bottom_summary" msgid="6426383462520888744">ActionBar を下に配置する</string>
+    <string name="force_my_font" msgid="7426383462520888742">"フォントを変更する"</string>
+    <string name="force_my_font_summary" msgid="9642000962902609986">"強制的にフォントを変更する"</string>
+    <string name="notification_setting">Notification を下に</string>
+    <string name="notification_setting_summary">Notification を下に配置する</string>
+    <string name="hide_theme_images">テーマ画像を表示しない</string>
+    <string name="hide_theme_images_summary">ギャラリーアプリなどでJCROMテーマ用の画像を非表示にする</string>
+    <string name="notification_progress">再構築中...</string>
+    <string name="force_my_hobby" msgid="7426383462520888752">"テーマ選択を有効にする"</string>
+    <string name="force_my_hobby_summary" msgid="9642000962902609996">"テーマ選択を有効にします"</string>
+    <string name="theme_setting" msgid="7426383462520988752">"テーマ選択"</string>
+    <string name="theme_setting_summary" msgid="9642000962902709996">"何も選択されてません"</string>
+    <string name="progress_set_theme">"テーマ適用中"</string>
+    <string name="progress_clear_theme">"テーマ解除中"</string>
+    <string name="force_fixed_wallpaper" msgid="9245217863256487532">"壁紙固定モード"</string>
+    <string name="force_fixed_wallpaper_summary" msgid="5441287412586128742">"ホームスクリーンをスクロールしても壁紙が連動しないようにします"</string>
+    <string name="number_of_homescreen" msgid="4682013568742146245">ホームスクリーンの枚数</string>
+    <string name="number_of_homescreen_summary" msgid="4682013568742146246">ホームスクリーンの枚数を変更する</string>
+    <string name="number_of_homescreen_title" msgid="4682013568742146247">ホームスクリーン枚数選択</string>
+    <string name ="gradient_setting" msgid="4682013568742146248">グラデーション無効</string>
+    <string name ="gradient_setting_summary" msgid="4682013568742146249">ホームスクリーン上下のグラデーションを無効化する</string>
+    <string name ="gradient_setting_progress" msgid="4682013568742146250">壁紙の再構築中…</string>
+    <string name="launcher_landscape">ホームスクリーン横画面対応</string>
+    <string name="launcher_landscape_summary">Phone UIのホームスクリーンを横画面対応します</string>
+    <string name="launcher_landscape_progress">ホームスクリーン再起動中…</string>
+    <string name="lockscreen_rotate">ロックスクリーン横画面対応</string>
+    <string name="lockscreen_rotate_summary">ロックスクリーンを横画面対応します</string>
+    <string name="fullscreen_wallpaper">ホームスクリーン全画面対応</string>
+    <string name="fullscreen_wallpaper_summary">ホームスクリーンの壁紙を全画面表示にします</string>
+    <string name="fullscreen_wallpaper_progress">画面の再構築中...</string>
+    <string name="force_my_sim">SIMエミュレーション</string>
+    <string name="jcrom_cannot_sim_emulation">SIMが刺さっているのでSIMエミュレーションはできません</string>
+    <string name="jcrom_simstate_emulation">SIMエミュレーション</string>
+    <string name="jcrom_simstate_roaming">ローミング</string>
+    <string name="jcrom_operator_sim">SIM事業者</string>
+    <string name="jcrom_operator_network">接続事業者</string>
+    <string name="jcrom_operator_select">選択</string>
+    <string name="jcrom_operator_mccmnc">MCC+MNC</string>
+    <string name="jcrom_operator_country">国コード</string>
+    <string name="jcrom_operator_name">事業者名</string>
+    <string name="jcrom_version">JCROM バージョン</string>
+    <string name="jcrom_version_default">不明</string>
+    <string name="navikey_alpha" msgid="4682013568742146251">ナビキーの透過設定</string>
+    <string name="navikey_alpha_summary" msgid="4682013568742146252">ナビキーの透過を無効にします</string>
+    <string name="searchbar_setting" msgid="4682013568742146253">検索バーの無効化</string>
+    <string name="searchbar_setting_summary" msgid="4682013568742146254">ホームの検索バーを非表示にします</string>
+    <string name="root_access">Rootアクセス</string>
+    <string name="root_access_warning_title">Rootアクセスを許可しますか?</string>
+    <string name="root_access_warning_message">アプリケーションによるrootアクセスを許可することは危険で、システムのセキュリティを危険にさらします!</string>
+    <string name="root_access_none">無効</string>
+    <string name="root_access_apps">アプリのみ</string>
+    <string name="root_access_adb">ADBのみ</string>
+    <string name="root_access_all">アプリとADB</string>
+    <!-- Software Update -->
+    <string name="software_update_title">JCROM の更新</string>
+    <string name="software_update_desc">"JCROM を最新版に更新します。\n\n<li>電池残量が少ない状態では実行しないでください。</li>\n<li>更新ファイルのダウンロード後、自動で再起動して JCROM を更新します。</li></string>
+    <string name="software_update_button_check">最新のバージョンを確認する</string>
+    <string name="software_update_button_text">最新のバージョンに更新する</string>
+    <string name="jcrom_not_update">アップデート機能をサポートしていない端末です。</string>
+    <string name="jcrom_latest">最新:</string>
+    <string name="jcrom_current">現在:</string>
+    <string name="theme_disabled_title">警告</string>
+    <string name="theme_disabled_message">テーマ選択が無効になっています。テーマを選択するには設定を有効にしてください。</string>
+    <string name="theme_disabled_dialog_accept">設定を開く</string>
+    <string name="theme_disabled_dialog_decline">キャンセル</string>
 </resources>

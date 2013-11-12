@@ -59,6 +59,10 @@
                 android:summaryOn="@string/verify_applications_summary"
                 android:persistent="false" />
 
+        <Preference android:title="@string/app_ops_settings"
+                android:persistent="false"
+                android:fragment="com.android.settings.applications.AppOpsSummary"/>
+
         <Preference
                 android:key="manage_notification_access"
                 android:title="@string/manage_notification_access"
