@@ -47,6 +47,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_SEARCHBAR_PROPERTY = "persist.sys.prop.searchbar";
     private static final String MY_NOTIFICATION_PROPERTY = "persist.sys.notification";
     private static final String SELECT_DENSITY_PROPERTY = "persist.sys.ui.density";
+    private static final String BATTERY_PERCENTAGE_PROPERTY = "persist.sys.battery.percentage";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -65,6 +66,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String SEARCHBAR_KEY = "searchbar_setting";
     private static final String NOTIFICATION_KEY = "notification_setting";
     private static final String HIDE_THEME_IMAGES = "hide_theme_images";
+    private static final String BATTERY_PERCENTAGE_KEY = "battery_percentage";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -86,6 +88,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mDisableSearchbar;
     private CheckBoxPreference mNotification;
     private CheckBoxPreference mHideThemeImages;
+    private CheckBoxPreference mBatteryPercentage;
 
     private String mAndroidId;
 
@@ -117,6 +120,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mNotification = (CheckBoxPreference) findPreference(NOTIFICATION_KEY);
         mHideThemeImages = (CheckBoxPreference) findPreference(HIDE_THEME_IMAGES);
         mFullscreenWallpaper = (CheckBoxPreference) findPreference(FULLSCREEN_WALLPAPER_KEY);
+        mBatteryPercentage = (CheckBoxPreference) findPreference(BATTERY_PERCENTAGE_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -212,6 +216,19 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             }
         );
 
+        mBatteryPercentage.setOnPreferenceChangeListener(
+            new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    CheckBoxPreference _cb = (CheckBoxPreference) findPreference(BATTERY_PERCENTAGE_KEY);
+                    if (_cb == preference && newValue != null) {
+                        showProgress(R.string.battery_percentage_progress);
+                        new ThemeManager(getActivity()).restartLauncher(closeProgress);
+                    }
+                    return true;
+                }
+            });
+
     }
 
     @Override
@@ -236,6 +253,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         updateNumHomescreen();
         updateForceMyHobby();
         updateFullscreenWallpaper();
+        updateBatteryPercentage();
     }
 
     private void updateActionBarBottomOptions() {
@@ -277,6 +295,9 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     }
     private void updateFullscreenWallpaper() {
         mFullscreenWallpaper.setChecked(SystemProperties.getBoolean(FULLSCREEN_WALLPAPER_PROPERTY, false));
+    }
+    private void updateBatteryPercentage() {
+        mBatteryPercentage.setChecked(SystemProperties.getBoolean(BATTERY_PERCENTAGE_PROPERTY, false));
     }
 
     private int getNumHomescreen() {
@@ -450,6 +471,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         SystemProperties.set(MY_SEARCHBAR_PROPERTY, mDisableSearchbar.isChecked() ? "true" : "false");
     }
 
+    private void writeBatteryPercentage() {
+        SystemProperties.set(BATTERY_PERCENTAGE_PROPERTY, mBatteryPercentage.isChecked() ? "true" : "false");
+    }
+
     @Override
     public void onClickFileList(File file) {
         if(file != null) {
@@ -494,6 +519,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeSearchbarOptions();
         } else if (preference == mFullscreenWallpaper) {
             writeFullscreenWallpaper();
+        } else if (preference == mBatteryPercentage) {
+            writeBatteryPercentage();
         } else {
         }
 

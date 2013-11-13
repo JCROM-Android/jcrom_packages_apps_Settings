@@ -2121,6 +2121,9 @@
     <string name="root_access_apps">アプリのみ</string>
     <string name="root_access_adb">ADBのみ</string>
     <string name="root_access_all">アプリとADB</string>
+    <string name="battery_percentage">電池残量を％表示にする</string>
+    <string name="battery_percentage_summary">電池残量を1％刻みで表示します</string>
+    <string name="battery_percentage_progress">画面の再構築中...</string>
     <!-- Software Update -->
     <string name="software_update_title">JCROM の更新</string>
     <string name="software_update_desc">"JCROM を最新版に更新します。\n\n<li>電池残量が少ない状態では実行しないでください。</li>\n<li>更新ファイルのダウンロード後、自動で再起動して JCROM を更新します。</li></string>

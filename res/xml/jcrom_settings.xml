@@ -87,6 +87,11 @@
             android:entries="@array/select_ui_entries"
             android:entryValues="@array/select_ui_values" />
 
+        <CheckBoxPreference
+            android:key="battery_percentage"
+            android:title="@string/battery_percentage"
+            android:summary="@string/battery_percentage_summary"/>
+
         <PreferenceScreen
           android:key="force_my_android_id"
           android:title="@string/force_my_android_id"
