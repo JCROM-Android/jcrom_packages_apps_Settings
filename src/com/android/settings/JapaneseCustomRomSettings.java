@@ -33,6 +33,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         implements OnPreferenceChangeListener, FileListDialog.onFileListDialogListener {
 
     private static final String SELECT_UI_PROPERTY = "persist.sys.ui.select";
+    private static final String SELECT_UI_PHONE_PROPERTY = "persist.sys.ui.phone";
+    private static final String SELECT_UI_TABLET_PROPERTY = "persist.sys.ui.tablet";
     private static final String ACTIONBAR_BOTTOM_PROPERTY = "persist.sys.actionbar.bottom";
     private static final String MY_HOBBY_PROPERTY = "persist.sys.force.hobby";
     private static final String MY_THEME_PROPERTY = "persist.sys.theme";
@@ -325,54 +327,25 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     }
 
     private int defaultUi() {
-        int dispSize = 0;
-        int density = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
-        int default_mode = 0;
-        Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        if (d.getHeight() < d.getWidth()) {
-            dispSize = d.getHeight();
-        } else {
-            dispSize = d.getWidth();
-        }
-        int shortSizeDp = (dispSize * DisplayMetrics.DENSITY_DEFAULT) / density;
-        if (shortSizeDp < 600) {
-            default_mode = 0;
-        } else if (shortSizeDp < 720) {
-            default_mode = 1;
-        } else {
-            default_mode = 2;
-        }
-        return default_mode;
+        int defaultDensity = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
+
+        if (defaultDensity < 600)
+            return 0;
+        else
+            return 1;
     }
 
     private void setUiMode(String select_ui) {
         int select = Integer.parseInt(select_ui);
-        int default_mode = defaultUi();
+        int defaultDensity = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
         int density = DisplayMetrics.DENSITY_DEFAULT;
-        int dispSize = 0;
 
-        Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        if (d.getHeight() < d.getWidth()) {
-            dispSize = d.getHeight();
-        } else {
-            dispSize = d.getWidth();
-        }
-
-        if (select == default_mode) {
-            density = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
-        } else if (select == 0) {
-            int checkDensity = (dispSize * 160) / 320;
-            if(checkDensity < 600) {
-                density = 320;
-            } else {
-                density = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
-            }
+        if (select == 0) {
+            density = SystemProperties.getInt(SELECT_UI_PHONE_PROPERTY, defaultDensity);
         } else if (select == 1) {
-            density = (dispSize * 160 ) / 600;
-        } else if (select == 2) {
-            density = (dispSize * 160 ) / 720;
+            density = SystemProperties.getInt(SELECT_UI_TABLET_PROPERTY, defaultDensity);
         } else {
-            density = SystemProperties.getInt("ro.sf.lcd_density", DisplayMetrics.DENSITY_DEFAULT);
+            density = defaultDensity;
         }
 
         SystemProperties.set(SELECT_DENSITY_PROPERTY, String.valueOf(density));
