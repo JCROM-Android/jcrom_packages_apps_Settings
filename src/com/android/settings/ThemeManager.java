@@ -515,7 +515,7 @@ public class ThemeManager {
 
     private void setWallpaper() {
         Bitmap bitmapWallpaper;
-        String MY_FRAME_FILE = "home_wallpaper.png";
+        String MY_FRAME_FILE = "home_wallpaper";
         StringBuilder builder = new StringBuilder();
         builder.append(Environment.getDataDirectory().toString() + "/theme/wallpaper/");
         builder.append(File.separator);
