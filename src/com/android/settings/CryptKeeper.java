@@ -115,6 +115,8 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
     /** Number of calls to {@link #notifyUser()} to ignore before notifying. */
     private int mNotificationCountdown = 0;
 
+    private static final String VOICE_CAPABLE_PROPERTY = "persist.sys.voice.capable";
+
     /**
      * Used to propagate state through configuration changes (e.g. screen rotation)
      */
@@ -710,7 +712,8 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
     }
 
     private boolean isEmergencyCallCapable() {
-        return getResources().getBoolean(com.android.internal.R.bool.config_voice_capable);
+        //return getResources().getBoolean(com.android.internal.R.bool.config_voice_capable);
+        return SystemProperties.getBoolean(VOICE_CAPABLE_PROPERTY, true);
     }
 
     private void takeEmergencyCallAction() {

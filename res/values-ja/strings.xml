@@ -2136,4 +2136,6 @@
     <string name="theme_disabled_message">テーマ選択が無効になっています。テーマを選択するには設定を有効にしてください。</string>
     <string name="theme_disabled_dialog_accept">設定を開く</string>
     <string name="theme_disabled_dialog_decline">キャンセル</string>
+    <string name="voice_capable">voice capable</string>
+    <string name="voice_capable_summary">config_voice_capable を有効にする</string>
 </resources>
