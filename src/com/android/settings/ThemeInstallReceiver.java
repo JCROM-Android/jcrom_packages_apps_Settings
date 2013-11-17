@@ -27,23 +27,27 @@ public class ThemeInstallReceiver extends BroadcastReceiver {
 		} else if (action.equals(Intent.ACTION_PACKAGE_ADDED)) {
 			Uri data = intent.getData();
 			String pkgName = data.getEncodedSchemeSpecificPart();
-			String checkName = pkgName.substring(0,15);
-			if(checkName.equals(JCROM_THEME_PKG)) {
-				String themeName = pkgName.substring(16);
-				Intent in = new Intent();
-				in.setClassName(pkgName, pkgName + ".JcromThemeInstaller");
-				in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	    		context.startActivity(in);
+			if(pkgName.length() >= 16) {
+				String checkName = pkgName.substring(0,15);
+				if(checkName.equals(JCROM_THEME_PKG)) {
+					String themeName = pkgName.substring(16);
+					Intent in = new Intent();
+					in.setClassName(pkgName, pkgName + ".JcromThemeInstaller");
+					in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	    			context.startActivity(in);
+				}
 			}
 		} else if (action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
 			Uri data = intent.getData();
 			String pkgName = data.getEncodedSchemeSpecificPart();
-			String checkName = pkgName.substring(0,15);
-			if(checkName.equals(JCROM_THEME_PKG)) {
-				Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("jcrom:///clear_theme"));
-				in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				in.putExtra("package_name", pkgName);
-				context.startActivity(in);
+			if(pkgName.length() >= 16) {
+				String checkName = pkgName.substring(0,15);
+				if(checkName.equals(JCROM_THEME_PKG)) {
+					Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("jcrom:///clear_theme"));
+					in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					in.putExtra("package_name", pkgName);
+					context.startActivity(in);
+				}
 			}
 		}
 	}
