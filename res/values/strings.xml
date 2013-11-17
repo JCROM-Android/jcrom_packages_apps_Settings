@@ -4985,6 +4985,8 @@
     <string name="battery_percentage_progress">Refleshing SystemUI.\nPlease wait...</string>
     <string name="voice_capable">voice capable</string>
     <string name="voice_capable_summary">Enable the value of config_voice_capable</string>
+    <string name="sms_capable">sms capable</string>
+    <string name="sms_capable_summary">Enable the value of config_sms_capable</string>
     <string name="jcrom_settings_category_system">JCROM System Settings</string>
     <string name="jcrom_settings_category_launcher">JCROM Launcher Settings</string>
     <string name="jcrom_settings_category_development">JCROM Development Settings</string>

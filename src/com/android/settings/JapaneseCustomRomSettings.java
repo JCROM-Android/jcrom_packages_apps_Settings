@@ -51,6 +51,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String SELECT_DENSITY_PROPERTY = "persist.sys.ui.density";
     private static final String BATTERY_PERCENTAGE_PROPERTY = "persist.sys.battery.percentage";
     private static final String VOICE_CAPABLE_PROPERTY = "persist.sys.voice.capable";
+    private static final String SMS_CAPABLE_PROPERTY = "persist.sys.sms.capable";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -71,6 +72,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String HIDE_THEME_IMAGES = "hide_theme_images";
     private static final String BATTERY_PERCENTAGE_KEY = "battery_percentage";
     private static final String VOICE_CAPABLE_KEY = "voice_capable";
+    private static final String SMS_CAPABLE_KEY = "sms_capable";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -94,6 +96,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mHideThemeImages;
     private CheckBoxPreference mBatteryPercentage;
     private CheckBoxPreference mVoiceCapable;
+    private CheckBoxPreference mSmsCapable;
 
     private String mAndroidId;
 
@@ -127,6 +130,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mFullscreenWallpaper = (CheckBoxPreference) findPreference(FULLSCREEN_WALLPAPER_KEY);
         mBatteryPercentage = (CheckBoxPreference) findPreference(BATTERY_PERCENTAGE_KEY);
         mVoiceCapable = (CheckBoxPreference) findPreference(VOICE_CAPABLE_KEY);
+        mSmsCapable = (CheckBoxPreference) findPreference(SMS_CAPABLE_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -247,6 +251,18 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 }
             });
 
+        mSmsCapable.setOnPreferenceChangeListener(
+            new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    CheckBoxPreference _cb = (CheckBoxPreference) findPreference(SMS_CAPABLE_KEY);
+                    if (_cb == preference && newValue != null) {
+                        confirmReset();
+                    }
+                    return true;
+                }
+            });
+
     }
 
     @Override
@@ -273,6 +289,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         updateFullscreenWallpaper();
         updateBatteryPercentage();
         updateVoiceCapable();
+        updateSmsCapable();
     }
 
     private void updateActionBarBottomOptions() {
@@ -320,6 +337,9 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     }
     private void updateVoiceCapable() {
         mVoiceCapable.setChecked(SystemProperties.getBoolean(VOICE_CAPABLE_PROPERTY, true));
+    }
+    private void updateSmsCapable() {
+        mSmsCapable.setChecked(SystemProperties.getBoolean(SMS_CAPABLE_PROPERTY, true));
     }
 
     private int getNumHomescreen() {
@@ -472,6 +492,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         SystemProperties.set(VOICE_CAPABLE_PROPERTY, mVoiceCapable.isChecked() ? "true" : "false");
     }
 
+    private void writeSmsCapable() {
+        SystemProperties.set(SMS_CAPABLE_PROPERTY, mSmsCapable.isChecked() ? "true" : "false");
+    }
+
     @Override
     public void onClickFileList(File file) {
         if(file != null) {
@@ -520,7 +544,9 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeBatteryPercentage();
         } else if (preference == mVoiceCapable) {
             writeVoiceCapable();
-        }else {
+        } else if (preference == mSmsCapable) {
+            writeSmsCapable();
+        } else {
         }
 
 

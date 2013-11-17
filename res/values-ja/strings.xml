@@ -2138,4 +2138,6 @@
     <string name="theme_disabled_dialog_decline">キャンセル</string>
     <string name="voice_capable">voice capable</string>
     <string name="voice_capable_summary">config_voice_capable を有効にする</string>
+    <string name="sms_capable">sms capable</string>
+    <string name="sms_capable_summary">config_sms_capable を有効にする</string>
 </resources>
