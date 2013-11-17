@@ -31,11 +31,6 @@
             android:summary="@string/theme_setting_summary"/>
 
         <CheckBoxPreference
-            android:key="fullscreen_wallpaper"
-            android:title="@string/fullscreen_wallpaper"
-            android:summary="@string/fullscreen_wallpaper_summary"/>
-
-        <CheckBoxPreference
             android:key="hide_theme_images"
             android:title="@string/hide_theme_images"
             android:summary="@string/hide_theme_images_summary"/>
@@ -105,11 +100,6 @@
         <PreferenceScreen
           android:key="force_my_android_id"
           android:title="@string/force_my_android_id"
-          android:summary=""/>
-
-        <PreferenceScreen
-          android:key="force_my_sim"
-          android:title="@string/force_my_sim"
           android:summary=""/>
 
     </PreferenceCategory>

@@ -44,7 +44,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_GRADIENT_PROPERTY = "persist.sys.prop.gradient";
     private static final String LAUNCHER_LANDSCAPE_PROPERTY = "persist.sys.launcher.landscape";
     private static final String LOCKSCREEN_ROTATE_PROPERTY = "persist.sys.lockscreen.rotate";
-    private static final String FULLSCREEN_WALLPAPER_PROPERTY = "persist.sys.full.wallpaper";
     private static final String NAVIKEY_ALPHA_PROPERTY = "persist.sys.alpha.navikey";
     private static final String MY_SEARCHBAR_PROPERTY = "persist.sys.prop.searchbar";
     private static final String MY_NOTIFICATION_PROPERTY = "persist.sys.notification";
@@ -64,8 +63,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String GRADIENT_KEY = "gradient_setting";
     private static final String ALLOW_LAUNCHER_LANDSCAPE_KEY = "launcher_landscape";
     private static final String LOCKSCREEN_ROTATE_KEY = "lockscreen_rotate";
-    private static final String FULLSCREEN_WALLPAPER_KEY = "fullscreen_wallpaper";
-    private static final String FORCE_MY_SIM_KEY = "force_my_sim";
     private static final String NAVIKEY_ALPHA_KEY = "navikey_alpha";
     private static final String SEARCHBAR_KEY = "searchbar_setting";
     private static final String NOTIFICATION_KEY = "notification_setting";
@@ -87,9 +84,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mGradientStat;
     private CheckBoxPreference mLauncherLandscape;
     private CheckBoxPreference mLockscreenRotate;
-    private CheckBoxPreference mFullscreenWallpaper;
     private ProgressDialog mProgressDialog;
-    private PreferenceScreen mForceMySIM;
     private CheckBoxPreference mNavikeyAlpha;
     private CheckBoxPreference mDisableSearchbar;
     private CheckBoxPreference mNotification;
@@ -122,12 +117,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mGradientStat = (CheckBoxPreference) findPreference(GRADIENT_KEY);
         mLauncherLandscape = (CheckBoxPreference) findPreference(ALLOW_LAUNCHER_LANDSCAPE_KEY);
         mLockscreenRotate = (CheckBoxPreference) findPreference(LOCKSCREEN_ROTATE_KEY);
-        mForceMySIM = (PreferenceScreen) findPreference(FORCE_MY_SIM_KEY);
         mNavikeyAlpha = (CheckBoxPreference) findPreference(NAVIKEY_ALPHA_KEY);
         mDisableSearchbar = (CheckBoxPreference) findPreference(SEARCHBAR_KEY);
         mNotification = (CheckBoxPreference) findPreference(NOTIFICATION_KEY);
         mHideThemeImages = (CheckBoxPreference) findPreference(HIDE_THEME_IMAGES);
-        mFullscreenWallpaper = (CheckBoxPreference) findPreference(FULLSCREEN_WALLPAPER_KEY);
         mBatteryPercentage = (CheckBoxPreference) findPreference(BATTERY_PERCENTAGE_KEY);
         mVoiceCapable = (CheckBoxPreference) findPreference(VOICE_CAPABLE_KEY);
         mSmsCapable = (CheckBoxPreference) findPreference(SMS_CAPABLE_KEY);
@@ -170,21 +163,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mAndroidId = Settings.Secure.getString(
                 getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
         mForceMyAndroidId.setSummary(mAndroidId);
-
-        mFullscreenWallpaper.setOnPreferenceChangeListener(
-                new OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        // TODO hand-generated method stub;;
-                        CheckBoxPreference _cb = (CheckBoxPreference) findPreference(FULLSCREEN_WALLPAPER_KEY);
-
-                        if (_cb == preference && newValue != null) {
-                            showProgress(R.string.fullscreen_wallpaper_progress);
-                            new ThemeManager(getActivity()).restartLauncher(closeProgress);
-                        }
-                        return true;
-                    }
-                });
 
         mGradientStat.setOnPreferenceChangeListener(
                 new OnPreferenceChangeListener() {
@@ -286,7 +264,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         updateDisableSearchbar();
         updateNumHomescreen();
         updateForceMyHobby();
-        updateFullscreenWallpaper();
         updateBatteryPercentage();
         updateVoiceCapable();
         updateSmsCapable();
@@ -328,9 +305,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 mTheme.setSummary("");
             }
         }
-    }
-    private void updateFullscreenWallpaper() {
-        mFullscreenWallpaper.setChecked(SystemProperties.getBoolean(FULLSCREEN_WALLPAPER_PROPERTY, false));
     }
     private void updateBatteryPercentage() {
         mBatteryPercentage.setChecked(SystemProperties.getBoolean(BATTERY_PERCENTAGE_PROPERTY, false));
@@ -462,10 +436,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         SystemProperties.set(MY_GRADIENT_PROPERTY, mGradientStat.isChecked() ? "true" : "false");
     }
 
-    private void writeFullscreenWallpaper() {
-        SystemProperties.set(FULLSCREEN_WALLPAPER_PROPERTY, mFullscreenWallpaper.isChecked() ? "true" : "false");
-    }
-
     private void writeLauncherLandscape() {
         SystemProperties.set(LAUNCHER_LANDSCAPE_PROPERTY, mLauncherLandscape.isChecked() ? "true" : "false");
         showProgress(R.string.launcher_landscape_progress);
@@ -532,14 +502,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeLauncherLandscape();
         } else if (preference == mLockscreenRotate) {
             writeLockscreenRotate();
-        } else if (preference == mForceMySIM) {
-            JapaneseCustomRomSimState.makeDialog(getActivity()).show();
         } else if (preference == mNavikeyAlpha){
             writeNavikeyAlphaOptions();
         } else if (preference == mDisableSearchbar) {
             writeSearchbarOptions();
-        } else if (preference == mFullscreenWallpaper) {
-            writeFullscreenWallpaper();
         } else if (preference == mBatteryPercentage) {
             writeBatteryPercentage();
         } else if (preference == mVoiceCapable) {

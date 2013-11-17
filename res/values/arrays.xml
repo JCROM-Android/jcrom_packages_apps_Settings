@@ -982,14 +982,12 @@
 
     <string-array name="select_ui_entries">
         <item>Phone UI</item>
-        <item>Phone UI(Large)</item>
         <item>Tablet UI</item>
     </string-array>
 
     <string-array name="select_ui_values" translatable="false" >
         <item>0</item>
         <item>1</item>
-        <item>2</item>
     </string-array>
 
     <!-- Titles for overlay display devices preference. [CHAR LIMIT=35] -->
