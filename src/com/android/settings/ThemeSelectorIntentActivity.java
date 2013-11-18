@@ -17,6 +17,7 @@ public class ThemeSelectorIntentActivity extends Activity
 	private static final String MY_THEME_PROPERTY = "persist.sys.theme";
 	private static final String MY_HOBBY_PROPERTY = "persist.sys.force.hobby";
 	private static final String FORCE_ROTATION_LOCK = "persist.sys.force.lock";
+	private static final String THEME_LOCK = "persist.sys.theme.lock";
 	private static final int JC_LIMIT = (72 * 1000);
 
 	private Activity mActivity = this;
@@ -82,6 +83,7 @@ public class ThemeSelectorIntentActivity extends Activity
 	private final Runnable closeProgress = new Runnable() {
 		@Override
 		public void run() {
+			SystemProperties.set(THEME_LOCK, "false");
 			if (mProgressDialog != null) {
 				mProgressDialog.dismiss();
 				mProgressDialog = null;
@@ -146,6 +148,7 @@ public class ThemeSelectorIntentActivity extends Activity
 		showProgress(R.string.progress_set_theme);
 
 		SystemProperties.set(MY_THEME_PROPERTY, newTheme);
+		SystemProperties.set(THEME_LOCK, "true");
 
         ThemeSetTimeout themeTimeout = new ThemeSetTimeout();
         themeTimeout.setTimeout(mActivity, JC_LIMIT);
@@ -167,5 +170,6 @@ public class ThemeSelectorIntentActivity extends Activity
 			RotationPolicy.setRotationLock(mActivity, false);
 		}
 		SystemProperties.set(FORCE_ROTATION_LOCK, "none");
+		SystemProperties.set(THEME_LOCK, "false");
 	}
 }

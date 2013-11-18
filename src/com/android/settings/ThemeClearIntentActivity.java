@@ -18,6 +18,7 @@ public class ThemeClearIntentActivity extends Activity
 
 	private static final String MY_THEME_PROPERTY = "persist.sys.theme";
     private static final String MY_HOBBY_PROPERTY = "persist.sys.force.hobby";
+    private static final String THEME_LOCK = "persist.sys.theme.lock";
 	private Activity mActivity = this;
 	private ProgressDialog mProgressDialog;
 	private AlertDialog mConfirmDialog;
@@ -97,6 +98,7 @@ public class ThemeClearIntentActivity extends Activity
     private final Runnable closeProgress = new Runnable() {
         @Override
         public void run() {
+            SystemProperties.set(THEME_LOCK, "false");
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
                 mProgressDialog = null;

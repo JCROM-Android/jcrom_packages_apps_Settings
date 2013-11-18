@@ -99,6 +99,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final int RESULT_OK = -1;
     private static final int RESULT_CANCELED = 0;
 
+    private static final String THEME_LOCK = "persist.sys.theme.lock";
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -532,6 +534,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private final Runnable closeProgress = new Runnable() {
         @Override
         public void run() {
+            SystemProperties.set(THEME_LOCK, "false");
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
                 mProgressDialog = null;

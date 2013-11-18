@@ -11,6 +11,7 @@ import android.util.Slog;
 public class ThemeSetTimeout{
     private static final String TAG = "ThemeSetTimeout";
     private static final String FORCE_ROTATION_LOCK = "persist.sys.force.lock";
+    private static final String THEME_LOCK = "persist.sys.theme.lock";
 
     public void setTimeout(final Activity activity, long timeout){
         new Handler().postDelayed(new Runnable() {
@@ -23,6 +24,7 @@ public class ThemeSetTimeout{
                     RotationPolicy.setRotationLock(activity, false);
                 }
                 SystemProperties.set(FORCE_ROTATION_LOCK, "none");
+                SystemProperties.set(THEME_LOCK, "false");
 
             }
         }, timeout);

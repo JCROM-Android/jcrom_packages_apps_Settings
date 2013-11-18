@@ -90,6 +90,7 @@ public class ThemeManager {
 
     public static final String THEME_DIRECTORY = "/theme/settings/";
     public static final String CONFIGURATION_FILE = "jcrom_settings.conf";
+    private static final String THEME_LOCK = "persist.sys.theme.lock";
 
     private Context mContext;
     private ContentResolver mContentResolver;
@@ -453,6 +454,8 @@ public class ThemeManager {
     private void restartSystemUI(final Runnable postproc) {
         mHandler.post(new Runnable() {
             public void run() {
+                SystemProperties.set(THEME_LOCK, "true");
+
                 try {
                     ActivityManager am = (ActivityManager) mContext
                             .getSystemService(Context.ACTIVITY_SERVICE);
