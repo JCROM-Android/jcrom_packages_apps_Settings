@@ -2140,4 +2140,6 @@
     <string name="voice_capable_summary">config_voice_capable を有効にする</string>
     <string name="sms_capable">sms capable</string>
     <string name="sms_capable_summary">config_sms_capable を有効にする</string>
+    <string name="drawer_transmission">ドロワーの透過設定</string>
+    <string name="drawer_transmission_summary">ドロワーを100％透過にします</string>
 </resources>

@@ -72,6 +72,11 @@
             android:title="@string/searchbar_setting"
             android:summary="@string/searchbar_setting_summary"/>
 
+        <CheckBoxPreference
+            android:key="drawer_transmission"
+            android:title="@string/drawer_transmission"
+            android:summary="@string/drawer_transmission_summary"/>
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/jcrom_settings_category_development" >
 
