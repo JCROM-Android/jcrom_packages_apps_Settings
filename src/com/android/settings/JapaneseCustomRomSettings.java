@@ -336,7 +336,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mSmsCapable.setChecked(SystemProperties.getBoolean(SMS_CAPABLE_PROPERTY, true));
     }
     private void updateLauncherDrawer() {
-        mLauncherDrawer.setChecked(SystemProperties.getBoolean(LAUNCHER_DRAWER_PROPERTY, true));
+        mLauncherDrawer.setChecked(SystemProperties.getBoolean(LAUNCHER_DRAWER_PROPERTY, false));
     }
 
     private int getNumHomescreen() {
