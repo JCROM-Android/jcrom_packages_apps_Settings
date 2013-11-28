@@ -20,6 +20,11 @@
             android:summary="@string/lockscreen_rotate_summary"/>
 
         <CheckBoxPreference
+            android:key="lockscreen_transmission"
+            android:title="@string/lockscreen_transmission"
+            android:summary="@string/lockscreen_transmission_summary"/>
+
+        <CheckBoxPreference
             android:key="force_my_hobby"
             android:title="@string/force_my_hobby" />
 

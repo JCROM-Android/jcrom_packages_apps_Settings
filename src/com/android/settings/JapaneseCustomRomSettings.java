@@ -52,6 +52,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String VOICE_CAPABLE_PROPERTY = "persist.sys.voice.capable";
     private static final String SMS_CAPABLE_PROPERTY = "persist.sys.sms.capable";
     private static final String LAUNCHER_DRAWER_PROPERTY = "persist.sys.launcher.drawer";
+    private static final String FULL_LOCKSCREEN_PROPERTY = "persist.sys.full.lockscreen";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -72,6 +73,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String VOICE_CAPABLE_KEY = "voice_capable";
     private static final String SMS_CAPABLE_KEY = "sms_capable";
     private static final String LAUNCHER_DRAWER_KEY = "drawer_transmission";
+    private static final String FULL_LOCKSCREEN_KEY = "lockscreen_transmission";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -95,6 +97,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mVoiceCapable;
     private CheckBoxPreference mSmsCapable;
     private CheckBoxPreference mLauncherDrawer;
+    private CheckBoxPreference mFullLockscreen;
 
     private String mAndroidId;
 
@@ -130,6 +133,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mVoiceCapable = (CheckBoxPreference) findPreference(VOICE_CAPABLE_KEY);
         mSmsCapable = (CheckBoxPreference) findPreference(SMS_CAPABLE_KEY);
         mLauncherDrawer = (CheckBoxPreference) findPreference(LAUNCHER_DRAWER_KEY);
+        mFullLockscreen = (CheckBoxPreference) findPreference(FULL_LOCKSCREEN_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -260,6 +264,19 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 }
             });
 
+        mFullLockscreen.setOnPreferenceChangeListener(
+            new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    CheckBoxPreference _cb = (CheckBoxPreference) findPreference(FULL_LOCKSCREEN_KEY);
+                    if (_cb == preference && newValue != null) {
+                        showProgress(R.string.lockscreen_transmission_progress);
+                        new ThemeManager(getActivity()).restartLauncher(closeProgress);
+                    }
+                    return true;
+                }
+            });
+
     }
 
     @Override
@@ -287,6 +304,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         updateVoiceCapable();
         updateSmsCapable();
         updateLauncherDrawer();
+        updateFullLockscreen();
     }
 
     private void updateActionBarBottomOptions() {
@@ -337,6 +355,9 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     }
     private void updateLauncherDrawer() {
         mLauncherDrawer.setChecked(SystemProperties.getBoolean(LAUNCHER_DRAWER_PROPERTY, false));
+    }
+    private void updateFullLockscreen() {
+        mFullLockscreen.setChecked(SystemProperties.getBoolean(FULL_LOCKSCREEN_PROPERTY, false));
     }
 
     private int getNumHomescreen() {
@@ -491,7 +512,11 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     private void writeLauncherDrawer() {
         SystemProperties.set(LAUNCHER_DRAWER_PROPERTY, mLauncherDrawer.isChecked() ? "true" : "false");
-    }    
+    }
+
+    private void writeFullLockscreen() {
+        SystemProperties.set(FULL_LOCKSCREEN_PROPERTY, mFullLockscreen.isChecked() ? "true" : "false");
+    }
 
     @Override
     public void onClickFileList(File file) {
@@ -541,6 +566,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeSmsCapable();
         } else if (preference == mLauncherDrawer) {
             writeLauncherDrawer();
+        } else if (preference == mFullLockscreen) {
+            writeFullLockscreen();
         } else {
         }
 
