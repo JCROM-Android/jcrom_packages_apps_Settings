@@ -272,7 +272,7 @@ public class SoftwareUpdate extends Fragment {
     }
 
     private void getUpdateInfo() {
-        String uri = "http://jcrom.net/release/aosp/jcrom_jb4.3_update.xml";
+        String uri = "http://jcrom.net/release/aosp/jcrom_kitkat_update.xml";
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet();
         try {
@@ -328,6 +328,8 @@ public class SoftwareUpdate extends Fragment {
             version = "ns_version";
         } else if(model.equals("razor")) {
             version = "n72_version";
+        } else if(model.equals("hammerhead")) {
+            version = "n5_version";
         }
         return version;
     }
@@ -347,6 +349,8 @@ public class SoftwareUpdate extends Fragment {
             link = "ns_link";
         } else if(model.equals("razor")) {
             link = "n72_link";
+        } else if(model.equals("hammerhead")) {
+            link = "n5_link";
         }
         return link;
     }
