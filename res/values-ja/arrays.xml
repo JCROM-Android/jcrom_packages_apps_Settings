@@ -486,4 +486,9 @@
     <item msgid="8672158431295301842">5 スクリーン(デフォルト)</item>
     <item msgid="8672158431295301843">7 スクリーン</item>
   </string-array>
+  <string-array name="select_battery_entries">
+    <item>標準の電池残量表示</item>
+    <item>％表示を有効にする</item>
+    <item>テーマを有効にする</item>
+  </string-array>
 </resources>

@@ -48,7 +48,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String MY_SEARCHBAR_PROPERTY = "persist.sys.prop.searchbar";
     private static final String MY_NOTIFICATION_PROPERTY = "persist.sys.notification";
     private static final String SELECT_DENSITY_PROPERTY = "persist.sys.ui.density";
-    private static final String BATTERY_PERCENTAGE_PROPERTY = "persist.sys.battery.percentage";
+    private static final String SELECT_BATTERY_PROPERTY = "persist.sys.battery.select";
     private static final String VOICE_CAPABLE_PROPERTY = "persist.sys.voice.capable";
     private static final String SMS_CAPABLE_PROPERTY = "persist.sys.sms.capable";
     private static final String LAUNCHER_DRAWER_PROPERTY = "persist.sys.launcher.drawer";
@@ -69,7 +69,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String SEARCHBAR_KEY = "searchbar_setting";
     private static final String NOTIFICATION_KEY = "notification_setting";
     private static final String HIDE_THEME_IMAGES = "hide_theme_images";
-    private static final String BATTERY_PERCENTAGE_KEY = "battery_percentage";
+    private static final String SELECT_BATTERY_KEY = "select_battery";
     private static final String VOICE_CAPABLE_KEY = "voice_capable";
     private static final String SMS_CAPABLE_KEY = "sms_capable";
     private static final String LAUNCHER_DRAWER_KEY = "drawer_transmission";
@@ -78,6 +78,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String TAG = "JapaneseCustomRomSettings";
 
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
+    private final ArrayList<Preference> mBatteryPrefs = new ArrayList<Preference>();
     private ListPreference mSelectUi;
     private CheckBoxPreference mActionBarBottom;
     private CheckBoxPreference mForceMyHobby;
@@ -94,6 +95,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mNotification;
     private CheckBoxPreference mHideThemeImages;
     private CheckBoxPreference mBatteryPercentage;
+    private ListPreference mSelectBattery;
     private CheckBoxPreference mVoiceCapable;
     private CheckBoxPreference mSmsCapable;
     private CheckBoxPreference mLauncherDrawer;
@@ -104,6 +106,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final int INTENT_SET_THEME = 1;
     private static final int RESULT_OK = -1;
     private static final int RESULT_CANCELED = 0;
+
+    private static final int SELECT_BATTERY_NORMAL = 0;
+    private static final int SELECT_BATTERY_PERCENTAGE = 1;
+    private static final int SELECT_BATTERY_THEME = 2;
 
     private static final String THEME_LOCK = "persist.sys.theme.lock";
 
@@ -116,6 +122,12 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mAllPrefs.add(mSelectUi);
         mSelectUi.setOnPreferenceChangeListener(this);
         selectUi();
+
+        mSelectBattery = (ListPreference) findPreference(SELECT_BATTERY_KEY);
+        mBatteryPrefs.add(mSelectBattery);
+        mSelectBattery.setOnPreferenceChangeListener(this);
+        selectBattery();
+
         mActionBarBottom = (CheckBoxPreference) findPreference(ACTIONBAR_BOTTOM_KEY);
         mForceMyHobby = (CheckBoxPreference) findPreference(FORCE_MY_HOBBY_KEY);
         mTheme = (PreferenceScreen) findPreference(THEME_KEY);
@@ -129,7 +141,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mDisableSearchbar = (CheckBoxPreference) findPreference(SEARCHBAR_KEY);
         mNotification = (CheckBoxPreference) findPreference(NOTIFICATION_KEY);
         mHideThemeImages = (CheckBoxPreference) findPreference(HIDE_THEME_IMAGES);
-        mBatteryPercentage = (CheckBoxPreference) findPreference(BATTERY_PERCENTAGE_KEY);
         mVoiceCapable = (CheckBoxPreference) findPreference(VOICE_CAPABLE_KEY);
         mSmsCapable = (CheckBoxPreference) findPreference(SMS_CAPABLE_KEY);
         mLauncherDrawer = (CheckBoxPreference) findPreference(LAUNCHER_DRAWER_KEY);
@@ -214,19 +225,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             }
         );
 
-        mBatteryPercentage.setOnPreferenceChangeListener(
-            new OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    CheckBoxPreference _cb = (CheckBoxPreference) findPreference(BATTERY_PERCENTAGE_KEY);
-                    if (_cb == preference && newValue != null) {
-                        showProgress(R.string.battery_percentage_progress);
-                        new ThemeManager(getActivity()).restartLauncher(closeProgress);
-                    }
-                    return true;
-                }
-            });
-
         mVoiceCapable.setOnPreferenceChangeListener(
             new OnPreferenceChangeListener() {
                 @Override
@@ -257,7 +255,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     CheckBoxPreference _cb = (CheckBoxPreference) findPreference(LAUNCHER_DRAWER_KEY);
                     if (_cb == preference && newValue != null) {
-                        showProgress(R.string.battery_percentage_progress);
+                        showProgress(R.string.drawer_transmission_progress);
                         new ThemeManager(getActivity()).restartLauncher(closeProgress);
                     }
                     return true;
@@ -300,7 +298,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         updateDisableSearchbar();
         updateNumHomescreen();
         updateForceMyHobby();
-        updateBatteryPercentage();
         updateVoiceCapable();
         updateSmsCapable();
         updateLauncherDrawer();
@@ -343,9 +340,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 mTheme.setSummary("");
             }
         }
-    }
-    private void updateBatteryPercentage() {
-        mBatteryPercentage.setChecked(SystemProperties.getBoolean(BATTERY_PERCENTAGE_PROPERTY, false));
     }
     private void updateVoiceCapable() {
         mVoiceCapable.setChecked(SystemProperties.getBoolean(VOICE_CAPABLE_PROPERTY, true));
@@ -409,6 +403,21 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         SystemProperties.set(SELECT_DENSITY_PROPERTY, String.valueOf(density));
     }
 
+    private void setBatteryMode(String select_battery) {
+        int select = Integer.parseInt(select_battery);
+        int battery_mode = SELECT_BATTERY_NORMAL;
+
+        if (select == SELECT_BATTERY_PERCENTAGE) {
+            battery_mode = SELECT_BATTERY_PERCENTAGE;
+        } else if (select == SELECT_BATTERY_THEME) {
+            battery_mode = SELECT_BATTERY_THEME;
+        } else {
+            battery_mode = SELECT_BATTERY_NORMAL;
+        }
+
+        SystemProperties.set(SELECT_BATTERY_PROPERTY, String.valueOf(battery_mode));
+    }
+
     private void selectUi() {
         int select = SystemProperties.getInt(SELECT_UI_PROPERTY, -1);
         if(select != -1) {
@@ -417,6 +426,17 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         } else {
             mSelectUi.setValueIndex(defaultUi());
             mSelectUi.setSummary(mSelectUi.getEntries()[defaultUi()]);
+        }
+    }
+
+    private void selectBattery() {
+        int select = SystemProperties.getInt(SELECT_BATTERY_PROPERTY, -1);
+        if(select != -1) {
+            mSelectBattery.setValueIndex(select);
+            mSelectBattery.setSummary(mSelectBattery.getEntries()[select]);
+        } else {
+            mSelectBattery.setValueIndex(SELECT_BATTERY_NORMAL);
+            mSelectBattery.setSummary(mSelectBattery.getEntries()[SELECT_BATTERY_NORMAL]);
         }
     }
 
@@ -498,10 +518,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         SystemProperties.set(MY_SEARCHBAR_PROPERTY, mDisableSearchbar.isChecked() ? "true" : "false");
     }
 
-    private void writeBatteryPercentage() {
-        SystemProperties.set(BATTERY_PERCENTAGE_PROPERTY, mBatteryPercentage.isChecked() ? "true" : "false");
-    }
-
     private void writeVoiceCapable() {
         SystemProperties.set(VOICE_CAPABLE_PROPERTY, mVoiceCapable.isChecked() ? "true" : "false");
     }
@@ -558,8 +574,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeNavikeyAlphaOptions();
         } else if (preference == mDisableSearchbar) {
             writeSearchbarOptions();
-        } else if (preference == mBatteryPercentage) {
-            writeBatteryPercentage();
         } else if (preference == mVoiceCapable) {
             writeVoiceCapable();
         } else if (preference == mSmsCapable) {
@@ -624,7 +638,19 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             confirmReset();
             return true;
         }
+        if (preference == mSelectBattery) {
+            SystemProperties.set(SELECT_BATTERY_PROPERTY, newValue.toString());
+            selectBattery();
+            setBatteryMode(newValue.toString());
+            confirmSystemUIReset();
+            return true;
+        }
         return false;
+    }
+
+    private void confirmSystemUIReset() {
+        showProgress(R.string.systemui_reset_progress);
+        new ThemeManager(getActivity()).restartLauncher(closeProgress);
     }
 
     private void confirmReset() {

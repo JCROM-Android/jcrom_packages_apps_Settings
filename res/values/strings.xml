@@ -4982,12 +4982,14 @@
     <string name="battery_percentage">Enable Battery Percentage</string>
     <string name="battery_percentage_summary">Display Battery Percentage</string>
     <string name="battery_percentage_progress">Refleshing SystemUI.\nPlease wait...</string>
+    <string name="select_battery_title">select Battery</string>
     <string name="voice_capable">voice capable</string>
     <string name="voice_capable_summary">Enable the value of config_voice_capable</string>
     <string name="sms_capable">sms capable</string>
     <string name="sms_capable_summary">Enable the value of config_sms_capable</string>
     <string name="drawer_transmission">Drawer\'s transmittance</string>
     <string name="drawer_transmission_summary">Transmittance of the drawer</string>
+    <string name="drawer_transmission_progress">Refleshing SystemUI.\nPlease wait...</string>
     <string name="lockscreen_transmission">Full-screen support of LockScreen</string>
     <string name="lockscreen_transmission_summary">Transmission of the navigation bar and status bar</string>
     <string name="lockscreen_transmission_progress">Refleshing SystemUI.\nPlease wait...</string>
@@ -5049,4 +5051,5 @@
     <string name="theme_disabled_message">Theme selection is currently disabled. If you want to set theme, please enable it.</string>
     <string name="theme_disabled_dialog_accept">Open Settings</string>
     <string name="theme_disabled_dialog_decline">Cancel</string>
+    <string name="systemui_reset_progress">Refleshing SystemUI.\nPlease wait...</string>
 </resources>

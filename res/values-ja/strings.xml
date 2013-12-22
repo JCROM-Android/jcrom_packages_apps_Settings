@@ -2120,6 +2120,7 @@
     <string name="battery_percentage">電池残量を％表示にする</string>
     <string name="battery_percentage_summary">電池残量を1％刻みで表示します</string>
     <string name="battery_percentage_progress">画面の再構築中...</string>
+    <string name="select_battery_title">電池残量表示を選択</string>
     <!-- Software Update -->
     <string name="software_update_title">JCROM の更新</string>
     <string name="software_update_desc">"JCROM を最新版に更新します。\n\n<li>電池残量が少ない状態では実行しないでください。</li>\n<li>更新ファイルのダウンロード後、自動で再起動して JCROM を更新します。</li></string>
@@ -2138,7 +2139,9 @@
     <string name="sms_capable_summary">config_sms_capable を有効にする</string>
     <string name="drawer_transmission">ドロワーの透過設定</string>
     <string name="drawer_transmission_summary">ドロワーを100％透過にします</string>
+    <string name="drawer_transmission_progress">画面の再構築中...</string>
     <string name="lockscreen_transmission">ロックスクリーン全画面設定</string>
     <string name="lockscreen_transmission_summary">ステータスバー、ナビゲーションバーを透過する</string>
     <string name="lockscreen_transmission_progress">画面の再構築中...</string>
+    <string name="systemui_reset_progress">画面の再構築中...</string>
 </resources>

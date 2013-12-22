@@ -92,10 +92,12 @@
             android:entries="@array/select_ui_entries"
             android:entryValues="@array/select_ui_values" />
 
-        <CheckBoxPreference
-            android:key="battery_percentage"
-            android:title="@string/battery_percentage"
-            android:summary="@string/battery_percentage_summary"/>
+        <ListPreference
+            android:key="select_battery"
+            android:title="@string/select_battery_title"
+            android:persistent="false"
+            android:entries="@array/select_battery_entries"
+            android:entryValues="@array/select_battery_values" />
 
         <CheckBoxPreference
             android:key="voice_capable"

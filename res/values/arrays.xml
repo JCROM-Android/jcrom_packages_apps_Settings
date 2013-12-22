@@ -990,6 +990,18 @@
         <item>1</item>
     </string-array>
 
+    <string-array name="select_battery_entries">
+        <item>Normal</item>
+        <item>Percentage</item>
+        <item>Theme</item>
+    </string-array>
+
+    <string-array name="select_battery_values" translatable="false" >
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <!-- Titles for overlay display devices preference. [CHAR LIMIT=35] -->
     <string-array name="overlay_display_devices_entries">
         <item>None</item>
