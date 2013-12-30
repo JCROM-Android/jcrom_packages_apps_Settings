@@ -4956,10 +4956,12 @@
     </string-array>
     <string name="number_of_homescreen">Number of Homescreen</string>
     <string name="number_of_homescreen_summary">Change number of Homescreen</string>
+    <string name="number_of_homescreen_summary_default">Using system default</string>
     <string name="number_of_homescreen_title">Select Number of Homescreen</string>
-    <string name ="gradient_setting">No Gradient</string>
-    <string name ="gradient_setting_summary">Disable Gradient of Homescreen</string>
-    <string name ="gradient_setting_progress">Refleshing Wallpaper.\nPlease wait...</string>
+    <string name="number_of_homescreen_changing_progress">Changing Number of Homescreen.\nPlease wait...</string>
+    <string name="gradient_setting">No Gradient</string>
+    <string name="gradient_setting_summary">Disable Gradient of Homescreen</string>
+    <string name="gradient_setting_progress">Refleshing Wallpaper.\nPlease wait...</string>
     <string name="launcher_landscape">Landscape launcher</string>
     <string name="launcher_landscape_summary">Launcher support landscape on Phone UI</string>
     <string name="launcher_landscape_progress">Restart launcher</string>
