@@ -1167,14 +1167,16 @@
 
     <!-- Titles for jcrom selectable number of homescreen. -->
     <string-array name="entries_number_of_homescreen">
+        <item>Use system default</item>
         <item>1 screen</item>
         <item>3 screens</item>
-        <item>5 screens(default)</item>
+        <item>5 screens</item>
         <item>7 screens</item>
     </string-array>
 
     <!-- Values for jcrom selectable number of homescreen. -->
     <string-array name="entryvalues_number_of_homescreen" translatable="false">
+        <item>0</item>
         <item>1</item>
         <item>3</item>
         <item>5</item>

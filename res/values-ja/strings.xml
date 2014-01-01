@@ -2082,10 +2082,12 @@
     <string name="force_fixed_wallpaper_summary" msgid="5441287412586128742">"ホームスクリーンをスクロールしても壁紙が連動しないようにします"</string>
     <string name="number_of_homescreen" msgid="4682013568742146245">ホームスクリーンの枚数</string>
     <string name="number_of_homescreen_summary" msgid="4682013568742146246">ホームスクリーンの枚数を変更する</string>
+    <string name="number_of_homescreen_summary_default">自動設定</string>
     <string name="number_of_homescreen_title" msgid="4682013568742146247">ホームスクリーン枚数選択</string>
-    <string name ="gradient_setting" msgid="4682013568742146248">グラデーション無効</string>
-    <string name ="gradient_setting_summary" msgid="4682013568742146249">ホームスクリーン上下のグラデーションを無効化する</string>
-    <string name ="gradient_setting_progress" msgid="4682013568742146250">壁紙の再構築中…</string>
+    <string name="number_of_homescreen_changing_progress">ホームスクリーン枚数変更中…</string>
+    <string name="gradient_setting" msgid="4682013568742146248">グラデーション無効</string>
+    <string name="gradient_setting_summary" msgid="4682013568742146249">ホームスクリーン上下のグラデーションを無効化する</string>
+    <string name="gradient_setting_progress" msgid="4682013568742146250">壁紙の再構築中…</string>
     <string name="launcher_landscape">ホームスクリーン横画面対応</string>
     <string name="launcher_landscape_summary">Phone UIのホームスクリーンを横画面対応します</string>
     <string name="launcher_landscape_progress">ホームスクリーン再起動中…</string>

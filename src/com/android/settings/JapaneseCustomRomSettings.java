@@ -150,32 +150,32 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
         }
 
-        // No way to setsummary after changing number of homescreen ? undertesting.
-        if ((SystemProperties.get(MY_HOMESCREEN_PROPERTY) != null) && (SystemProperties.get(MY_HOMESCREEN_PROPERTY) != "")) {
-            mNumHomescreen.setSummary(SystemProperties.get(MY_HOMESCREEN_PROPERTY));
-        }else{
+        String screenNumStr = SystemProperties.get("persist.sys.num.homescreen");
+        if(screenNumStr == null || screenNumStr.length() == 0) {
             mNumHomescreen.setSummary(R.string.number_of_homescreen_summary);
+        } else if (Integer.valueOf(screenNumStr) == 0){
+            mNumHomescreen.setSummary(R.string.number_of_homescreen_summary_default);
+        } else {
+            mNumHomescreen.setSummary(SystemProperties.get(MY_HOMESCREEN_PROPERTY));
         }
 
         mNumHomescreen.setOnPreferenceChangeListener(
                 new OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue){
-                        // TODO hand-generated method stub;;
-                          ListPreference _list = (ListPreference)findPreference(NUM_OF_HOMESCREEN);
+                        ListPreference _list = (ListPreference)findPreference(NUM_OF_HOMESCREEN);
 
-                          if(_list == preference && newValue != null){
-                              String screenNum = (String)newValue.toString();
+                        if(_list == preference && newValue != null){
+                            String screenNum = (String)newValue.toString();
 
-                              _list.setSummary(screenNum);
-                              writeNumberofScreenOptions(screenNum);
-
-                            try {
-                                ActivityManager am = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
-                                am.forceStopPackage("com.android.launcher3");
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            if(Integer.valueOf(screenNum) == 0){
+                                _list.setSummary(R.string.number_of_homescreen_summary_default);
+                            } else {
+                                _list.setSummary(screenNum);
                             }
+                            writeNumberofScreenOptions(screenNum);
+                            showProgress(R.string.number_of_homescreen_changing_progress);
+                            new ThemeManager(getActivity()).restartLauncher(closeProgress);
                         }
                         return true;
                     }
@@ -355,24 +355,27 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     }
 
     private int getNumHomescreen() {
-        int num = 2;
-        String sNum = SystemProperties.get(MY_HOMESCREEN_PROPERTY, "5");
+        int num = 0;
+        String sNum = SystemProperties.get(MY_HOMESCREEN_PROPERTY, "0");
         int iNum = Integer.parseInt(sNum);
         switch(iNum) {
-            case 1:
+            case 0:
                 num = 0;
                 break;
-            case 3:
+            case 1:
                 num = 1;
                 break;
-            case 5:
+            case 3:
                 num = 2;
                 break;
-            case 7:
+            case 5:
                 num = 3;
                 break;
+            case 7:
+                num = 4;
+                break;
             default:
-                num = 2;
+                num = 0;
                 break;
         }
         return num;
