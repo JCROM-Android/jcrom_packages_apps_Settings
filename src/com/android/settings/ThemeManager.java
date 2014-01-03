@@ -86,6 +86,9 @@ public class ThemeManager {
         "persist.sys.alpha.navikey",
         "persist.sys.prop.searchbar",
         "persist.sys.full.wallpaper",
+        "persist.sys.full.lockscreen",
+        "persist.sys.launcher.drawer",
+        "persist.sys.battery.select",
     };
 
     public static final String THEME_DIRECTORY = "/theme/settings/";
