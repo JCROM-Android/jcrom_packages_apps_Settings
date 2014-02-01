@@ -89,6 +89,7 @@ public class ThemeManager {
         "persist.sys.full.lockscreen",
         "persist.sys.launcher.drawer",
         "persist.sys.battery.select",
+        "persist.sys.keylayout.select",
     };
 
     public static final String THEME_DIRECTORY = "/theme/settings/";

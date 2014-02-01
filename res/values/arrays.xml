@@ -990,6 +990,20 @@
         <item>1</item>
     </string-array>
 
+    <string-array name="select_keylayout_entries">
+        <item>BACK - MENU - HOME - NOTIFICATION - RECENT</item>
+        <item>MENU - HOME - BACK - RECENT - NOTIFICATION</item>
+        <item>RECENT - NOTIFICATION - HOME - MENU - BACK</item>
+        <item>HOME - BACK - MENU - RECENT - NOTIFICATION</item>
+    </string-array>
+
+    <string-array name="select_keylayout_values" translatable="false" >
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string-array name="select_battery_entries">
         <item>Normal</item>
         <item>Percentage</item>

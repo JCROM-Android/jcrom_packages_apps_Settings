@@ -492,4 +492,10 @@
     <item>％表示を有効にする</item>
     <item>テーマを有効にする</item>
   </string-array>
+  <string-array name="select_keylayout_entries">
+    <item>戻る - メニュー - ホーム - 通知 - 履歴</item>
+    <item>メニュー - ホーム - 戻る - 履歴 - 通知</item>
+    <item>履歴 - 通知 - ホーム - メニュー - 戻る</item>
+    <item>ホーム - 戻る - メニュー - 履歴 - 通知</item>
+  </string-array>
 </resources>

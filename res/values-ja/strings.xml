@@ -2146,4 +2146,5 @@
     <string name="lockscreen_transmission_summary">ステータスバー、ナビゲーションバーを透過する</string>
     <string name="lockscreen_transmission_progress">画面の再構築中...</string>
     <string name="systemui_reset_progress">画面の再構築中...</string>
+    <string name="select_keylayout_title">キーレイアウトを選択</string>
 </resources>

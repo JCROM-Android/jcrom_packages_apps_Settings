@@ -53,6 +53,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String SMS_CAPABLE_PROPERTY = "persist.sys.sms.capable";
     private static final String LAUNCHER_DRAWER_PROPERTY = "persist.sys.launcher.drawer";
     private static final String FULL_LOCKSCREEN_PROPERTY = "persist.sys.full.lockscreen";
+    private static final String SELECT_KEYLAYOUT_PROPERTY = "persist.sys.keylayout.select";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -74,11 +75,13 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String SMS_CAPABLE_KEY = "sms_capable";
     private static final String LAUNCHER_DRAWER_KEY = "drawer_transmission";
     private static final String FULL_LOCKSCREEN_KEY = "lockscreen_transmission";
+    private static final String SELECT_KEYLAYOUT_KEY = "select_keylayout";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
     private final ArrayList<Preference> mBatteryPrefs = new ArrayList<Preference>();
+    private final ArrayList<Preference> mKeyLayoutPrefs = new ArrayList<Preference>();
     private ListPreference mSelectUi;
     private CheckBoxPreference mActionBarBottom;
     private CheckBoxPreference mForceMyHobby;
@@ -100,6 +103,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mSmsCapable;
     private CheckBoxPreference mLauncherDrawer;
     private CheckBoxPreference mFullLockscreen;
+    private ListPreference mSelectKeyLayout;
 
     private String mAndroidId;
 
@@ -127,6 +131,11 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mBatteryPrefs.add(mSelectBattery);
         mSelectBattery.setOnPreferenceChangeListener(this);
         selectBattery();
+
+        mSelectKeyLayout = (ListPreference) findPreference(SELECT_KEYLAYOUT_KEY);
+        mKeyLayoutPrefs.add(mSelectKeyLayout);
+        mSelectKeyLayout.setOnPreferenceChangeListener(this);
+        selectKeyLayout();
 
         mActionBarBottom = (CheckBoxPreference) findPreference(ACTIONBAR_BOTTOM_KEY);
         mForceMyHobby = (CheckBoxPreference) findPreference(FORCE_MY_HOBBY_KEY);
@@ -421,6 +430,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         SystemProperties.set(SELECT_BATTERY_PROPERTY, String.valueOf(battery_mode));
     }
 
+    private void setKeyLayoutMode(String select_keylayout) {
+        SystemProperties.set(SELECT_KEYLAYOUT_PROPERTY, select_keylayout);
+    }
+
     private void selectUi() {
         int select = SystemProperties.getInt(SELECT_UI_PROPERTY, -1);
         if(select != -1) {
@@ -440,6 +453,17 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         } else {
             mSelectBattery.setValueIndex(SELECT_BATTERY_NORMAL);
             mSelectBattery.setSummary(mSelectBattery.getEntries()[SELECT_BATTERY_NORMAL]);
+        }
+    }
+
+    private void selectKeyLayout() {
+        int select = SystemProperties.getInt(SELECT_KEYLAYOUT_PROPERTY, -1);
+        if(select != -1) {
+            mSelectKeyLayout.setValueIndex(select);
+            mSelectKeyLayout.setSummary(mSelectKeyLayout.getEntries()[select]);
+        } else {
+            mSelectKeyLayout.setValueIndex(0);
+            mSelectKeyLayout.setSummary(mSelectKeyLayout.getEntries()[0]);
         }
     }
 
@@ -648,6 +672,13 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             confirmSystemUIReset();
             return true;
         }
+        if (preference == mSelectKeyLayout) {
+            SystemProperties.set(SELECT_KEYLAYOUT_PROPERTY, newValue.toString());
+            selectKeyLayout();
+            setKeyLayoutMode(newValue.toString());
+            confirmSystemUIReset();
+            return true;
+        }        
         return false;
     }
 

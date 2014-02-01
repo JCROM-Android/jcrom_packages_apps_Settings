@@ -5054,4 +5054,5 @@
     <string name="theme_disabled_dialog_accept">Open Settings</string>
     <string name="theme_disabled_dialog_decline">Cancel</string>
     <string name="systemui_reset_progress">Refleshing SystemUI.\nPlease wait...</string>
+    <string name="select_keylayout_title">select KeyLayout</string>
 </resources>

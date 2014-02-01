@@ -93,6 +93,13 @@
             android:entryValues="@array/select_ui_values" />
 
         <ListPreference
+            android:key="select_keylayout"
+            android:title="@string/select_keylayout_title"
+            android:persistent="false"
+            android:entries="@array/select_keylayout_entries"
+            android:entryValues="@array/select_keylayout_values" />
+
+        <ListPreference
             android:key="select_battery"
             android:title="@string/select_battery_title"
             android:persistent="false"
