@@ -13,6 +13,7 @@ import android.os.SystemProperties;
 import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
@@ -76,6 +77,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String LAUNCHER_DRAWER_KEY = "drawer_transmission";
     private static final String FULL_LOCKSCREEN_KEY = "lockscreen_transmission";
     private static final String SELECT_KEYLAYOUT_KEY = "select_keylayout";
+    private static final String INSTALL_BLACK_LIST_KEY = "install_blacklist";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -104,6 +106,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mLauncherDrawer;
     private CheckBoxPreference mFullLockscreen;
     private ListPreference mSelectKeyLayout;
+    private EditTextPreference mEditInstallBlackList;
 
     private String mAndroidId;
 
@@ -154,6 +157,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mSmsCapable = (CheckBoxPreference) findPreference(SMS_CAPABLE_KEY);
         mLauncherDrawer = (CheckBoxPreference) findPreference(LAUNCHER_DRAWER_KEY);
         mFullLockscreen = (CheckBoxPreference) findPreference(FULL_LOCKSCREEN_KEY);
+        mEditInstallBlackList = (EditTextPreference) findPreference(INSTALL_BLACK_LIST_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -284,6 +288,17 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 }
             });
 
+        mEditInstallBlackList.setOnPreferenceChangeListener(
+                new OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue){
+                        if (newValue != null) {
+                            Settings.Secure.putString(getActivity().getContentResolver(),Settings.Secure.INSTALL_BLACK_LIST,newValue.toString());
+                        }
+                        return true;
+                    }
+                });
+
     }
 
     @Override
@@ -361,6 +376,11 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     }
     private void updateFullLockscreen() {
         mFullLockscreen.setChecked(SystemProperties.getBoolean(FULL_LOCKSCREEN_PROPERTY, false));
+    }
+    private void updateInstallBlacklist() {
+        String blacklist = Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.INSTALL_BLACK_LIST);
+        if (blacklist == null) blacklist = "";
+        mEditInstallBlackList.setText(blacklist);
     }
 
     private int getNumHomescreen() {

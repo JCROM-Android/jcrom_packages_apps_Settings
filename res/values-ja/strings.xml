@@ -2147,4 +2147,6 @@
     <string name="lockscreen_transmission_progress">画面の再構築中...</string>
     <string name="systemui_reset_progress">画面の再構築中...</string>
     <string name="select_keylayout_title">キーレイアウトを選択</string>
+    <string name="install_blacklist">ブラックリスト編集</string>
+    <string name="install_blacklist_summary">インストールを禁止するアプリのパッケージ名をカンマ(,)区切りで入力してください。</string>
 </resources>

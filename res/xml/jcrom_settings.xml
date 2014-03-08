@@ -39,6 +39,12 @@
             android:key="hide_theme_images"
             android:title="@string/hide_theme_images"
             android:summary="@string/hide_theme_images_summary"/>
+        
+        <EditTextPreference
+            android:key="install_blacklist"
+            android:title="@string/install_blacklist"
+            android:summary="@string/install_blacklist_summary"
+            android:dialogTitle="@string/install_blacklist"/>
             
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/jcrom_settings_category_launcher" >
