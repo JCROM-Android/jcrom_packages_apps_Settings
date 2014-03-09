@@ -39,9 +39,15 @@
             android:key="hide_theme_images"
             android:title="@string/hide_theme_images"
             android:summary="@string/hide_theme_images_summary"/>
-        
+
+        <CheckBoxPreference
+            android:key="enable_blacklist"
+            android:title="@string/enable_blacklist" />
+
         <EditTextPreference
             android:key="install_blacklist"
+            android:dependency="enable_blacklist"
+            android:layout="?android:attr/preferenceLayoutChild"
             android:title="@string/install_blacklist"
             android:summary="@string/install_blacklist_summary"
             android:dialogTitle="@string/install_blacklist"/>

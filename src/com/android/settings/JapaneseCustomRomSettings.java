@@ -55,6 +55,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String LAUNCHER_DRAWER_PROPERTY = "persist.sys.launcher.drawer";
     private static final String FULL_LOCKSCREEN_PROPERTY = "persist.sys.full.lockscreen";
     private static final String SELECT_KEYLAYOUT_PROPERTY = "persist.sys.keylayout.select";
+    private static final String SELECT_BLACKLIST_PROPERTY = "persist.sys.blacklist";
 
     private static final String SELECT_UI_KEY = "select_ui";
     private static final String ACTIONBAR_BOTTOM_KEY = "actionbar_bottom";
@@ -78,6 +79,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private static final String FULL_LOCKSCREEN_KEY = "lockscreen_transmission";
     private static final String SELECT_KEYLAYOUT_KEY = "select_keylayout";
     private static final String INSTALL_BLACK_LIST_KEY = "install_blacklist";
+    private static final String SELECT_BLACKLIST_KEY = "enable_blacklist";
 
     private static final String TAG = "JapaneseCustomRomSettings";
 
@@ -107,6 +109,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     private CheckBoxPreference mFullLockscreen;
     private ListPreference mSelectKeyLayout;
     private EditTextPreference mEditInstallBlackList;
+    private CheckBoxPreference mSelectBlackList;
 
     private String mAndroidId;
 
@@ -158,6 +161,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         mLauncherDrawer = (CheckBoxPreference) findPreference(LAUNCHER_DRAWER_KEY);
         mFullLockscreen = (CheckBoxPreference) findPreference(FULL_LOCKSCREEN_KEY);
         mEditInstallBlackList = (EditTextPreference) findPreference(INSTALL_BLACK_LIST_KEY);
+        mSelectBlackList = (CheckBoxPreference) findPreference(SELECT_BLACKLIST_KEY);
 
         if ((SystemProperties.get(MY_THEME_PROPERTY) != null) && (SystemProperties.get(MY_THEME_PROPERTY) != "")) {
             mTheme.setSummary(SystemProperties.get(MY_THEME_PROPERTY));
@@ -326,6 +330,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         updateSmsCapable();
         updateLauncherDrawer();
         updateFullLockscreen();
+        updateBlackList();
     }
 
     private void updateActionBarBottomOptions() {
@@ -381,6 +386,9 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         String blacklist = Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.INSTALL_BLACK_LIST);
         if (blacklist == null) blacklist = "";
         mEditInstallBlackList.setText(blacklist);
+    }
+    private void updateBlackList() {
+        mSelectBlackList.setChecked(SystemProperties.getBoolean(SELECT_BLACKLIST_PROPERTY, false));
     }
 
     private int getNumHomescreen() {
@@ -581,6 +589,10 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         SystemProperties.set(FULL_LOCKSCREEN_PROPERTY, mFullLockscreen.isChecked() ? "true" : "false");
     }
 
+    private void writeBlackListOptions() {
+        SystemProperties.set(SELECT_BLACKLIST_PROPERTY, mSelectBlackList.isChecked() ? "true" : "false");
+    }
+
     @Override
     public void onClickFileList(File file) {
         if(file != null) {
@@ -629,6 +641,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             writeLauncherDrawer();
         } else if (preference == mFullLockscreen) {
             writeFullLockscreen();
+        } else if (preference == mSelectBlackList) {
+            writeBlackListOptions();
         } else {
         }
 

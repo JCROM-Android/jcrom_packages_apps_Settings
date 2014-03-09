@@ -5059,4 +5059,5 @@
     <string name="select_keylayout_title">select KeyLayout</string>
     <string name="install_blacklist">Edit install black list</string>
     <string name="install_blacklist_summary">Edit install black list. Please enter the package name, separated by commas.</string>
+    <string name="enable_blacklist">Enabling black list</string>
 </resources>
