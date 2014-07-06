@@ -3,6 +3,8 @@ package com.android.settings;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ActivityManagerNative;
+import android.app.IActivityManager;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -15,6 +17,7 @@ import android.graphics.Matrix;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.os.RemoteException;
 import android.os.SystemProperties;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -48,6 +51,7 @@ import java.io.BufferedInputStream;
 import android.graphics.drawable.NinePatchDrawable;
 import android.graphics.NinePatch;
 
+import java.util.Locale;
 import java.util.Properties;
 import java.util.HashMap;
 
@@ -102,7 +106,10 @@ public class ThemeManager {
     private WindowManager mWindowManager;
     private Handler mHandler;
     private static final String TAG = "ThemeManager";
-    private static int wait_time = 7500; /* ms */
+    private static int wait_time = 500; /* ms */
+    static final String PROP_REFRESH_THEME = "sys.refresh_theme";
+    private boolean mClearFontExists = false;
+    private boolean mSetFontExists = false;
 
     private HashMap<String,String> mSettingsList = new HashMap<String,String>();
 
@@ -114,18 +121,20 @@ public class ThemeManager {
         mHandler = new Handler();
     }
 
-    public void restartLauncher(final Runnable afterProc) {
-        restartSystemUI(new Runnable() {
+    public void restartLauncher() {
+        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        am.forceStopPackage("com.android.launcher3");
+    }
+
+    public void restartSystemUI(final Runnable afterProc) {
+        mHandler.post(new Runnable() {
             public void run() {
-                String forceHobby = SystemProperties.get("persist.sys.force.hobby");
-                if (forceHobby.equals("true")) {
-                    applyTheme();
-                }
-                if (afterProc != null) {
-                    afterProc.run();
-                }
+                SystemProperties.set(THEME_LOCK, "true");
+                Intent jcservice = (new Intent()).setClassName("com.android.systemui", "com.android.systemui.JcromService");
+                mContext.startActivity(jcservice);
+                mHandler.postDelayed(afterProc, wait_time);
             }
-        });
+        });        
     }
 
     private void themeZipInstall(String themeFile) {
@@ -228,7 +237,7 @@ public class ThemeManager {
         return themePath;
     }
 
-    public void setTheme(final String themeName, final Runnable afterProc, final boolean performReset) {
+    public void setTheme(final String themeName, final Runnable afterProc) {
         new Thread(new Runnable() {
             public void run() {
                 themeAllClear();
@@ -246,56 +255,29 @@ public class ThemeManager {
                         themeAllInstall();
                     }
                 }
+                mSetFontExists = checkFontFile();
                 setDefaultSounds();
                 setMySounds();
                 loadMySettings();
                 setFlickWnnTheme();
-
-                if (performReset == true) {
-                    applyTheme();
-                    PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
-                    pm.reboot(null);
-                } else {
-                    restartSystemUI(new Runnable() {
-                        public void run() {
-                            applyTheme();
-                            if (afterProc != null) {
-                                afterProc.run();
-                            }
+                SystemProperties.set(PROP_REFRESH_THEME, "true");
+                changeTheme(new Runnable() {
+                    public void run() {
+                        setWallpaper();
+                        if (afterProc != null) {
+                            afterProc.run();
                         }
-                    });
-                }
+                    }
+                });
             }
         }).start();
     }
 
-    public void clearTheme(final Runnable afterProc, final boolean performReset) {
+    public void clearTheme(final Runnable afterProc) {
         setDefaultSounds();
         themeAllClear();
-
-        if (performReset == true) {
-            try {
-                mWallpaperManager.clear();
-            } catch (IOException e) {
-            }
-            PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
-            pm.reboot(null);
-        } else {
-            restartSystemUI(new Runnable() {
-                public void run() {
-                    try {
-                        mWallpaperManager.clear();
-                    } catch (IOException e) {
-                    }
-                    if (afterProc != null) {
-                        afterProc.run();
-                    }
-                }
-            });
-        }
-
-
-        restartSystemUI(new Runnable() {
+        SystemProperties.set(PROP_REFRESH_THEME, "true");
+        changeTheme(new Runnable() {
             public void run() {
                 try {
                     mWallpaperManager.clear();
@@ -450,29 +432,38 @@ public class ThemeManager {
     }
 
     public void themeAllClear() {
+        mClearFontExists = checkFontFile();
         for (String dir : sThemeDirs) {
             themeClear(dir);
         }
     }
 
-    private void restartSystemUI(final Runnable postproc) {
+    private boolean checkFontFile() {
+        return checkFile("theme/font", "fonts.xml");
+    }
+
+    private void changeTheme(final Runnable postproc) {
         mHandler.post(new Runnable() {
             public void run() {
                 SystemProperties.set(THEME_LOCK, "true");
 
                 try {
-                    ActivityManager am = (ActivityManager) mContext
-                            .getSystemService(Context.ACTIVITY_SERVICE);
+                    ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
                     am.forceStopPackage("com.android.launcher3");
-                    Intent jcservice = (new Intent())
-                            .setClassName("com.android.systemui",
-                                    "com.android.systemui.JcromService");
-                    mContext.startActivity(jcservice);
+                    Intent intent = new Intent(Intent.ACTION_JCROM_THEME_CHANGE);
+                    mContext.sendBroadcast(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 mHandler.postDelayed(postproc, wait_time);
+
+                if (mClearFontExists || mSetFontExists) {
+                    mClearFontExists = false;
+                    mSetFontExists = false;
+                    ThemeSetFont themeSetFont = new ThemeSetFont();
+                    themeSetFont.setTimeout(mContext, 500);
+                }
             }
         });
     }
@@ -484,9 +475,19 @@ public class ThemeManager {
         }
     }
 
-    private boolean checkFile(String fileName) {
+    private boolean checkFile(String dirName, String fileName) {
         StringBuilder builder = new StringBuilder();
-        builder.append(Environment.getDataDirectory().toString() + "/theme/wallpaper/");
+        builder.append(Environment.getDataDirectory().toString() + "/" + dirName + "/");
+        builder.append(File.separator);
+        builder.append(fileName);
+        String filePath = builder.toString();
+        File file = new File(filePath);
+        return file.exists();
+    }
+
+    private boolean checkPictureFile(String dirName, String fileName) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(Environment.getDataDirectory().toString() + "/" + dirName + "/");
         builder.append(File.separator);
         builder.append(fileName);
         String filePath = builder.toString();
@@ -512,15 +513,15 @@ public class ThemeManager {
         return extension;
     }
 
-    private void applyTheme() {
-        if(checkFile("home_wallpaper_port") && checkFile("home_wallpaper_land")) {
+    private void setWallpaper() {
+        if(checkPictureFile("theme/wallpaper", "home_wallpaper_port") && checkPictureFile("theme/wallpaper", "home_wallpaper_land")) {
             setLiveWallpaper();
         } else {
-            setWallpaper();
+            setPictureWallpaper();
         }
     }
 
-    private void setWallpaper() {
+    private void setPictureWallpaper() {
         Bitmap bitmapWallpaper;
         String MY_FRAME_FILE = "home_wallpaper";
         StringBuilder builder = new StringBuilder();

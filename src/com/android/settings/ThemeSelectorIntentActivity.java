@@ -24,7 +24,6 @@ public class ThemeSelectorIntentActivity extends Activity
 	private ProgressDialog mProgressDialog;
 	private String newTheme;
 	private AlertDialog mConfirmDialog;
-	private AlertDialog mErrorDialog;
 
 	@Override
 	public void onCreate(Bundle icicle){
@@ -32,31 +31,15 @@ public class ThemeSelectorIntentActivity extends Activity
 		setContentView(R.layout.theme_selector_intent_activity);
 
 		if(SystemProperties.getBoolean(MY_HOBBY_PROPERTY, false)){
-
 			Intent intent = getIntent();
 			String[] strs = (getIntent().getData().toString()).split("\\+");
 			if((strs.length == 4) && (strs[1].equals("jcrom.new.theme"))) {
 				newTheme = strs[2];
-				if(strs[3].equals("true")) {
-					onButtonSelected(true);
-				} else {
-					onButtonSelected(false);
-				}
-				return;
 			} else {
 				newTheme = intent.getStringExtra("jcrom.new.theme");
 			}
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.set_theme_confirm_reboot);
-			builder.setOnCancelListener(this);
-			builder.setPositiveButton(R.string.set_theme_confirm_yes, this);
-			builder.setNegativeButton(R.string.set_theme_confirm_no, this);
-		
-			mConfirmDialog = builder.create();
-			mConfirmDialog.show();
+			setThemeManager();
 		}else{
-
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setTitle(R.string.theme_disabled_title);
@@ -64,9 +47,8 @@ public class ThemeSelectorIntentActivity extends Activity
 			builder.setOnCancelListener(this);
 			builder.setPositiveButton(R.string.theme_disabled_dialog_accept, this);
 			builder.setNegativeButton(R.string.theme_disabled_dialog_decline, this);
-
-			mErrorDialog = builder.create();
-			mErrorDialog.show();
+			mConfirmDialog = builder.create();
+			mConfirmDialog.show();
 		}
 	}
 
@@ -80,7 +62,7 @@ public class ThemeSelectorIntentActivity extends Activity
 		mProgressDialog.show();
 	}
 
-	private final Runnable closeProgress = new Runnable() {
+	private final Runnable closeProcess = new Runnable() {
 		@Override
 		public void run() {
 			SystemProperties.set(THEME_LOCK, "false");
@@ -104,36 +86,22 @@ public class ThemeSelectorIntentActivity extends Activity
 	@Override
 	public void onClick(DialogInterface dialog, int which){
 		
-		if(mConfirmDialog == dialog){
-			boolean performReset = false;
-		
-			switch(which){
-			case DialogInterface.BUTTON1:
-				performReset = true;
-				onButtonSelected(performReset);
-				break;
-	
-			case DialogInterface.BUTTON2:
-				onButtonSelected(performReset);
-				break;
-			}
-		}else{
-			switch(which){
-			case DialogInterface.BUTTON1:
-				Intent intent = new Intent();
-				intent.setAction("android.settings.JAPANESE_CUSTOM_ROM_SETTINGS");
-				startActivity(intent);
-				break;
-	
-			case DialogInterface.BUTTON2:
-				setResult(RESULT_CANCELED);
-				finish();
-				break;
+		if(mConfirmDialog == dialog) {
+			switch(which) {
+				case DialogInterface.BUTTON1:
+					Intent intent = new Intent();
+					intent.setAction("android.settings.JAPANESE_CUSTOM_ROM_SETTINGS");
+					startActivity(intent);
+					break;
+				case DialogInterface.BUTTON2:
+					setResult(RESULT_CANCELED);
+					finish();
+					break;
 			}
 		}
 	}
 
-	private void onButtonSelected(boolean performReset){
+	private void setThemeManager(){
 
 		boolean rotationLock = RotationPolicy.isRotationLocked(mActivity);
 
@@ -145,7 +113,7 @@ public class ThemeSelectorIntentActivity extends Activity
 
         RotationPolicy.setRotationLock(mActivity, true);
 
-		showProgress(R.string.progress_set_theme);
+        showProgress(R.string.progress_set_theme);
 
 		SystemProperties.set(MY_THEME_PROPERTY, newTheme);
 		SystemProperties.set(THEME_LOCK, "true");
@@ -153,7 +121,7 @@ public class ThemeSelectorIntentActivity extends Activity
         ThemeSetTimeout themeTimeout = new ThemeSetTimeout();
         themeTimeout.setTimeout(mActivity, JC_LIMIT);
 
-		new ThemeManager(mActivity).setTheme(newTheme, closeProgress, performReset);
+		new ThemeManager(mActivity).setTheme(newTheme, closeProcess);
 	}
 
 	@Override

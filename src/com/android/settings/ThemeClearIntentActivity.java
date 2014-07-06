@@ -2,26 +2,20 @@
 package com.android.settings;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemProperties;
-import com.android.internal.view.RotationPolicy;
 import java.io.File;
 
-public class ThemeClearIntentActivity extends Activity 
-	implements DialogInterface.OnClickListener, DialogInterface.OnCancelListener {
+public class ThemeClearIntentActivity extends Activity {
 
 	private static final String MY_THEME_PROPERTY = "persist.sys.theme";
     private static final String MY_HOBBY_PROPERTY = "persist.sys.force.hobby";
     private static final String THEME_LOCK = "persist.sys.theme.lock";
 	private Activity mActivity = this;
 	private ProgressDialog mProgressDialog;
-	private AlertDialog mConfirmDialog;
 
 	@Override
 	public void onCreate(Bundle icicle){
@@ -40,21 +34,12 @@ public class ThemeClearIntentActivity extends Activity
         	deleteThemeInfo(uninstallTheme);
         	SystemProperties.set(property_name, "");
 	        if(currentTheme.equals(uninstallTheme)) {
-    	    	onButtonSelected(false);
+    	    	setThemeClear();
         	}else {
         		finish();
         	}
-        } else if((null != fromSelectorValue) && fromSelectorValue.equals("true")) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.unset_theme_confirm_reboot);
-			builder.setOnCancelListener(this);
-			builder.setPositiveButton(R.string.set_theme_confirm_yes, this);
-			builder.setNegativeButton(R.string.set_theme_confirm_no, this);
-		
-			mConfirmDialog = builder.create();
-			mConfirmDialog.show();
         } else {
-        	onButtonSelected(false);
+        	setThemeClear();
         }
 	}
 
@@ -95,51 +80,28 @@ public class ThemeClearIntentActivity extends Activity
 		mProgressDialog.show();
 	}
 
-    private final Runnable closeProgress = new Runnable() {
+    private final Runnable closeProcess = new Runnable() {
         @Override
         public void run() {
             SystemProperties.set(THEME_LOCK, "false");
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
                 mProgressDialog = null;
+
+                Intent intent = new Intent();
+                intent.setClassName("com.android.launcher3", "com.android.launcher3.Launcher");
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
                 finish();
             }
         }
     };
 
-	private void onButtonSelected(boolean performReset){
-		showProgress(R.string.progress_clear_theme);
-		setThemeClear();
-		new ThemeManager(mActivity).clearTheme(closeProgress, performReset);
-	}
-
 	private void setThemeClear() {
+		showProgress(R.string.progress_clear_theme);
 		SystemProperties.set(MY_HOBBY_PROPERTY, "false");
 		SystemProperties.set(MY_THEME_PROPERTY, "");
+		new ThemeManager(mActivity).clearTheme(closeProcess);
 	}
-
-	@Override
-	public void onClick(DialogInterface dialog, int which){
-		
-		if(mConfirmDialog == dialog){
-			boolean performReset = false;
-		
-			switch(which){
-			case DialogInterface.BUTTON1:
-				performReset = true;
-				onButtonSelected(performReset);
-				break;
-	
-			case DialogInterface.BUTTON2:
-				onButtonSelected(performReset);
-				break;
-			}
-		}
-	}
-
-	@Override
-	public void onCancel(DialogInterface dialog){
-		finish();
-	}
-
 }

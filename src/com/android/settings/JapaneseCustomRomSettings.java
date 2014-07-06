@@ -30,8 +30,7 @@ import java.io.File;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
-public class JapaneseCustomRomSettings extends PreferenceFragment
-        implements OnPreferenceChangeListener, FileListDialog.onFileListDialogListener {
+public class JapaneseCustomRomSettings extends PreferenceFragment implements OnPreferenceChangeListener {
 
     private static final String SELECT_UI_PROPERTY = "persist.sys.ui.select";
     private static final String SELECT_UI_PHONE_PROPERTY = "persist.sys.ui.phone";
@@ -191,8 +190,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                                 _list.setSummary(screenNum);
                             }
                             writeNumberofScreenOptions(screenNum);
-                            showProgress(R.string.number_of_homescreen_changing_progress);
-                            new ThemeManager(getActivity()).restartLauncher(closeProgress);
+                            new ThemeManager(getActivity()).restartLauncher();
                         }
                         return true;
                     }
@@ -206,12 +204,11 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 new OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        // TODO hand-generated method stub;;
+
                         CheckBoxPreference _cb = (CheckBoxPreference) findPreference(GRADIENT_KEY);
 
                         if (_cb == preference && newValue != null) {
-                            showProgress(R.string.gradient_setting_progress);
-                            new ThemeManager(getActivity()).restartLauncher(closeProgress);
+                            new ThemeManager(getActivity()).restartLauncher();
                         }
                         return true;
                     }
@@ -272,21 +269,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     CheckBoxPreference _cb = (CheckBoxPreference) findPreference(LAUNCHER_DRAWER_KEY);
                     if (_cb == preference && newValue != null) {
-                        showProgress(R.string.drawer_transmission_progress);
-                        new ThemeManager(getActivity()).restartLauncher(closeProgress);
-                    }
-                    return true;
-                }
-            });
-
-        mFullLockscreen.setOnPreferenceChangeListener(
-            new OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    CheckBoxPreference _cb = (CheckBoxPreference) findPreference(FULL_LOCKSCREEN_KEY);
-                    if (_cb == preference && newValue != null) {
-                        showProgress(R.string.lockscreen_transmission_progress);
-                        new ThemeManager(getActivity()).restartLauncher(closeProgress);
+                        new ThemeManager(getActivity()).restartLauncher();
                     }
                     return true;
                 }
@@ -497,8 +480,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     private void writeNotificationOptions() {
         SystemProperties.set(MY_NOTIFICATION_PROPERTY, mNotification.isChecked() ? "true" : "false");
-        showProgress(R.string.notification_progress);
-        new ThemeManager(getActivity()).restartLauncher(closeProgress);
+        new ThemeManager(getActivity()).restartSystemUI(closeProgress);
     }
 
     private void writeActionBarBottomOptions() {
@@ -514,7 +496,9 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         if (!(mForceMyHobby.isChecked())) {
             SystemProperties.set(MY_THEME_PROPERTY, "");
             mTheme.setSummary("");
-            confirmResetForUnetTheme();
+            //confirmResetForUnetTheme();
+            showProgress(R.string.progress_clear_theme);
+            new ThemeManager(getActivity()).clearTheme(closeProgress);
         }
     }
 
@@ -557,8 +541,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     private void writeLauncherLandscape() {
         SystemProperties.set(LAUNCHER_LANDSCAPE_PROPERTY, mLauncherLandscape.isChecked() ? "true" : "false");
-        showProgress(R.string.launcher_landscape_progress);
-        new ThemeManager(getActivity()).restartLauncher(closeProgress);
+        new ThemeManager(getActivity()).restartLauncher();
     }
 
     private void writeLockscreenRotate() {
@@ -591,15 +574,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
 
     private void writeBlackListOptions() {
         SystemProperties.set(SELECT_BLACKLIST_PROPERTY, mSelectBlackList.isChecked() ? "true" : "false");
-    }
-
-    @Override
-    public void onClickFileList(File file) {
-        if(file != null) {
-            SystemProperties.set(MY_THEME_PROPERTY, removeFileExtension(file.getName()));
-            mTheme.setSummary(removeFileExtension(file.getName()));
-            confirmResetForSetTheme(file);
-        }
     }
 
     @Override
@@ -667,6 +641,11 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
                 mProgressDialog = null;
+
+                Intent intent = new Intent();
+                intent.setClassName("com.android.launcher3", "com.android.launcher3.Launcher");
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         }
     };
@@ -717,8 +696,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
     }
 
     private void confirmSystemUIReset() {
-        showProgress(R.string.systemui_reset_progress);
-        new ThemeManager(getActivity()).restartLauncher(closeProgress);
+        new ThemeManager(getActivity()).restartSystemUI(closeProgress);
     }
 
     private void confirmReset() {
@@ -750,25 +728,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
         }
     }
 
-    private void confirmResetForSetTheme(final File file) {
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                boolean performReset = false;
-                if (which == DialogInterface.BUTTON_POSITIVE) {
-                    performReset = true;
-                }
-                showProgress(R.string.progress_set_theme);
-                new ThemeManager(getActivity()).setTheme(removeFileExtension(file.getName()), closeProgress, performReset);
-            }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.set_theme_confirm_reboot);
-        builder.setPositiveButton(R.string.set_theme_confirm_yes, listener);
-        builder.setNegativeButton(R.string.set_theme_confirm_no, listener);
-        builder.show();
-    }
-
     private void confirmResetForUnetTheme() {
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -777,7 +736,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment
                     performReset = true;
                 }
                 showProgress(R.string.progress_clear_theme);
-                new ThemeManager(getActivity()).clearTheme(closeProgress, performReset);
+                new ThemeManager(getActivity()).clearTheme(closeProgress);
             }
         };
 
