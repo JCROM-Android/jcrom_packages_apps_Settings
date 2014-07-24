@@ -35,6 +35,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
     private static final String SELECT_UI_PROPERTY = "persist.sys.ui.select";
     private static final String SELECT_UI_PHONE_PROPERTY = "persist.sys.ui.phone";
     private static final String SELECT_UI_TABLET_PROPERTY = "persist.sys.ui.tablet";
+    private static final String SELECT_UI_PHABLET_PROPERTY = "persist.sys.ui.phablet";
     private static final String ACTIONBAR_BOTTOM_PROPERTY = "persist.sys.actionbar.bottom";
     private static final String MY_HOBBY_PROPERTY = "persist.sys.force.hobby";
     private static final String MY_THEME_PROPERTY = "persist.sys.theme";
@@ -419,6 +420,8 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
             density = SystemProperties.getInt(SELECT_UI_PHONE_PROPERTY, defaultDensity);
         } else if (select == 1) {
             density = SystemProperties.getInt(SELECT_UI_TABLET_PROPERTY, defaultDensity);
+        } else if (select == 2) {
+            density = SystemProperties.getInt(SELECT_UI_PHABLET_PROPERTY, defaultDensity);
         } else {
             density = defaultDensity;
         }
