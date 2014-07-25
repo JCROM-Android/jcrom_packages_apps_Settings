@@ -71,15 +71,20 @@ public class SoftwareUpdate extends Fragment {
     private static final int KEYGUARD_REQUEST = 55;
     private static final String FILE_LOCAL_PATH = "/cache/jcrom.zip";
     private static final String FILE_LOCAL_TMP_PATH = "/cache/jcrom.zip.tmp";
+    private static final String FILE_LOCAL_GAPPS_PATH = "/cache/gapps.zip";
+    private static final String FILE_LOCAL_GAPPS_TMP_PATH = "/cache/gapps.zip.tmp";
     private static final String KEY_JCROM_VERSION = "ro.jcrom.version";
+    private static final String URL_JCROM_UPDATE = "http://jcrom.net/release/aosp/jcrom_update.xml";
 
     private View mContentView;
     private Button mInitiateButton;
     private Button mCheckButton;
     private String jcrom_version = "";
     private String jcrom_link = "";
+    private String gapps_link = "";
     private PowerManager pm = null;
     private WakeLock lock = null;
+    private boolean mWakeLockFlag = false;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -147,6 +152,7 @@ public class SoftwareUpdate extends Fragment {
         @Override
         public void onPreExecute() {
             lock.acquire();
+            mWakeLockFlag = true;
             this.progressDialog = new ProgressDialog(getActivity());
             this.progressDialog.setMessage("Downloading");
             this.progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
@@ -164,9 +170,8 @@ public class SoftwareUpdate extends Fragment {
             this.progressDialog.show();
         }
         
-        @Override
-        public Integer doInBackground(Integer...ARGS) {
-            File temporaryFile = new File (FILE_LOCAL_PATH + ".tmp");
+        public void downloadFile(String downloadfile, String downloadlink, boolean reboot) {
+            File temporaryFile = new File (downloadfile + ".tmp");
             if(temporaryFile.exists()) {
                 this.downloadFileSize = 0;
                 this.downloadFileSizeCount = (int)temporaryFile.length();
@@ -181,13 +186,13 @@ public class SoftwareUpdate extends Fragment {
             }
 
             Resources res = getResources();
-            Log.d(TAG, jcrom_version + ": " + jcrom_link);
+            Log.d(TAG, downloadlink + ": " + downloadfile);
             boolean downloadComplete = false;
             boolean downloadCancel = false;
 
             try {
                 {
-                    URL url = new URL(jcrom_link);
+                    URL url = new URL(downloadlink);
                     HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                     httpURLConnection.setRequestMethod("HEAD");
                     httpURLConnection.connect();
@@ -196,7 +201,7 @@ public class SoftwareUpdate extends Fragment {
                     }
                 }
                 {
-                    URL url = new URL(jcrom_link);
+                    URL url = new URL(downloadlink);
                     HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                     httpURLConnection.setRequestMethod("GET");
                     httpURLConnection.setRequestProperty("Range",
@@ -213,7 +218,10 @@ public class SoftwareUpdate extends Fragment {
                             this.publishProgress(this.downloadFileSizeCount);
                             if(this.isCancelled()) {
                                 downloadCancel = true;
-                                lock.release();
+                                if(mWakeLockFlag) {
+                                    lock.release();
+                                    mWakeLockFlag = false;
+                                }
                                 break;
                             }
                         }
@@ -227,14 +235,23 @@ public class SoftwareUpdate extends Fragment {
             } catch(IOException exception) {
                 exception.printStackTrace();
             } finally {
-                if(true == downloadComplete) {
-                    if(false == downloadCancel) {
-                        temporaryFile.renameTo(new File(FILE_LOCAL_PATH));
+                if((true == downloadComplete) && (false == downloadCancel)) {
+                    temporaryFile.renameTo(new File(downloadfile));
+                    if (true == reboot) {
+                        if(mWakeLockFlag) {
+                            lock.release();
+                            mWakeLockFlag = false;
+                        }
                         showFinalConfirmation();
-                        lock.release();
                     }
                 }
             }
+        }
+
+        @Override
+        public Integer doInBackground(Integer...ARGS) {
+            downloadFile(FILE_LOCAL_PATH, jcrom_link, false);
+            downloadFile(FILE_LOCAL_GAPPS_PATH, gapps_link, true);
             return 0;
         }
 
@@ -250,7 +267,10 @@ public class SoftwareUpdate extends Fragment {
                 this.progressDialog.dismiss();
                 this.progressDialog = null;
             }
-            lock.release();
+            if(mWakeLockFlag) {
+                lock.release();
+                mWakeLockFlag = false;
+            }
         }
 
         ProgressDialog progressDialog = null;
@@ -272,7 +292,7 @@ public class SoftwareUpdate extends Fragment {
     }
 
     private void getUpdateInfo() {
-        String uri = "http://jcrom.net/release/aosp/jcrom_kitkat_update.xml";
+        String uri = URL_JCROM_UPDATE;
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet();
         try {
@@ -284,8 +304,10 @@ public class SoftwareUpdate extends Fragment {
             int eventType = parser.getEventType();
             jcrom_version = "";
             jcrom_link = "";
+            gapps_link = "";
             String version_name = getVersionName();
             String link_name = getLinkName();
+            String gapps_name = getGappsName();
             while(eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
                 case XmlPullParser.START_TAG:
@@ -294,10 +316,12 @@ public class SoftwareUpdate extends Fragment {
                         jcrom_version = parser.nextText();
                     } else if (link_name.equals(tag)) {
                     	jcrom_link = parser.nextText();
+                    } else if (gapps_name.equals(tag)) {
+                        gapps_link = parser.nextText();
                     }
                     break;
                 }
-                if ( ! ("".equals(jcrom_version) || "".equals(jcrom_link))) {
+                if ( ! ("".equals(jcrom_version) || "".equals(jcrom_link) || "".equals(gapps_link))) {
                     break;
                 }
                 eventType = parser.next();
@@ -355,10 +379,20 @@ public class SoftwareUpdate extends Fragment {
         return link;
     }
 
+    private String getGappsName() {
+        return "gapps_link";
+    }
+
     private void clearDownloadData() {
-        File deleteFile = new File(FILE_LOCAL_PATH);
-        deleteFile.delete();
-        deleteFile = new File(FILE_LOCAL_TMP_PATH);
+        clearFile(FILE_LOCAL_PATH);
+        clearFile(FILE_LOCAL_TMP_PATH);
+        clearFile(FILE_LOCAL_GAPPS_PATH);
+        clearFile(FILE_LOCAL_GAPPS_TMP_PATH);
+    }
+
+    private void clearFile(String filename) {
+        File deleteFile;
+        deleteFile = new File(filename);
         deleteFile.delete();
     }
 }
