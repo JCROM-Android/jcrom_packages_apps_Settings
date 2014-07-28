@@ -71,6 +71,8 @@ public class SoftwareUpdate extends Fragment {
     private static final int KEYGUARD_REQUEST = 55;
     private static final String FILE_LOCAL_PATH = "/cache/jcrom.zip";
     private static final String FILE_LOCAL_TMP_PATH = "/cache/jcrom.zip.tmp";
+    private static final String FILE_LOCAL_MD5_PATH = "/cache/jcrom.zip.md5sum";
+    private static final String FILE_LOCAL_MD5_TMP_PATH = "/cache/jcrom.zip.md5sum.tmp";
     private static final String FILE_LOCAL_GAPPS_PATH = "/cache/gapps.zip";
     private static final String FILE_LOCAL_GAPPS_TMP_PATH = "/cache/gapps.zip.tmp";
     private static final String KEY_JCROM_VERSION = "ro.jcrom.version";
@@ -81,6 +83,7 @@ public class SoftwareUpdate extends Fragment {
     private Button mCheckButton;
     private String jcrom_version = "";
     private String jcrom_link = "";
+    private String md5_link = "";
     private String gapps_link = "";
     private PowerManager pm = null;
     private WakeLock lock = null;
@@ -251,6 +254,7 @@ public class SoftwareUpdate extends Fragment {
         @Override
         public Integer doInBackground(Integer...ARGS) {
             downloadFile(FILE_LOCAL_PATH, jcrom_link, false);
+            downloadFile(FILE_LOCAL_MD5_PATH, md5_link, false);
             downloadFile(FILE_LOCAL_GAPPS_PATH, gapps_link, true);
             return 0;
         }
@@ -304,9 +308,11 @@ public class SoftwareUpdate extends Fragment {
             int eventType = parser.getEventType();
             jcrom_version = "";
             jcrom_link = "";
+            md5_link = "";
             gapps_link = "";
             String version_name = getVersionName();
             String link_name = getLinkName();
+            String md5_name = getMd5Name();
             String gapps_name = getGappsName();
             while(eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
@@ -316,12 +322,14 @@ public class SoftwareUpdate extends Fragment {
                         jcrom_version = parser.nextText();
                     } else if (link_name.equals(tag)) {
                     	jcrom_link = parser.nextText();
+                    } else if (md5_name.equals(tag)) {
+                        md5_link = parser.nextText();
                     } else if (gapps_name.equals(tag)) {
                         gapps_link = parser.nextText();
                     }
                     break;
                 }
-                if ( ! ("".equals(jcrom_version) || "".equals(jcrom_link) || "".equals(gapps_link))) {
+                if ( ! ("".equals(jcrom_version) || "".equals(jcrom_link) || "".equals(md5_link) || "".equals(gapps_link))) {
                     break;
                 }
                 eventType = parser.next();
@@ -379,6 +387,27 @@ public class SoftwareUpdate extends Fragment {
         return link;
     }
 
+    private String getMd5Name() {
+        String model = Build.PRODUCT;
+        String md5_link = null;
+        if(model.equals("yakju")) {
+            md5_link = "gn_md5";
+        } else if(model.equals("nakasi")) {
+            md5_link = "n7_md5";
+        } else if(model.equals("occam")) {
+            md5_link = "n4_md5";
+        } else if(model.equals("mantaray")) {
+            md5_link = "n10_md5";
+        } else if(model.equals("soju")) {
+            md5_link = "ns_md5";
+        } else if(model.equals("razor")) {
+            md5_link = "n72_md5";
+        } else if(model.equals("hammerhead")) {
+            md5_link = "n5_md5";
+        }
+        return md5_link;
+    }
+
     private String getGappsName() {
         return "gapps_link";
     }
@@ -386,6 +415,8 @@ public class SoftwareUpdate extends Fragment {
     private void clearDownloadData() {
         clearFile(FILE_LOCAL_PATH);
         clearFile(FILE_LOCAL_TMP_PATH);
+        clearFile(FILE_LOCAL_MD5_PATH);
+        clearFile(FILE_LOCAL_MD5_TMP_PATH);
         clearFile(FILE_LOCAL_GAPPS_PATH);
         clearFile(FILE_LOCAL_GAPPS_TMP_PATH);
     }
