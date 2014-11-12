@@ -2488,4 +2488,9 @@
     <string name="encrypt_talkback_dialog_message_pin" msgid="1890374082842868489">"PINを入力してこの端末を開始しても、<xliff:g id="SERVICE">%1$s</xliff:g>のようなユーザー補助サービスはまだご利用になれません。"</string>
     <string name="encrypt_talkback_dialog_message_pattern" msgid="4474332516537386384">"パターンを入力してこの端末を開始しても、<xliff:g id="SERVICE">%1$s</xliff:g>のようなユーザー補助サービスはまだご利用になれません。"</string>
     <string name="encrypt_talkback_dialog_message_password" msgid="8166099418487083927">"パスワードを入力してこの端末を開始しても、<xliff:g id="SERVICE">%1$s</xliff:g>のようなユーザー補助サービスはまだご利用になれません。"</string>
+
+<!-- JCROM -->
+    <string name="jcrom_version">JCROM バージョン</string>
+    <string name="jcrom_version_default">不明</string>
+
 </resources>
