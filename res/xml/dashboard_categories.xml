@@ -17,6 +17,19 @@
 <dashboard-categories
         xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- JCROM -->
+    <dashboard-category
+            android:id="@+id/jcrom_section"
+            android:title="@string/header_category_jcrom" >
+
+        <dashboard-tile
+                android:id="@+id/jcrom_developers"
+                android:fragment="com.android.settings.JapaneseCustomRomDevelopers"
+                android:icon="@drawable/ic_jcrom_developers"
+                android:title="@string/jcrom_developers" />
+
+    </dashboard-category>
+
     <!-- WIRELESS and NETWORKS -->
     <dashboard-category
             android:id="@+id/wireless_section"

@@ -2490,7 +2490,10 @@
     <string name="encrypt_talkback_dialog_message_password" msgid="8166099418487083927">"パスワードを入力してこの端末を開始しても、<xliff:g id="SERVICE">%1$s</xliff:g>のようなユーザー補助サービスはまだご利用になれません。"</string>
 
 <!-- JCROM -->
+    <string name="header_category_jcrom">JCROM</string>
     <string name="jcrom_version">JCROM バージョン</string>
     <string name="jcrom_version_default">不明</string>
+    <string name="jcrom_developers">"JCROM 開発者"</string>
+    <string name="jcrom_developers_summary">"JCROM 開発者情報"</string>
 
 </resources>
