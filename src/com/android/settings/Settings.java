@@ -47,15 +47,7 @@ public class Settings extends SettingsActivity {
     public static class DeviceInfoSettingsActivity extends SettingsActivity { /* empty */ }
     public static class ApplicationSettingsActivity extends SettingsActivity { /* empty */ }
     public static class ManageApplicationsActivity extends SettingsActivity { /* empty */ }
-    public static class AppOpsSummaryActivity extends SettingsActivity {
-        @Override
-        public boolean isValidFragment(String className) {
-            if (AppOpsSummary.class.getName().equals(className)) {
-                return true;
-            }
-            return super.isValidFragment(className);
-            }
-    }
+    public static class AppOpsSummaryActivity extends SettingsActivity { /* empty */ }
     public static class StorageUseActivity extends SettingsActivity { /* empty */ }
     public static class DevelopmentSettingsActivity extends SettingsActivity { /* empty */ }
     public static class AccessibilitySettingsActivity extends SettingsActivity { /* empty */ }

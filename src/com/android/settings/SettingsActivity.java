@@ -68,6 +68,7 @@ import com.android.settings.accessibility.AccessibilitySettings;
 import com.android.settings.accessibility.CaptionPropertiesFragment;
 import com.android.settings.accounts.AccountSettings;
 import com.android.settings.accounts.AccountSyncSettings;
+import com.android.settings.applications.AppOpsSummary;
 import com.android.settings.applications.InstalledAppDetails;
 import com.android.settings.applications.ManageApplications;
 import com.android.settings.applications.ProcessStatsUi;
@@ -264,6 +265,7 @@ public class SettingsActivity extends Activity
             ManageApplications.class.getName(),
             ProcessStatsUi.class.getName(),
             NotificationStation.class.getName(),
+            AppOpsSummary.class.getName(),
             LocationSettings.class.getName(),
             SecuritySettings.class.getName(),
             UsageAccessSettings.class.getName(),
