@@ -79,6 +79,21 @@
             android:supportsRtl="true"
             android:allowBackup="false">
 
+        <receiver
+            android:name="ThemeInstallReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.JcromThemeInstall" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
         <!-- Settings -->
 
         <activity android:name="Settings"
@@ -1247,6 +1262,33 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="Settings$JapaneseCustomRomSettingsActivity"
+                android:label="@string/jcrom_settings"
+                android:clearTaskOnLaunch="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.settings.JAPANESE_CUSTOM_ROM_SETTINGS" />
+                <action android:name="com.android.settings.JAPANESE_CUSTOM_ROM_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.JapaneseCustomRomSettings" />
+            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/jcrom_settings" />
+        </activity>
+
+        <activity-alias android:name="JapaneseCustomRomSettings"
+                  android:clearTaskOnLaunch="true"
+                  android:exported="true"
+                  android:label="@string/jcrom_settings"
+                  android:targetActivity="Settings$JapaneseCustomRomSettingsActivity">
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.JapaneseCustomRomSettings" />
+            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/jcrom_settings" />
+        </activity-alias>
+
         <activity android:name="Settings$DevelopmentSettingsActivity"
                 android:label="@string/development_settings_title"
                 android:taskAffinity="com.android.settings"
@@ -1306,6 +1348,40 @@
             <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/development_settings" />
         </activity-alias>
+
+        <!-- JCROM Theme Selector Intent Entrypoint -->
+        <activity
+            android:name="ThemeSelectorIntentActivity"
+            android:label="@string/jcrom_theme_setting"
+            android:theme="@style/ThemeSelectorIntentActivityStyle"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="jcrom" />
+                <data android:host=""/>
+                <data android:pathPrefix="/set_theme"/>
+            </intent-filter>
+            <intent-filter android:priority="-101">
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="jcrom" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="ThemeClearIntentActivity"
+            android:label="@string/jcrom_theme_setting"
+            android:theme="@style/ThemeClearIntentActivityStyle"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="jcrom" />
+                <data android:host=""/>
+                <data android:pathPrefix="/clear_theme"/>
+            </intent-filter>
+        </activity>
 
         <activity android:name=".AppPicker" android:label="@string/select_application"
                 android:theme="@android:style/Theme.Material.Light.Dialog" />

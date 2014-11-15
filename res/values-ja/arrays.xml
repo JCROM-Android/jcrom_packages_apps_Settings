@@ -37,6 +37,7 @@
     <item msgid="7489864775127957179">"5分"</item>
     <item msgid="2314124409517439288">"10分"</item>
     <item msgid="6864027152847611413">"30分"</item>
+    <item >"スリープしない"</item>
   </string-array>
   <string-array name="dream_timeout_entries">
     <item msgid="3149294732238283185">"起動しない"</item>
@@ -530,5 +531,24 @@
     <item msgid="8610560843693675830">"キャッシュ済み（アクティビティ）"</item>
     <item msgid="4338089220026248848">"キャッシュ済み（アクティビティクライアント）"</item>
     <item msgid="6652164677254579050">"キャッシュ済み（空）"</item>
+  </string-array>
+<!-- JCROM -->
+  <string-array name="entries_number_of_homescreen">
+    <item msgid="8672158431295301844">自動設定（デフォルト）</item>
+    <item msgid="8672158431295301840">1 スクリーン</item>
+    <item msgid="8672158431295301841">3 スクリーン</item>
+    <item msgid="8672158431295301842">5 スクリーン</item>
+    <item msgid="8672158431295301843">7 スクリーン</item>
+  </string-array>
+  <string-array name="select_battery_entries">
+    <item>標準の電池残量表示</item>
+    <item>％表示を有効にする</item>
+    <item>テーマを有効にする</item>
+  </string-array>
+  <string-array name="select_keylayout_entries">
+    <item>戻る - メニュー - ホーム - 通知 - 履歴</item>
+    <item>メニュー - ホーム - 戻る - 履歴 - 通知</item>
+    <item>履歴 - 通知 - ホーム - メニュー - 戻る</item>
+    <item>ホーム - 戻る - メニュー - 履歴 - 通知</item>
   </string-array>
 </resources>

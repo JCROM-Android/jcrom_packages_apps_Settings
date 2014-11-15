@@ -23,6 +23,12 @@
             android:title="@string/header_category_jcrom" >
 
         <dashboard-tile
+                android:id="@+id/jcrom_settings"
+                android:fragment="com.android.settings.JapaneseCustomRomSettings"
+                android:icon="@drawable/ic_jcrom_settings"
+                android:title="@string/jcrom_settings" />
+
+        <dashboard-tile
                 android:id="@+id/jcrom_developers"
                 android:fragment="com.android.settings.JapaneseCustomRomDevelopers"
                 android:icon="@drawable/ic_jcrom_developers"
