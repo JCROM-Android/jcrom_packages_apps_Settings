@@ -138,7 +138,7 @@ public class ThemeManager {
 
     public void restartLauncher() {
         ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        am.forceStopPackage("com.android.launcher3");
+        am.forceStopPackage("com.android.jclauncher");
     }
 
     public void restartSystemUI(final Runnable afterProc) {
@@ -464,7 +464,7 @@ public class ThemeManager {
 
                 try {
                     ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-                    am.forceStopPackage("com.android.launcher3");
+                    am.forceStopPackage("com.android.jclauncher");
                     Intent intent = new Intent(Intent.ACTION_JCROM_THEME_CHANGE);
                     mContext.sendBroadcast(intent);
                 } catch (Exception e) {
