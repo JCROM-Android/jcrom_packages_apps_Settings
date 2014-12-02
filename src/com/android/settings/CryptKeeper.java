@@ -108,6 +108,8 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
     private static final String FORCE_VIEW_ERROR = "error";
     private static final String FORCE_VIEW_PASSWORD = "password";
 
+    private static final String VOICE_CAPABLE_PROPERTY = "persist.sys.voice.capable";
+
     /** When encryption is detected, this flag indicates whether or not we've checked for errors. */
     private boolean mValidationComplete;
     private boolean mValidationRequested;
@@ -959,7 +961,8 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
     }
 
     private boolean isEmergencyCallCapable() {
-        return getResources().getBoolean(com.android.internal.R.bool.config_voice_capable);
+        //return getResources().getBoolean(com.android.internal.R.bool.config_voice_capable);
+        return SystemProperties.getBoolean(VOICE_CAPABLE_PROPERTY, true);
     }
 
     private void takeEmergencyCallAction() {
