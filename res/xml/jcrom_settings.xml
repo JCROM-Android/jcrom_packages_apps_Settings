@@ -5,26 +5,6 @@
 
     <PreferenceCategory android:title="@string/jcrom_settings_category_system" >
         <CheckBoxPreference
-            android:key="actionbar_bottom"
-            android:title="@string/actionbar_bottom"
-            android:summary="@string/actionbar_bottom_summary"/>
-
-        <CheckBoxPreference
-            android:key="notification_setting"
-            android:title="@string/notification_setting"
-            android:summary="@string/notification_setting_summary"/>
-
-        <CheckBoxPreference
-            android:key="lockscreen_rotate"
-            android:title="@string/lockscreen_rotate"
-            android:summary="@string/lockscreen_rotate_summary"/>
-
-        <CheckBoxPreference
-            android:key="lockscreen_transmission"
-            android:title="@string/lockscreen_transmission"
-            android:summary="@string/lockscreen_transmission_summary"/>
-
-        <CheckBoxPreference
             android:key="force_my_hobby"
             android:title="@string/force_my_hobby" />
 
@@ -35,23 +15,25 @@
             android:title="@string/theme_setting"
             android:summary="@string/theme_setting_summary"/>
 
-        <CheckBoxPreference
-            android:key="hide_theme_images"
-            android:title="@string/hide_theme_images"
-            android:summary="@string/hide_theme_images_summary"/>
+        <ListPreference
+            android:key="select_ui"
+            android:title="@string/select_ui_title"
+            android:persistent="false"
+            android:entries="@array/select_ui_entries"
+            android:entryValues="@array/select_ui_values" />
+
+        <ListPreference
+            android:key="select_keylayout"
+            android:title="@string/select_keylayout_title"
+            android:persistent="false"
+            android:entries="@array/select_keylayout_entries"
+            android:entryValues="@array/select_keylayout_values" />
 
         <CheckBoxPreference
-            android:key="enable_blacklist"
-            android:title="@string/enable_blacklist" />
+            android:key="lockscreen_rotate"
+            android:title="@string/lockscreen_rotate"
+            android:summary="@string/lockscreen_rotate_summary"/>
 
-        <EditTextPreference
-            android:key="install_blacklist"
-            android:dependency="enable_blacklist"
-            android:layout="?android:attr/preferenceLayoutChild"
-            android:title="@string/install_blacklist"
-            android:summary="@string/install_blacklist_summary"
-            android:dialogTitle="@string/install_blacklist"/>
-            
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/jcrom_settings_category_launcher" >
 
@@ -97,27 +79,6 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/jcrom_settings_category_development" >
 
-        <ListPreference
-            android:key="select_ui"
-            android:title="@string/select_ui_title"
-            android:persistent="false"
-            android:entries="@array/select_ui_entries"
-            android:entryValues="@array/select_ui_values" />
-
-        <ListPreference
-            android:key="select_keylayout"
-            android:title="@string/select_keylayout_title"
-            android:persistent="false"
-            android:entries="@array/select_keylayout_entries"
-            android:entryValues="@array/select_keylayout_values" />
-
-        <ListPreference
-            android:key="select_battery"
-            android:title="@string/select_battery_title"
-            android:persistent="false"
-            android:entries="@array/select_battery_entries"
-            android:entryValues="@array/select_battery_values" />
-
         <CheckBoxPreference
             android:key="voice_capable"
             android:title="@string/voice_capable"
@@ -132,6 +93,48 @@
           android:key="force_my_android_id"
           android:title="@string/force_my_android_id"
           android:summary=""/>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/jcrom_settings_category_notsupported" >
+
+        <CheckBoxPreference
+            android:key="hide_theme_images"
+            android:title="@string/hide_theme_images"
+            android:summary="@string/hide_theme_images_summary"/>
+
+        <ListPreference
+            android:key="select_battery"
+            android:title="@string/select_battery_title"
+            android:persistent="false"
+            android:entries="@array/select_battery_entries"
+            android:entryValues="@array/select_battery_values" />
+
+        <CheckBoxPreference
+            android:key="enable_blacklist"
+            android:title="@string/enable_blacklist" />
+
+        <EditTextPreference
+            android:key="install_blacklist"
+            android:dependency="enable_blacklist"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:title="@string/install_blacklist"
+            android:summary="@string/install_blacklist_summary"
+            android:dialogTitle="@string/install_blacklist"/>
+
+        <CheckBoxPreference
+            android:key="actionbar_bottom"
+            android:title="@string/actionbar_bottom"
+            android:summary="@string/actionbar_bottom_summary"/>
+
+        <CheckBoxPreference
+            android:key="notification_setting"
+            android:title="@string/notification_setting"
+            android:summary="@string/notification_setting_summary"/>
+
+        <CheckBoxPreference
+            android:key="lockscreen_transmission"
+            android:title="@string/lockscreen_transmission"
+            android:summary="@string/lockscreen_transmission_summary"/>
 
     </PreferenceCategory>
 
