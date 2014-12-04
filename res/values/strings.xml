@@ -6074,6 +6074,7 @@
     <string name="jcrom_settings_category_system">JCROM System Settings</string>
     <string name="jcrom_settings_category_launcher">JCROM Launcher Settings</string>
     <string name="jcrom_settings_category_development">JCROM Development Settings</string>
+    <string name="jcrom_settings_category_notsupported">Not Supported</string>
     <string name="theme_setting">Select Theme</string>
     <string name="theme_setting_summary">default</string>
     <string name="progress_set_theme">Setting Theme</string>
