@@ -308,6 +308,8 @@ public class ThemeManager {
     private void setDefaultSounds() {
         Settings.Global.putString(mContentResolver, Settings.Global.LOW_BATTERY_SOUND,
                 "/system/media/audio/ui/LowBattery.ogg");
+        Settings.Global.putString(mContentResolver, Settings.Global.WIRELESS_CHARGING_STARTED_SOUND,
+                "/system/media/audio/ui/WirelessChargingStarted.ogg");
         Settings.Global.putString(mContentResolver, Settings.Global.DESK_DOCK_SOUND,
                 "/system/media/audio/ui/Dock.ogg");
         Settings.Global.putString(mContentResolver, Settings.Global.DESK_UNDOCK_SOUND,
@@ -320,6 +322,8 @@ public class ThemeManager {
                 "/system/media/audio/ui/Lock.ogg");
         Settings.Global.putString(mContentResolver, Settings.Global.UNLOCK_SOUND,
                 "/system/media/audio/ui/Unlock.ogg");
+        Settings.Global.putString(mContentResolver, Settings.Global.TRUSTED_SOUND,
+                "/system/media/audio/ui/Trusted.ogg");
     }
 
     private void setDefaultCameraSounds() {
@@ -351,12 +355,14 @@ public class ThemeManager {
         String forceHobby = SystemProperties.get("persist.sys.force.hobby");
         if (forceHobby.equals("true")) {
             setDataBase(Settings.Global.LOW_BATTERY_SOUND, "LowBattery.ogg");
+            setDataBase(Settings.Global.WIRELESS_CHARGING_STARTED_SOUND, "WirelessChargingStarted.ogg");
             setDataBase(Settings.Global.DESK_DOCK_SOUND, "Dock.ogg");
             setDataBase(Settings.Global.DESK_UNDOCK_SOUND, "UnDock.ogg");
             setDataBase(Settings.Global.CAR_DOCK_SOUND, "CarDock.ogg");
             setDataBase(Settings.Global.CAR_UNDOCK_SOUND, "UnCarDock.ogg");
             setDataBase(Settings.Global.LOCK_SOUND, "Lock.ogg");
             setDataBase(Settings.Global.UNLOCK_SOUND, "unLock.ogg");
+            setDataBase(Settings.Global.TRUSTED_SOUND, "Trusted.ogg");
         }
     }
 
