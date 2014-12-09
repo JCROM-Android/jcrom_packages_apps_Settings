@@ -68,7 +68,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
     private static final String VOICE_CAPABLE_PROPERTY = "persist.sys.voice.capable";
     private static final String SMS_CAPABLE_PROPERTY = "persist.sys.sms.capable";
     private static final String LAUNCHER_DRAWER_PROPERTY = "persist.sys.launcher.drawer";
-    private static final String FULL_LOCKSCREEN_PROPERTY = "persist.sys.full.lockscreen";
     private static final String SELECT_KEYLAYOUT_PROPERTY = "persist.sys.keylayout.select";
     private static final String SELECT_BLACKLIST_PROPERTY = "persist.sys.blacklist";
 
@@ -91,7 +90,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
     private static final String VOICE_CAPABLE_KEY = "voice_capable";
     private static final String SMS_CAPABLE_KEY = "sms_capable";
     private static final String LAUNCHER_DRAWER_KEY = "drawer_transmission";
-    private static final String FULL_LOCKSCREEN_KEY = "lockscreen_transmission";
     private static final String SELECT_KEYLAYOUT_KEY = "select_keylayout";
     private static final String INSTALL_BLACK_LIST_KEY = "install_blacklist";
     private static final String SELECT_BLACKLIST_KEY = "enable_blacklist";
@@ -121,7 +119,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
     private CheckBoxPreference mVoiceCapable;
     private CheckBoxPreference mSmsCapable;
     private CheckBoxPreference mLauncherDrawer;
-    private CheckBoxPreference mFullLockscreen;
     private ListPreference mSelectKeyLayout;
     private EditTextPreference mEditInstallBlackList;
     private CheckBoxPreference mSelectBlackList;
@@ -174,7 +171,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
         mVoiceCapable = (CheckBoxPreference) findPreference(VOICE_CAPABLE_KEY);
         mSmsCapable = (CheckBoxPreference) findPreference(SMS_CAPABLE_KEY);
         mLauncherDrawer = (CheckBoxPreference) findPreference(LAUNCHER_DRAWER_KEY);
-        mFullLockscreen = (CheckBoxPreference) findPreference(FULL_LOCKSCREEN_KEY);
         mEditInstallBlackList = (EditTextPreference) findPreference(INSTALL_BLACK_LIST_KEY);
         mSelectBlackList = (CheckBoxPreference) findPreference(SELECT_BLACKLIST_KEY);
 
@@ -328,7 +324,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
         updateVoiceCapable();
         updateSmsCapable();
         updateLauncherDrawer();
-        updateFullLockscreen();
         updateBlackList();
     }
 
@@ -377,9 +372,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
     }
     private void updateLauncherDrawer() {
         mLauncherDrawer.setChecked(SystemProperties.getBoolean(LAUNCHER_DRAWER_PROPERTY, false));
-    }
-    private void updateFullLockscreen() {
-        mFullLockscreen.setChecked(SystemProperties.getBoolean(FULL_LOCKSCREEN_PROPERTY, false));
     }
     private void updateInstallBlacklist() {
         String blacklist = Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.INSTALL_BLACK_LIST);
@@ -498,7 +490,7 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
 
     private void writeNotificationOptions() {
         SystemProperties.set(MY_NOTIFICATION_PROPERTY, mNotification.isChecked() ? "true" : "false");
-        new ThemeManager(getActivity()).restartSystemUI(closeProgress);
+        //new ThemeManager(getActivity()).restartSystemUI(closeProgress);
     }
 
     private void writeActionBarBottomOptions() {
@@ -586,10 +578,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
         SystemProperties.set(LAUNCHER_DRAWER_PROPERTY, mLauncherDrawer.isChecked() ? "true" : "false");
     }
 
-    private void writeFullLockscreen() {
-        SystemProperties.set(FULL_LOCKSCREEN_PROPERTY, mFullLockscreen.isChecked() ? "true" : "false");
-    }
-
     private void writeBlackListOptions() {
         SystemProperties.set(SELECT_BLACKLIST_PROPERTY, mSelectBlackList.isChecked() ? "true" : "false");
     }
@@ -631,8 +619,6 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
             writeSmsCapable();
         } else if (preference == mLauncherDrawer) {
             writeLauncherDrawer();
-        } else if (preference == mFullLockscreen) {
-            writeFullLockscreen();
         } else if (preference == mSelectBlackList) {
             writeBlackListOptions();
         } else {
@@ -700,14 +686,14 @@ public class JapaneseCustomRomSettings extends PreferenceFragment implements OnP
             SystemProperties.set(SELECT_BATTERY_PROPERTY, newValue.toString());
             selectBattery();
             setBatteryMode(newValue.toString());
-            confirmSystemUIReset();
+            confirmReset();
             return true;
         }
         if (preference == mSelectKeyLayout) {
             SystemProperties.set(SELECT_KEYLAYOUT_PROPERTY, newValue.toString());
             selectKeyLayout();
             setKeyLayoutMode(newValue.toString());
-            confirmSystemUIReset();
+            confirmReset();
             return true;
         }        
         return false;

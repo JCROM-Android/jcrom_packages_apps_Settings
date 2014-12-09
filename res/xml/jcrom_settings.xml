@@ -29,10 +29,22 @@
             android:entries="@array/select_keylayout_entries"
             android:entryValues="@array/select_keylayout_values" />
 
+        <ListPreference
+            android:key="select_battery"
+            android:title="@string/select_battery_title"
+            android:persistent="false"
+            android:entries="@array/select_battery_entries"
+            android:entryValues="@array/select_battery_values" />
+
         <CheckBoxPreference
             android:key="lockscreen_rotate"
             android:title="@string/lockscreen_rotate"
             android:summary="@string/lockscreen_rotate_summary"/>
+
+        <CheckBoxPreference
+            android:key="hide_theme_images"
+            android:title="@string/hide_theme_images"
+            android:summary="@string/hide_theme_images_summary"/>
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/jcrom_settings_category_launcher" >
@@ -98,18 +110,6 @@
     <PreferenceCategory android:title="@string/jcrom_settings_category_notsupported" >
 
         <CheckBoxPreference
-            android:key="hide_theme_images"
-            android:title="@string/hide_theme_images"
-            android:summary="@string/hide_theme_images_summary"/>
-
-        <ListPreference
-            android:key="select_battery"
-            android:title="@string/select_battery_title"
-            android:persistent="false"
-            android:entries="@array/select_battery_entries"
-            android:entryValues="@array/select_battery_values" />
-
-        <CheckBoxPreference
             android:key="enable_blacklist"
             android:title="@string/enable_blacklist" />
 
@@ -130,11 +130,6 @@
             android:key="notification_setting"
             android:title="@string/notification_setting"
             android:summary="@string/notification_setting_summary"/>
-
-        <CheckBoxPreference
-            android:key="lockscreen_transmission"
-            android:title="@string/lockscreen_transmission"
-            android:summary="@string/lockscreen_transmission_summary"/>
 
     </PreferenceCategory>
 
