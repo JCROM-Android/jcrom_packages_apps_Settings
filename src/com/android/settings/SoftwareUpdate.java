@@ -58,6 +58,9 @@ import java.net.URISyntaxException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -77,6 +80,9 @@ public class SoftwareUpdate extends Fragment {
     private static final String FILE_LOCAL_GAPPS_TMP_PATH = "/cache/gapps.zip.tmp";
     private static final String KEY_JCROM_VERSION = "ro.jcrom.version";
     private static final String URL_JCROM_UPDATE = "http://jcrom.net/release/aosp/jcrom_update_lolli.xml";
+    private static final int INDEX_VERSION = 0;
+    private static final int INDEX_LINK = 1;
+    private static final int INDEX_MD5 = 2;
 
     private View mContentView;
     private Button mInitiateButton;
@@ -88,6 +94,32 @@ public class SoftwareUpdate extends Fragment {
     private PowerManager pm = null;
     private WakeLock lock = null;
     private boolean mWakeLockFlag = false;
+
+    String mUpdateInfo[][] = {{"gn_version",  "gn_link",  "gn_md5" },
+                              {"n7_version",  "n7_link",  "n7_md5" },
+                              {"n4_version",  "n4_link",  "n4_md5" },
+                              {"n10_version", "n10_link", "n10_md5"},
+                              {"ns_version",  "ns_link",  "ns_md5" },
+                              {"n72_version", "n72_link", "n72_md5"},
+                              {"n5_version",  "n5_link",  "n5_md5" },
+                              {"n6_version",  "n6_link",  "n6_md5" },
+                              {"n9_version",  "n9_link",  "n9_md5" }};
+    List<String> mList = 
+        new ArrayList<String>(Arrays.asList("yakju", "nakasi", "occam", 
+                                            "mantaray", "soju", "razor", 
+                                            "hammerhead", "shamu", "volantis"));
+
+    private String getModelInfo(int info) {
+        String model = Build.PRODUCT;
+        String data = null;
+        int index = mList.indexOf(model);
+
+        if (index != -1) {
+            data = mUpdateInfo[index][info];
+        }
+
+        return data;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -310,9 +342,9 @@ public class SoftwareUpdate extends Fragment {
             jcrom_link = "";
             md5_link = "";
             gapps_link = "";
-            String version_name = getVersionName();
-            String link_name = getLinkName();
-            String md5_name = getMd5Name();
+            String version_name = getModelInfo(INDEX_VERSION);
+            String link_name = getModelInfo(INDEX_LINK);
+            String md5_name = getModelInfo(INDEX_MD5);
             String gapps_name = getGappsName();
             while(eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
@@ -343,69 +375,6 @@ public class SoftwareUpdate extends Fragment {
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
-    }
-
-    private String getVersionName() {
-        String model = Build.PRODUCT;
-        String version = null;
-        if(model.equals("yakju")) {
-            version = "gn_version";
-        } else if(model.equals("nakasi")) {
-            version = "n7_version";
-        } else if(model.equals("occam")) {
-            version = "n4_version";
-        } else if(model.equals("mantaray")) {
-            version = "n10_version";
-        } else if(model.equals("soju")) {
-            version = "ns_version";
-        } else if(model.equals("razor")) {
-            version = "n72_version";
-        } else if(model.equals("hammerhead")) {
-            version = "n5_version";
-        }
-        return version;
-    }
-
-    private String getLinkName() {
-        String model = Build.PRODUCT;
-        String link = null;
-        if(model.equals("yakju")) {
-            link = "gn_link";
-        } else if(model.equals("nakasi")) {
-            link = "n7_link";
-        } else if(model.equals("occam")) {
-            link = "n4_link";
-        } else if(model.equals("mantaray")) {
-            link = "n10_link";
-        } else if(model.equals("soju")) {
-            link = "ns_link";
-        } else if(model.equals("razor")) {
-            link = "n72_link";
-        } else if(model.equals("hammerhead")) {
-            link = "n5_link";
-        }
-        return link;
-    }
-
-    private String getMd5Name() {
-        String model = Build.PRODUCT;
-        String md5_link = null;
-        if(model.equals("yakju")) {
-            md5_link = "gn_md5";
-        } else if(model.equals("nakasi")) {
-            md5_link = "n7_md5";
-        } else if(model.equals("occam")) {
-            md5_link = "n4_md5";
-        } else if(model.equals("mantaray")) {
-            md5_link = "n10_md5";
-        } else if(model.equals("soju")) {
-            md5_link = "ns_md5";
-        } else if(model.equals("razor")) {
-            md5_link = "n72_md5";
-        } else if(model.equals("hammerhead")) {
-            md5_link = "n5_md5";
-        }
-        return md5_link;
     }
 
     private String getGappsName() {
