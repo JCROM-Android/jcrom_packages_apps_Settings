@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/jcrom_batterysaver">
+
+        <ListPreference
+            android:key="batterysaver_maxfreq"
+            android:title="@string/batterysaver_maxfreq_title"
+            android:persistent="false"
+            android:entries="@array/batterysaver_maxfreq_entries"
+            android:entryValues="@array/batterysaver_maxfreq_values" />
+
+        <CheckBoxPreference
+            android:key="batterysaver_statusbar"
+            android:title="@string/batterysaver_statusbar" />
+
+        <CheckBoxPreference
+            android:key="batterysaver_animation"
+            android:title="@string/batterysaver_animation" />
+
+        <CheckBoxPreference
+            android:key="batterysaver_background"
+            android:title="@string/batterysaver_background" />
+
+        <CheckBoxPreference
+            android:key="batterysaver_vibrator"
+            android:title="@string/batterysaver_vibrator" />
+
+</PreferenceScreen>

@@ -135,6 +135,12 @@
                 android:icon="@drawable/ic_settings_battery"
                 />
 
+        <dashboard-tile
+                android:id="@+id/jcrom_batterysaver"
+                android:fragment="com.android.settings.JapaneseCustomRomBatterySaver"
+                android:icon="@drawable/ic_settings_battery"
+                android:title="@string/jcrom_batterysaver" />
+
         <!-- Application Settings -->
         <dashboard-tile
                 android:id="@+id/application_settings"
