@@ -49,6 +49,7 @@ public class Settings extends SettingsActivity {
     public static class ManageApplicationsActivity extends SettingsActivity { /* empty */ }
     public static class AppOpsSummaryActivity extends SettingsActivity { /* empty */ }
     public static class StorageUseActivity extends SettingsActivity { /* empty */ }
+    public static class JapaneseCustomRomSettingsActivity extends Settings { /* empty */ }
     public static class DevelopmentSettingsActivity extends SettingsActivity { /* empty */ }
     public static class AccessibilitySettingsActivity extends SettingsActivity { /* empty */ }
     public static class CaptioningSettingsActivity extends SettingsActivity { /* empty */ }
