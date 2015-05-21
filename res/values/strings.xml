@@ -6051,7 +6051,38 @@
    <string name="slot_number">(Slot<xliff:g id="slot_num">%1$d</xliff:g>)</string>
 
 <!-- JCROM -->
+    <string name="header_category_jcrom">JCROM</string>
     <string name="jcrom_version">JCROM version</string>
     <string name="jcrom_version_default">Unknown</string>
+    <string name="jcrom_developers">JCROM Developers</string>
+    <string name="jcrom_developers_summary">Developers Info.</string>
+    <string name="developer_sola">sola</string>
+    <string name="developer_sola_summary">twitter : androidsola</string>
+    <string name="developer_adakoda">adakoda</string>
+    <string name="developer_adakoda_summary">twitter : adakoda</string>
+    <string name="developer_mhidaka">mhidaka</string>
+    <string name="developer_mhidaka_summary">twitter : mhidaka</string>
+    <string name="developer_iqm">iqm</string>
+    <string name="developer_iqm_summary">twitter : iqm</string>
+    <string name="developer_Kaikias">Kaikias_lys</string>
+    <string name="developer_Kaikias_summary">twitter : Kaikias_lys</string>
+    <string name="developer_neuralassembly">neuralassembly</string>
+    <string name="developer_neuralassembly_summary">twitter : neuralassembly</string>
+    <string name="developer_ryosms">ryosms</string>
+    <string name="developer_ryosms_summary">twitter : ryosms</string>
+    <string name="developer_IoriAYANE">IoriAYANE</string>
+    <string name="developer_IoriAYANE_summary">twitter : IoriAYANE</string>
+    <string name="developer_hamatz">hamatz</string>
+    <string name="developer_hamatz_summary">twitter : hamatz</string>
+    <string name="developer_tama">tama</string>
+    <string name="developer_tama_summary">twitter : tamacjp</string>
+    <string name="developer_chebecky">chebecky</string>
+    <string name="developer_chebecky_summary">twitter : chebecky</string>
+    <string name="developer_ta9mar">ta9mar</string>
+    <string name="developer_ta9mar_summary">twitter : ta9mar</string>
+    <string name="developer_kassy_kz">kassy_kz</string>
+    <string name="developer_kassy_kz_summary">twitter : kassy_kz</string>
+    <string name="developer_nuts">Nuts</string>
+    <string name="developer_nuts_summary">twitter : nuts_i77</string>
 
 </resources>
