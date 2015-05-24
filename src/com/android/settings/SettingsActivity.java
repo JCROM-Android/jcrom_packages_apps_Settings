@@ -305,7 +305,9 @@ public class SettingsActivity extends Activity
             OtherSoundSettings.class.getName(),
             QuickLaunchSettings.class.getName(),
             ApnSettings.class.getName(),
-            JapaneseCustomRomSettings.class.getName()
+            JapaneseCustomRomSettings.class.getName(),
+            JapaneseCustomRomDevelopers.class.getName(),
+            JapaneseCustomRomBatterySaver.class.getName()
     };
 
 

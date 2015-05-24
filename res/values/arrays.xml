@@ -1318,4 +1318,13 @@
         <item>Pink</item>
         <item>Red</item>
     </string-array>
+
+    <string-array name="batterysaver_maxfreq_entries">
+        <item>Unselectable</item>
+    </string-array>
+
+    <string-array name="batterysaver_maxfreq_values" translatable="false" >
+        <item>0</item>
+    </string-array>
+
 </resources>

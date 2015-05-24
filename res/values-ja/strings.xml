@@ -2602,5 +2602,10 @@
     <string name="install_blacklist">ブラックリスト編集</string>
     <string name="install_blacklist_summary">インストールを禁止するアプリのパッケージ名をカンマ(,)区切りで入力してください。</string>
     <string name="enable_blacklist">ブラックリストを有効にする</string>
-
+    <string name="jcrom_batterysaver">バッテリーセーバーの設定</string>
+    <string name="batterysaver_statusbar">ステータスバーとナビバーの色を変更する</string>
+    <string name="batterysaver_animation">アニメーションを無効にする</string>
+    <string name="batterysaver_background">バックグラウンドデータを制限する</string>
+    <string name="batterysaver_vibrator">バイブレーションを無効にする</string>
+    <string name="batterysaver_maxfreq_title">クロック周波数の上限値を選択</string>
 </resources>

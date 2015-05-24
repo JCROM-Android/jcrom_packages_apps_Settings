@@ -6171,5 +6171,10 @@
     <string name="install_blacklist">Edit install black list</string>
     <string name="install_blacklist_summary">Edit install black list. Please enter the package name, separated by commas.</string>
     <string name="enable_blacklist">Enabling black list</string>
-
+    <string name="jcrom_batterysaver">BatterySaver Settings</string>
+    <string name="batterysaver_statusbar">Enable warning color </string>
+    <string name="batterysaver_animation">Disable animation</string>
+    <string name="batterysaver_background">Limited background data</string>
+    <string name="batterysaver_vibrator">Disable vibration</string>
+    <string name="batterysaver_maxfreq_title">Select max freq</string>
 </resources>
